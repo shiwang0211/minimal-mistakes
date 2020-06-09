@@ -4,6 +4,10 @@ categories:
   - Statistics
 ---
 
+```
+{% raw %}
+```
+
 # Permutation and Combination
 
 - Different sampling methods 
@@ -83,7 +87,6 @@ $$P(X=k) = \frac{\lambda^k}{k!}e^{-\lambda}$$
 ## Normal Distribution
 
 $$f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$
-
 
 $$X \sim N(\mu_X, \sigma^2), Y \sim N(\mu_Y, \sigma^2)$$
 $$\bar X - \bar Y \sim N[(\mu_X - \mu_Y, \sigma^2(\frac{1}{N_X} + \frac{1}{N_Y})]$$
@@ -233,3 +236,10 @@ The observarions are very unlikely to have occurred given the null hypothesis.
 
 - Cannot tell the impact of a feature 
   <img src="https://cdn-images-1.medium.com/max/1600/0*juOEvI0itN6cEToo.png" width="500">
+
+
+
+```
+{% endraw %}
+```
+
