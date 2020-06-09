@@ -10,3 +10,15 @@ main:
   #   url: /collection-archive/
   # - title: "Sitemap"
   #   url: /sitemap/
+
+docs:
+  - title: Getting Started
+    children:
+      - title: "Quick-Start Guide"
+        url: /about/
+      - title: "Structure"
+        url: /about/
+      - title: "Installation"
+        url: /about/
+      - title: "Upgrading"
+        url: /about/
