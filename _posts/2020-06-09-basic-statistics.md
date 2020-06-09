@@ -4,9 +4,7 @@ categories:
   - Statistics
 ---
 
-```
-{% raw %}
-```
+
 
 # Permutation and Combination
 
@@ -29,8 +27,6 @@ categories:
 - Example: 2m players, m field, how many ways to assign players **(without fields)** 
   - Think of 2m places
     $$N = \frac{(2m)!}{(2!)^m \times m!}$$
-
-
 
 # Common Distributions
 
@@ -77,16 +73,14 @@ $$P(X=k) = \frac{\lambda^k}{k!}e^{-\lambda}$$
 - Number until first success
   $$P(X=k) = (1-p)^{k-1}p$$
 
-
 ## Hyper-Geometric Distribution
 
 - Choose $m$ from $n$, get $k$ successes out of $r$
-  $$P(X=k) = \frac{{r \choose k}{{N-r} \choose {m-k}}}{N \choose m}$$
-
+  $$P(X=k) = \frac{ {r \choose k}{ {N-r} \choose {m-k} } }{N \choose m}$$
 
 ## Normal Distribution
 
-$$f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$
+$$f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2} }$$
 
 $$X \sim N(\mu_X, \sigma^2), Y \sim N(\mu_Y, \sigma^2)$$
 $$\bar X - \bar Y \sim N[(\mu_X - \mu_Y, \sigma^2(\frac{1}{N_X} + \frac{1}{N_Y})]$$
@@ -104,7 +98,7 @@ $$\frac{(n-1)s^2}{\sigma^2} \sim \chi^2(n-1)$$
 ## $t$ Distribution
 
 $$X \sim N(\mu, \sigma^2)$$
-$$\frac{X}{\sqrt{\chi^2(n)}} \sim t(n)$$
+$$\frac{X}{\sqrt{\chi^2(n)} } \sim t(n)$$
 <img src="https://andyjconnelly.files.wordpress.com/2017/05/distributions1.png" width="400">
 
 ## Other Distributions
@@ -146,7 +140,7 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 
 ## Correlation
 
-- $\rho(X,Y) = \frac{Cov(X,Y)}{\sqrt{Var(X)}\sqrt{Var(Y)}}$
+- $\rho(X,Y) = \frac{Cov(X,Y)}{\sqrt{Var(X)}\sqrt{Var(Y)} }$
 - $\rho=0$ only indicates no **linear** relationship
 
 ## Indendency
@@ -181,7 +175,7 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
   - Null: p = 0.50
   - Mean: $np$ = 50
   - Variance: $np(1-p)$ = 25
-  - Normal Distribution: $P(X \geq 60) = P(\frac{X-50}{\sqrt{25}} \geq \frac{60-50}{\sqrt{25}}) = P(Z_{N(0,1)} \geq2)$
+  - Normal Distribution: $P(X \geq 60) = P(\frac{X-50}{\sqrt{25} } \geq \frac{60-50}{\sqrt{25} }) = P(Z_{N(0,1)} \geq2)$
 
 # Linear regression
 
@@ -194,9 +188,9 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 
 
 - Parameter Test
-  $$Z = \frac{\hat \beta_1 - 0}{\sigma_{\beta_1}} \sim N(0,1)$$
-  $$T = \frac{\hat \beta_1 - 0}{s_{\hat \beta_1}} \sim t\ (N-k)$$
-  $$s_{\hat \beta_1} = \sqrt{\hat \sigma^2\ /\sum{(x-\bar x)^2}}$$
+  $$Z = \frac{\hat \beta_1 - 0}{\sigma_{\beta_1} } \sim N(0,1)$$
+  $$T = \frac{\hat \beta_1 - 0}{s_{\hat \beta_1} } \sim t\ (N-k)$$
+  $$s_{\hat \beta_1} = \sqrt{\hat \sigma^2\ /\sum{(x-\bar x)^2} }$$
 
 
 
@@ -236,10 +230,3 @@ The observarions are very unlikely to have occurred given the null hypothesis.
 
 - Cannot tell the impact of a feature 
   <img src="https://cdn-images-1.medium.com/max/1600/0*juOEvI0itN6cEToo.png" width="500">
-
-
-
-```
-{% endraw %}
-```
-
