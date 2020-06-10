@@ -1,7 +1,5 @@
 ---
 title: "Basic Statistics"
-categories:
-  - Statistics
 ---
 
 
@@ -56,7 +54,7 @@ categories:
 
 - Number of successes
   $$P(X=K) = {N \choose k} p^k (1-p)^{N-k} $$
-  <img src="/assets/figures/bio_nor.png" width="300">
+  <img src="../assets/figures/bio_nor.png" width="300">
 
 ## Poisson Distribution
 
@@ -64,7 +62,7 @@ categories:
 - Note, when n is big and p is small, close to binomial distribution
 
 $$P(X=k) = \frac{\lambda^k}{k!}e^{-\lambda}$$
-<img src="/assets/figures/poisson.png" width="300">
+<img src="../assets/figures/poisson.png" width="300">
 
 ## Geometric Distribution
 
