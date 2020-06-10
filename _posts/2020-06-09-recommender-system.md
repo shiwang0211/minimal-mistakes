@@ -2,7 +2,7 @@
 title: "Recommender System"
 excerpt: "Memory-based CF, matrix decomposition, various CTR prediction models, etc."
 tags:
-  - Recommender System
+  - Deep Learning
 
 
 
@@ -1064,7 +1064,6 @@ Problem Definition
 
 Feature Embedding
 - <img src="../assets/figures/dl/dstn1.png" width="300">
-- ![image-20200610000919398](../assets/figures/dl/image-20200610000919398.png)
 - <img src="../assets/figures/dl/dstn3.png" width="800">
 
 **DSTN - Pooling Model**

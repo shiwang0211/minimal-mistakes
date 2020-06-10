@@ -145,10 +145,12 @@ def get_activation(w, activation):
 ###  Internal Covariate Shift
 - Different layers have different distributions of input data
   
-    - 1. Gradient Vanishing: activation function input value within nonlinear regime for sigmoid function <img src="https://image.slidesharecdn.com/dlmmdcud1l06optimization-170427160940/95/optimizing-deep-networks-d1l6-insightdcu-machine-learning-workshop-2017-8-638.jpg?cb=1493309658" width="500">
+    - 1. Gradient Vanishing: activation function input value within nonlinear regime for sigmoid function 
 
-    - 2. Slow learning: different scale makes it harder for faster convergence using SGD
+         <img src="https://image.slidesharecdn.com/dlmmdcud1l06optimization-170427160940/95/optimizing-deep-networks-d1l6-insightdcu-machine-learning-workshop-2017-8-638.jpg?cb=1493309658" width="500">
 
+  - 2. Slow learning: different scale makes it harder for faster convergence using SGD
+  
 
 
 ### Algorithm
@@ -322,7 +324,7 @@ def Adam(x, dx, learning_rate, m, v, t, beta1, beta2, eps):
     * Stacking three convolutional layers with filters of 3 × 3 and pooling is similar to a single convolutional layer with a 7 × 7 filter.
     
 - Challenge: Computational resources
-<img src="https://i.stack.imgur.com/AuqKy.png" width="500">
+- <img src="https://i.stack.imgur.com/AuqKy.png" width="500">
 
 
 - Different features are detected at each layer. For example, AlexNet:
@@ -413,7 +415,8 @@ Number of filters for each layer
 |  VGGNet |  	64, 128, 256, 512, 512 |
 
 - Data Augmentation
-<img src="https://cdn-images-1.medium.com/max/1600/1*dJNlEc7yf93K4pjRJL55PA.png" width="500">
+
+  <img src="https://cdn-images-1.medium.com/max/1600/1*dJNlEc7yf93K4pjRJL55PA.png" width="500">
 
 ## Transfer Learning
 

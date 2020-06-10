@@ -16,3 +16,9 @@ docs:
     children:
       - title: "Statistics"
         url: /tags/Statistics/
+      - title: "Deep Learning"
+        url: /tags/dl/
+      - title: "Natural Language Processing"
+        url: /tags/nlp/
+      - title: "Reinforcement Learning"
+        url: /tags/rl/

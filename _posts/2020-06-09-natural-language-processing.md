@@ -23,13 +23,19 @@ tags:
 
 - Context-free Grammer (CFG)
     - Consists of a set of **rules**, and a **lexicon** of words and symbols
+    
     - Define a **grammatical** sentence and perform **Syntactic Parsing**
+    
     - A (human) syntactically annotated corpus is called a **Treebank**.
+    
     - From **Treebank** we can extract CFG grammars 
+    
     - A device to generate sentence
+    
     - A device to assign a structure to a sentence
-     <img src="../assets/figures/nlp/grammer_lexicon.png" width="400">
-    <img src="../assets/figures/nlp/grammer_rule.png" width="400">
+    
+    <img src="../assets/figures/nlp/grammer_lexicon.png" width="400">
+     <img src="../assets/figures/nlp/grammer_rule.png" width="400">
 
 
 - Example 1:
@@ -580,8 +586,12 @@ ref: https://blog.goodaudience.com/introduction-to-1d-convolutional-neural-netwo
     
     
 
-<img src="../assets/figures/nlp/Hmm.png" width="600"> 
+<img src="../assets/figures/nlp/hmm.png" width="600"> 
+
+
+
 **Define Optimal solution**
+
 - Solve by NB
 - $Tag^* _{1-n} = {argmax}_t P(T _{1-n} \vert W _{1-n}) \\
 \xrightarrow{Bayesian} P(T _{1-n})P(W _{1-n} \vert T _{1-n}) \\
@@ -728,9 +738,11 @@ $$p(T_i \vert T _{i-1},W_i) = \frac{e^{s(T_i, T _{i-1},W_i)}}{\sum _{T' \in \mat
 <img src="../assets/figures/nlp/crf1.png" width="400">
 
 - CRF: put constraint on adjacent labels, and to predict the tags of whole sentence jointly
+
 <img src="../assets/figures/nlp/crf2.png" width="300">
 
 - Bi-LSTM and CRF
+
 <img src="../assets/figures/nlp/crf3.png" width="400">
 
 
@@ -760,15 +772,17 @@ $$p(T_i \vert T _{i-1},W_i) = \frac{e^{s(T_i, T _{i-1},W_i)}}{\sum _{T' \in \mat
         - for example: $DC10-30$ would map to $XXdd-dd$
 
 - Model
+
 <img src="../assets/figures/nlp/ner_model.png" width="600">
 
-    - Rule-basded models
+    - Rule-based models
     - Deep-learning models
         - <img src="../assets/figures/nlp/ner_DL.png" width="600">
-
+    
     -  Also see above section
 
  
+
 
 ## Sentiment Analysis
 
@@ -891,6 +905,7 @@ $$p(T_i \vert T _{i-1},W_i) = \frac{e^{s(T_i, T _{i-1},W_i)}}{\sum _{T' \in \mat
     -  Naïve Bayes classifiers assume that the effect of a variable value on a given class is independent of the values of other variable. This assumption is called class conditional independence.
     - ***Good for small dataset, and easy to train***
     - Numerical Example:
+    
     <img src="../assets/figures/nlp/NB_example.png" width="400">
     - P(+) =, P(-) = 
     - P(predictable \vert +) = ...
@@ -1123,6 +1138,7 @@ https://arxiv.org/pdf/1703.01619.pdf
 1. Get ***encoder*** hidden states: $ h_1, ..h_k,..., h_N $
 
 1. Get ***decoder*** hidden state at time *t*: $ s_t $
+    
     - $s_t = LSTM(s _{t-1}, \hat y _{t-1})$<br/><br/>
     
 1. Get attention scores by dot product: 
@@ -1132,19 +1148,25 @@ $ \mathbf e_t = [s^T_t h_1, ..., s^T_t h_N] $
     - Penalty available: penalize input tokens that have obtained high attention scores in past decoding steps 
     - $e'_t = e_t\ if\ t = 1\ else\ \frac{exp(e_t)}{\sum _{j=1}^{t-1}{exp(e_j)}} $ for decoder state
    
-    - With FC layer: <img src="https://miro.medium.com/max/1364/1*wxv56cPyJdrEFSkknrlP-A.jpeg" width="400">
+    - With FC layer: 
+   
+    <img src="https://miro.medium.com/max/1364/1*wxv56cPyJdrEFSkknrlP-A.jpeg" width="400">
+   
     <img src="https://miro.medium.com/max/1902/1*jRBjCcGSoVL-rDb_zBXyPQ.jpeg" width="400">
 4. Take softmax of $ \mathbf e_t $ and get $ \pmb\alpha_t $ which sum up to one
     - $ \pmb\alpha_t = softmax(\mathbf e_t) $
     - Note: $\pmb\alpha_t$ can be interpreted as attention. For example, when generating word `vas`, the attention for `are` in encoder hidden states should be close to 1, others to 0<br/><br/>
     
 5. Take weighted sum of hidder states $\mathbf h$ and $\pmb\alpha$, and get context vector **c**
+    
     - $ c_t = \sum _{k=1}^{N} \alpha _{tk}h_k $<br/><br/>
     
 6. Generate *Attentional Hidden Layer*
-    - $ \tilde h_t = tanh(W_c[c_t;s_t])$<br/><br/>
-
+    
+- $ \tilde h_t = tanh(W_c[c_t;s_t])$<br/><br/>
+    
 7. Make Predicition
+    
     - $ p = softmax(W_s \tilde h_t)$
 
 <img src="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2017/10/Depiction-of-Global-Attention-in-an-Encoder-Decoder-Recurrent-Neural-Network.png" width="400">
@@ -1175,6 +1197,7 @@ $ \mathbf e_t = [s^T_t h_1, ..., s^T_t h_N] $
 <img src="http://cnyah.com/2017/08/01/attention-variants/attention-mechanisms.png" width="800">
 
 **Example of attention weights**
+
 <img src="https://i.stack.imgur.com/WxG8e.png" width="300">
 
 ## Pointer Network
@@ -1201,6 +1224,7 @@ $ \mathbf e_t = [s^T_t h_1, ..., s^T_t h_N] $
 
 Illustrations:
 1) Pointer Generator:
+
 <img src="https://miro.medium.com/max/1200/1*9LrChLLHnQ03kEj0YyB7HA.png" width="500">
 
 Illustration: 2) Combine Attention Seq2seq and Pointer
@@ -1359,9 +1383,9 @@ reference:
 
 ***Retrieve Documents***
 - Initial Ranking
-    
+  
 - Based on similarity/Relevance to query
-    
+  
 - Further Ranking
     - Supervised Learning
     - Features:
@@ -1416,6 +1440,7 @@ reference:
 
 - Neural Coref Model
     * Input layer: word embedding and other catogorical features (e.g., distance, document characteristic)
+
 <img src="../assets/figures/nlp/Coref.png" width="500">
 
 
