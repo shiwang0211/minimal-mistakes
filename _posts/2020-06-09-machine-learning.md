@@ -11,47 +11,47 @@ tags:
 
 ## Overview
 
-- Want to: learn $P(c\vert x)$
+- Want to: learn $P(c \vert  x)$
     - Discriminative models (like LR)
-    - Generative models: based on $P(x\vert c)$
+    - Generative models: based on $P(x \vert  c)$
     
 - For generative model:
-    - $P(c\vert x) = \frac{P(x,c)}{P(x)} = \frac{P(c)P(x\vert c)}{P(x)}$
+    - $P(c \vert  x) = \frac{P(x,c)}{P(x)} = \frac{P(c)P(x \vert  c)}{P(x)}$
     - Prior: $P(c)$
-    - Likelihood: $P(x\vert c)$
+    - Likelihood: $P(x \vert  c)$
     
-- How to describe $P(x\vert c)$
-    - $P(x\vert c) = P(x\vert \theta _c)$
-    - For continuous variables: $P(x\vert c) = N(\mu _c, \sigma^2 _c)$ (*depends on right assumption*)
+- How to describe $P(x \vert  c)$
+    - $P(x \vert  c) = P(x \vert  \theta _c)$
+    - For continuous variables: $P(x \vert  c) = N(\mu _c, \sigma^2 _c)$ (*depends on right assumption*)
 
 ## Naive Bayes
 
-- Motivation: Calculate $P(x\vert c)$, which is a joint distribution, cannot be estimated from limited samples (curse of dimension).
+- Motivation: Calculate $P(x \vert  c)$, which is a joint distribution, cannot be estimated from limited samples (curse of dimension).
 
-- Attribute conditional independence assumption: $P(x\vert c) = \prod _i P(x _i\vert c)$
+- Attribute conditional independence assumption: $P(x \vert  c) = \prod _i P(x _i \vert  c)$
 
 ## Bayesian Inference
 
 **Example: flip coins**
-- Represent data by some parameters: $P(D\vert \theta) = \prod _i P(Y _i\vert \theta) = \theta^{N _+} (1-\theta)^{N _-}$
+- Represent data by some parameters: $P(D \vert  \theta) = \prod _i P(Y _i \vert  \theta) = \theta^{N _+} (1-\theta)^{N _-}$
 
 - Set prior for $\theta$: $P(\theta)$
 
-- Calculate posterior for $\theta$: $P(\theta\vert D) = \frac{P(D\vert \theta)P(\theta)}{P(D)}$
+- Calculate posterior for $\theta$: $P(\theta \vert  D) = \frac{P(D \vert  \theta)P(\theta)}{P(D)}$
 
 
 
 ## EM (Expectation-Maximization) algorithm
 
 - $Z$ is latent variable. Cannot be obsewrved.
-- $LL(\Theta\vert X,Z) = ln P(X,Z\vert \Theta)$
-- $LL(\Theta\vert X) = ln P(X\vert \Theta) = ln \sum _z P(X,Z\vert \Theta)$
+- $LL(\Theta \vert  X,Z) = ln P(X,Z \vert  \Theta)$
+- $LL(\Theta \vert  X) = ln P(X \vert  \Theta) = ln \sum _z P(X,Z \vert  \Theta)$
 - For GMM clustering: $\mathbf Z = (k _1, k _2, ..., k _i, ...)$, the class label for each data point.
 
-- Expectation: $Q(\boldsymbol\theta\vert \boldsymbol\theta^{(t)}) = \operatorname{E}   _{\mathbf{Z}\vert \mathbf{X},\boldsymbol\theta^{(t)} }\left[ \log L (\boldsymbol\theta;\mathbf{X},\mathbf{Z})  \right] $
+- Expectation: $Q(\boldsymbol\theta \vert  \boldsymbol\theta^{(t)}) = \operatorname{E}   _{\mathbf{Z} \vert  \mathbf{X},\boldsymbol\theta^{(t)} }\left[ \log L (\boldsymbol\theta;\mathbf{X},\mathbf{Z})  \right] $
 
 
-- Maximization: $\boldsymbol\theta^{(t+1)} = \underset{\boldsymbol\theta}{\operatorname{arg\,max} } \ Q(\boldsymbol\theta\vert \boldsymbol\theta^{(t)})$
+- Maximization: $\boldsymbol\theta^{(t+1)} = \underset{\boldsymbol\theta}{\operatorname{arg\,max} } \ Q(\boldsymbol\theta \vert  \boldsymbol\theta^{(t)})$
 
 
 # Unsupervised - Clustering
@@ -75,7 +75,7 @@ tags:
 
 **Unknown class labels**:
 - Objective is to maximize likelihood
-    - $P(\mathbf X) = P(\mathbf X \vert \mu,\sigma^2, \alpha) = \sum _k \alpha _k P(\mathbf X\vert \mu _k,\sigma^2 _k) $
+    - $P(\mathbf X) = P(\mathbf X  \vert  \mu,\sigma^2, \alpha) = \sum _k \alpha _k P(\mathbf X \vert  \mu _k,\sigma^2 _k) $
 - Approach: *Soft Labels*
 
 
@@ -88,14 +88,14 @@ tags:
 ***Until Convergence***
 - Expectation (E) step: 
     - Calculate the probability of sample $i$ belongs to each class from 1 to $K$
-    - $p(k\vert x _i) = \frac{p(k)p(x _i\vert k)}{p(x _i)} = \frac{\alpha   _{k}N(x _i\vert \mu   _{k}, \sigma^2   _{k})}{\sum   _{k}\alpha   _{k}N(x _i\vert \mu   _{k}, \sigma^2   _{k})}$
+    - $p(k \vert  x _i) = \frac{p(k)p(x _i \vert  k)}{p(x _i)} = \frac{\alpha   _{k}N(x _i \vert  \mu   _{k}, \sigma^2   _{k})}{\sum   _{k}\alpha   _{k}N(x _i \vert  \mu   _{k}, \sigma^2   _{k})}$
 
 
 - Maximization (M) step: 
     - Re-estimate paramaters
-    - $\mu _k = \frac{\sum _ip(k\vert x _i)x _i}{\sum _ip(k\vert x _i)}$
-    - $\sigma^2 _k = \frac{\sum _ip(k\vert x _i)(x _i-\mu _k)^2}{\sum _ip(k\vert x _i)}$
-    - $\alpha _k = \frac{\sum _ip(k\vert x _i)}{N}$
+    - $\mu _k = \frac{\sum _ip(k \vert  x _i)x _i}{\sum _ip(k \vert  x _i)}$
+    - $\sigma^2 _k = \frac{\sum _ip(k \vert  x _i)(x _i-\mu _k)^2}{\sum _ip(k \vert  x _i)}$
+    - $\alpha _k = \frac{\sum _ip(k \vert  x _i)}{N}$
     
 - Detailed proof for GMM clsutering: https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization _algorithm
 
@@ -112,15 +112,15 @@ tags:
 - Assumption: labeled and unlabelled comes from the same mixed distribution
 - Compare with GMM-based clustering: labels of unlabelled data can be viewed as latent variable $Z$
 
-- One way of formulating:  $p(X _l, Y _l, X _u\vert \theta) = \sum   _{Y _u}p(X _l, Y _l, X _u, Y _u\vert \theta)$
+- One way of formulating:  $p(X _l, Y _l, X _u \vert  \theta) = \sum   _{Y _u}p(X _l, Y _l, X _u, Y _u \vert  \theta)$
 
-- The combined log-likelihood: $${\underset {\Theta }{\operatorname {argmax} } }\left(\log p(\{x   _{i},y   _{i}\}   _{i=1}^{l}\vert \theta )+\lambda \log p(\{x   _{i}\}   _{i=l+1}^{l+u}\vert \theta )\right)$$
+- The combined log-likelihood: $${\underset {\Theta }{\operatorname {argmax} } }\left(\log p(\{x   _{i},y   _{i}\}   _{i=1}^{l} \vert  \theta )+\lambda \log p(\{x   _{i}\}   _{i=l+1}^{l+u} \vert  \theta )\right)$$
 
 Where: 
-- Labelled: $\log p(\{x   _{i},y   _{i}=k _i\}   _{i=1}^{l}\vert \theta ) = \sum _i ln \ p(x _i,k _i\vert \theta) = \sum _i ln\ \alpha   _{k _i}p(x _i\vert \mu   _{k _i}, \sigma^2   _{k _i}) $
+- Labelled: $\log p(\{x   _{i},y   _{i}=k _i\}   _{i=1}^{l} \vert  \theta ) = \sum _i ln \ p(x _i,k _i \vert  \theta) = \sum _i ln\ \alpha   _{k _i}p(x _i \vert  \mu   _{k _i}, \sigma^2   _{k _i}) $
 
 
-- Unlabelled: $\log p(\{x   _{i}\}   _{i=l+1}^{l+u}\vert \theta ) = \ln \sum _i p(x _i\vert \theta) = \sum _i \sum _k \ln \alpha _k  p(x _i\vert \mu _k, \sigma^2 _k) $
+- Unlabelled: $\log p(\{x   _{i}\}   _{i=l+1}^{l+u} \vert  \theta ) = \ln \sum _i p(x _i \vert  \theta) = \sum _i \sum _k \ln \alpha _k  p(x _i \vert  \mu _k, \sigma^2 _k) $
 
 To be solved by EM algorithm
 
@@ -130,7 +130,7 @@ To be solved by EM algorithm
 - Main idea: Add loss/penalty term for unlabelled data:
 - The third term prefers unlabeled points outside the margin
 
-$$ Min \sum _i [1 - y _i f(x _i)] _+ + \lambda _1 \vert \vert w\vert \vert ^2 + \lambda _2 \sum _i (1-\vert f(x _i)\vert ) _+$$
+$$ Min \sum _i [1 - y _i f(x _i)] _+ + \lambda _1  \vert   \vert  w \vert   \vert  ^2 + \lambda _2 \sum _i (1- \vert  f(x _i) \vert  ) _+$$
 
 <img src="../assets/figures/s3vm.png" width="200">
 
@@ -182,32 +182,32 @@ $$ Min \sum _i [1 - y _i f(x _i)] _+ + \lambda _1 \vert \vert w\vert \vert ^2 + 
 How to formulate the problem?
 - Most Intuitive formulation
     - Maximize Geometric Margin: $\gamma $
-    - Constraint: $\gamma _i = \frac{y _i (w^Tx _i + b)}{\vert \vert w\vert \vert } \geq \gamma $
+    - Constraint: $\gamma _i = \frac{y _i (w^Tx _i + b)}{ \vert   \vert  w \vert   \vert  } \geq \gamma $
     
 - Define functional margin:
-    - $\gamma _i = \frac{\hat \gamma _i}{\vert \vert w\vert \vert }$, where ${\hat \gamma _i}$ is function margin: $y _i f(x _i$)
-    - Maximize Functional Margin:$Max \frac{\hat \gamma}{\vert \vert w\vert \vert }$
+    - $\gamma _i = \frac{\hat \gamma _i}{ \vert   \vert  w \vert   \vert  }$, where ${\hat \gamma _i}$ is function margin: $y _i f(x _i$)
+    - Maximize Functional Margin:$Max \frac{\hat \gamma}{ \vert   \vert  w \vert   \vert  }$
     - Constraint: $\hat \gamma _i = {y _i (w^Tx _i + b)} \geq \hat \gamma $
 
 
 - Take a step further:
     - Scaling $w$ and $b$ by $\hat \gamma$ will not affect decision boundary
-    - Maximize: $\frac{1}{\vert \vert w\vert \vert }$
+    - Maximize: $\frac{1}{ \vert   \vert  w \vert   \vert  }$
     - Constraint: ${y _i (w^Tx _i + b)} \geq 1$
 
 See Notes below for how to re-formulate the problem:
-- 1) Original problem: $Min \vert \vert w\vert \vert ^2$
+- 1) Original problem: $Min  \vert   \vert  w \vert   \vert  ^2$
 - 2) Unconstraint problem $Min _w\ Max   _{\alpha, \beta}\ L(\alpha, \beta, w)$
 - 3) Dual problem: $Max   _{\alpha, \beta}\ Min _w\ L(\alpha, \beta, w)$ with constraints.
 - 4) With SVM satisfying *Slater Condition*, solve dual problem equivalent to orginal problem
 
 Loss function:
-- Min $\lambda \vert \vert w\vert \vert ^2 + \sum _i[1-y _i(w^Tx _i + b)] _+$
+- Min $\lambda  \vert   \vert  w \vert   \vert  ^2 + \sum _i[1-y _i(w^Tx _i + b)] _+$
 
 Kernel function
 - Popular kernels (linear, Polynomial, RBF)
     - Polynomial: $k(x _1, x _2) = (x _1, x _2 +c)^d$
-    - RBF: $k(x _1, x _2) = exp(- \frac{\vert \vert x _1 - x _2\vert \vert ^2}{2\sigma^2})$
+    - RBF: $k(x _1, x _2) = exp(- \frac{ \vert   \vert  x _1 - x _2 \vert   \vert  ^2}{2\sigma^2})$
 - How to select kernel
     - CV
 
@@ -222,7 +222,7 @@ Kernel function
 
 - Prediction function: $p = \frac{1}{1+exp(-f(x))}$, where $f(x) = \theta^Tx$
 - Loss function: 
-    - $L = \sum _i ln[p(y _i\vert x _i;\mathbf w)]$; where y = 0,1
+    - $L = \sum _i ln[p(y _i \vert  x _i;\mathbf w)]$; where y = 0,1
     - $l(y, p) = -[y ln(p) + (1-y)ln(1-p)]$ ; where y = 0,1
 
 
@@ -440,14 +440,14 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
 ## Approach 2: Solve for minumum
 
 Difference in loss function:
-- L1: $L _1(w) = L(w) + C\vert w\vert $ 
+- L1: $L _1(w) = L(w) + C \vert  w \vert  $ 
 - L2: $L _2(w) = L(w) + Cw^2$ 
 
 Take L1 as example:
 - Calculate: $\frac{\partial L _1(w)}{\partial w}$
 - When w<0: $f _l = \frac{\partial L _1(w)}{\partial w} = L'(w) - C$
 - When w>0: $f _r = \frac{\partial L _1(w)}{\partial w} = L'(w) + C$
-- If $\vert L'(w)\vert <C$ is met (i.e., C is large enough), then we have $f _l<0$ and $f _r>0$, thus minimum is find at $w=0$
+- If $ \vert  L'(w) \vert  <C$ is met (i.e., C is large enough), then we have $f _l<0$ and $f _r>0$, thus minimum is find at $w=0$
 
 
 Take L2 as example:
@@ -458,21 +458,21 @@ Take L2 as example:
 
 Recall the posterior for parameter:  
 
-$$P(\theta\vert D) = \frac{P(D\vert \theta)P(\theta)}{P(D)}$$
+$$P(\theta \vert  D) = \frac{P(D \vert  \theta)P(\theta)}{P(D)}$$
 
 Remove constants:
 
-$$P(\theta\vert D) = P(D\vert \theta)P(\theta)$$
+$$P(\theta \vert  D) = P(D \vert  \theta)P(\theta)$$
 
 Solve for $\theta$:
 
-$$\theta = argmin\ \{-[lnP(D\vert \theta) + lnP(\theta)]\} =  argmin\ [L(\theta) - ln(P(\theta)]$$
+$$\theta = argmin\ \{-[lnP(D \vert  \theta) + lnP(\theta)]\} =  argmin\ [L(\theta) - ln(P(\theta)]$$
 
 For L1: $\theta$~Laplace Disribution
 
-$$P(\theta) = \frac{1}{2b}e^{-\frac{\vert \theta\vert }{2b} }$$
+$$P(\theta) = \frac{1}{2b}e^{-\frac{ \vert  \theta \vert  }{2b} }$$
 
-$$\theta = argmin\ [L(\theta) + C\vert \theta\vert ]$$
+$$\theta = argmin\ [L(\theta) + C \vert  \theta \vert  ]$$
 
 For L2: $\theta$~Guassian Disribution
 
@@ -490,7 +490,7 @@ Laplace: compared with Guassian, more likely to take zero:
 - AUC: For a random (+) and a random (-) sample, the probability that S(+) > S(-)
 - Explains why AUC equals to the area under the curve of TPR and FPR:
 
-$$AUC = \sum P(S(+)>S(-)\vert +,-) \cdot P(+,-) = \sum   _{-} P(S(+)>S(-)\vert -) = \sum   _{-}[TPR\vert Threshold = S(-)]$$
+$$AUC = \sum P(S(+)>S(-) \vert  +,-) \cdot P(+,-) = \sum   _{-} P(S(+)>S(-) \vert  -) = \sum   _{-}[TPR \vert  Threshold = S(-)]$$
 
 # Miscellaneous
 

@@ -126,7 +126,7 @@ $$X \geq 0 \rightarrow P(X \geq t) \leq \frac{E(X)}{t} \rightarrow P[X \geq kE(X
 
 **Chebyshev Inequality**
 
-$$P(\vert X-\mu\vert  > t) \leq \frac{\sigma^2}{t^2}$$
+$$P( \vert  X-\mu \vert   > t) \leq \frac{\sigma^2}{t^2}$$
 
 **Law of total expectation / Conditional expectation**
 
