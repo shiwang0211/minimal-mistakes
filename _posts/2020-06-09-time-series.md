@@ -70,15 +70,16 @@ Forecast with decompositions:
 
 # Time series forecasting
 
-<img src="../assets/figures/ExponentialSmoothing.jpeg" width="600">
+<img src="../assets/figures/ExponentialSmoothing.png" width="600">
 
-Ref: https://robjhyndman.com/talks/MelbourneRUG.pdf
+Ref: 
+  - https://robjhyndman.com/talks/MelbourneRUG.pdf
 
 ## Simple Exponential Smoothing
 
 
-- $\hat x_{t+1} = \alpha x_t + (1-\alpha) \hat x_{t|t-1}$
-- $\hat x_{t+1} = \hat x_{t|t-1} + \alpha (x_t - \hat x_{t|t-1})$
+- $\hat x_{t+1} = \alpha x_t + (1-\alpha) \hat x_{t\vert t-1}$
+- $\hat x_{t+1} = \hat x_{t\vert t-1} + \alpha (x_t - \hat x_{t\vert t-1})$
 - $F_{t+1} = F_{t} + \alpha (A_{t} - F_{t})$
 - $F_{t+1} = \alpha A_t + (1 - \alpha) F_t$
 
@@ -102,7 +103,7 @@ Ref: https://robjhyndman.com/talks/MelbourneRUG.pdf
     - b2: b
 
 - Forecast = **level** + **trend** + **seasonal component** <br/>
-$ \hat{y}_{t+h|t} = l_t + hb_t + s_{last} $
+$ \hat{y}_{t+h\vert t} = l_t + hb_t + s_{last} $
 
 
 - Level = Seasonal Adjusted Observation + Non-seasonal Forecast for t <br/>
@@ -125,9 +126,9 @@ $ error = y_t - (l_{t-1} + b_{t-1} + s_{t-m}) $
 1. Damped Trend Model:
     - Short-run: trended
     - Long-run: constant
-    - $ \hat{y}_{t+h|t} = ... + (\phi + \phi + ... + \phi^h)b_t + ... $
+    - $ \hat{y}_{t+h\vert t} = ... + (\phi + \phi + ... + \phi^h)b_t + ... $
 1. Exponential Trend Model
-    - $ \hat{y}_{t+h|t} = l_tb^h_t $
+    - $ \hat{y}_{t+h\vert t} = l_tb^h_t $
 1. Holt's linear Trend model
     - No seasonal term
 
@@ -154,7 +155,7 @@ $$ Y_t = c + \phi Y_{t-1} + \epsilon_t,\ where\ \epsilon\ - iid(0, \sigma^2) $$
 
 
 - Condition for stationary
-    - When $|\phi|<1,$ $\mu = E(Y_t) = \frac{c}{1-\phi}$
+    - When $\vert \phi\vert <1,$ $\mu = E(Y_t) = \frac{c}{1-\phi}$
     - Root of operator: $(1-\phi B) = 0, B= \frac{1}{\phi}$
     - if $ \phi = 1 $ and $ c = 0 $ : random walk
     - if $ \phi = 1 $ and $ c <> 0 $ : random walk **with drift**
@@ -224,7 +225,7 @@ Note: Difference between MA *model* and MA *smoothing*
 
 - Special Case : $Y_t - Y_{t-1} = c + (\epsilon_t - \theta \epsilon_{t-1})$
 - $\theta=0$: random walk
-- $c=0, |\theta| <1$: simple exponential smoothing
+- $c=0, \vert \theta\vert  <1$: simple exponential smoothing
 
 ***Random walk***
 
@@ -233,7 +234,7 @@ $$ Y_t = c + \phi Y_{t-1} + \epsilon_t$$
 - If $\phi = 1$, $\Delta Y_t = c + \epsilon_t$
     - Or: $Y_t = ct + \epsilon_{t} + \epsilon_{t-1}+ \epsilon_{t-2} + ...$
 - Unlike stationary process, constant $c$ is very important in defining non-stationary process
-    - $E(Y_t) = ct$
+    - $E(Y_t) = ct $ 
     - $\sigma^2_Y = \sigma^2_{\epsilon}t$
     - $cov(t, t+k) = \sigma^2_{\epsilon}t$
 <img src="../assets/figures/random_walk.png" width="300">
@@ -241,7 +242,7 @@ $$ Y_t = c + \phi Y_{t-1} + \epsilon_t$$
 ***Simple Exponential Smooth (SES)***
 
 * $ y_t = Y_t - Y_{t-1} = \mu - \theta \epsilon_{t-1} + \epsilon_t$, where it is a combination of *deterministic trend* and *stochastic trend*.
-* $ \mu$ is the constant term. Let $\mu=0, |\phi|<1$,
+* $ \mu$ is the constant term. Let $\mu=0, \vert \phi\vert<1$,
     - $E(Y_t) = \mu t$. If $\mu$ = 0, $ Y_t - Y_{t-1} =  - \theta \epsilon_{t-1} + \epsilon_t$.
     
 * $ Y_t = \epsilon_t + Y_{t-1} - \theta\epsilon_{t-1} = \epsilon_t + Y_{t-1} - \theta(Y_{t-1} - Y_{t-2} + \theta\epsilon_{t-2}) + ...... $
@@ -435,8 +436,8 @@ Ref: http://web.sgh.waw.pl/~atoroj/econometric_methods/lecture_6_ecm.pdf
 
 - Rewrite assumtpion for stationary error
     * $ E(\epsilon ) = 0 $ <br/>
-    * $ E(\epsilon^2 | X ) = \rho(\frac{\sigma^2}{1-\rho^2}) $ Homescedasticity <br/>
-    * $ E(\epsilon_i \epsilon_j) = \rho_{|i-j|} * \sigma^2 $ What matters is proximity $k = |i-j|$
+    * $ E(\epsilon^2 \vert X ) = \rho(\frac{\sigma^2}{1-\rho^2}) $ Homescedasticity <br/>
+    * $ E(\epsilon_i \epsilon_j) = \rho_{\vert i-j\vert } * \sigma^2 $ What matters is proximity $k = \vert i-j\vert $
         * $ Corr(\epsilon_t, \epsilon_{t-1}) = \rho $
     
 - Model assumptions
