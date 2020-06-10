@@ -424,10 +424,10 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
 # EVD and SVD 
 
 ## EVD
-<img src="https://cdn-images-1.medium.com/max/1600/1*NhjyqD7L6N4S7Nf-FCYT-Q.png" width=500>
+<img src="https://cdn-images-1.medium.com/max/1600/1*NhjyqD7L6N4S7Nf-FCYT-Q.png" width="500">
 
 ## SVD
-<img src="https://blogs.sas.com/content/iml/files/2017/08/svd1.png" width=500>
+<img src="https://blogs.sas.com/content/iml/files/2017/08/svd1.png" width="500">
 
 - http://explained.ai/gradient-boosting/index.html
 - https://homes.cs.washington.edu/~tqchen/pdf/BoostedTree.pdf
