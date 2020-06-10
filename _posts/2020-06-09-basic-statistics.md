@@ -1,13 +1,13 @@
 ---
 title: "Basic Statistics"
-categotogy: "Statistics"
+category: "Statistics"
 ---
 
 
 
 # Permutation and Combination
 
-- Different sampling methods 
+- Different sampling methods
   - Sampling without replacement
   - Sampling with replacement
 
@@ -23,7 +23,7 @@ categotogy: "Statistics"
   - Think of 2m places
     $$N = \frac{(2m)!}{(2!)^m}$$
 
-- Example: 2m players, m field, how many ways to assign players **(without fields)** 
+- Example: 2m players, m field, how many ways to assign players **(without fields)**
   - Think of 2m places
     $$N = \frac{(2m)!}{(2!)^m \times m!}$$
 
@@ -47,7 +47,7 @@ categotogy: "Statistics"
   - $\bar X$ and $\bar Y$: $Var(\bar X - \bar Y) = \frac{2p(1-p)}{N} $
   - $\bar X$ and $\bar Y$: $s^2(\bar X - \bar Y) = \frac{2\hat p(1-\hat p)}{N} $
 
-  
+
 
 
 
@@ -152,7 +152,7 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 
 ## Indendency
 
-- $E(XY) = E(X)E(Y)$ 
+- $E(XY) = E(X)E(Y)$
 - $Var(X+Y) = Var(X) + Var(Y)$
 - $Cov(X,Y) = \rho(X,Y) = 0$
 
@@ -170,13 +170,13 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 - When $Z$ comes from normal distribution:
 
   $$\frac{\bar Z -\mu}{\sigma / \sqrt N} \sim N(0,1)$$
-  
+
   $$\frac{\bar Z -\mu}{\hat \sigma / \sqrt N} \sim t(N-1)$$
-  
+
 - When sample size is big:
 
   $$\frac{\bar Z -\mu}{\sigma / \sqrt N} \xrightarrow{N\to\infty} N(0,1)$$
-  
+
   $$\frac{\bar Z -\mu}{\hat \sigma / \sqrt N} \xrightarrow{N\to\infty} N(0,1)$$
 
 
@@ -190,21 +190,21 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 # Linear regression
 
 - Unbiased estimator of $\beta_1$:
-  
+
   $$\hat \beta_1=\dfrac{\sum\limits_{i=1}^n (x_i-\bar{x})(y_i-\bar{y})}{\sum\limits_{i=1}^n (x_i-\bar{x})^2}$$
 
 
 - Unbiased estimator of $\sigma^2$:
-  
-  $$\hat \sigma^2=\frac{\sum e^2}{N-k}$$ 
+
+  $$\hat \sigma^2=\frac{\sum e^2}{N-k}$$
 
 
 - Parameter Test
-  
+
   $$Z = \frac{\hat \beta_1 - 0}{\sigma_{\beta_1} } \sim N(0,1)$$
-  
+
   $$T = \frac{\hat \beta_1 - 0}{s_{\hat \beta_1} } \sim t\ (N-k)$$
-  
+
   $$s_{\hat \beta_1} = \sqrt{\hat \sigma^2\ /\sum{(x-\bar x)^2} }$$
 
 
@@ -216,7 +216,7 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 - The confidence interval you compute depends on the data you happened to collect. If you repeated the experiment, your confidence interval would almost certainly be different. So it is OK to ask about the probability that the interval contains the population mean.
 
 
-- It is not quite correct to ask about the probability that the interval contains the population mean. It either does or it doesn't. There is no chance about it. 
+- It is not quite correct to ask about the probability that the interval contains the population mean. It either does or it doesn't. There is no chance about it.
 
 
 - What you can say is that if you perform this kind of experiment many times, the confidence intervals would not all be the same, you would expect 95% of them to contain the population mean, you would expect 5% of the confidence intervals to not include the population mean, and that you would never know whether the interval from a particular experiment contained the population mean or not.
@@ -243,5 +243,5 @@ The observarions are very unlikely to have occurred given the null hypothesis.
   - Robust prediction for different populations
 
 
-- Cannot tell the impact of a feature 
+- Cannot tell the impact of a feature
   <img src="https://cdn-images-1.medium.com/max/1600/0*juOEvI0itN6cEToo.png" width="500">
