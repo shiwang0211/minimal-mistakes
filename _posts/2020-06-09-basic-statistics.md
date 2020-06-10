@@ -1,6 +1,7 @@
 ---
 title: "Basic Statistics"
-category: "Statistics"
+categories:
+  - Statistics
 ---
 
 
