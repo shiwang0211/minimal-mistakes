@@ -435,7 +435,7 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
 # L1 and L2 Regularization
 
 ## Approach 1：From Figure
-<img src="../assets/figures/l1_l2.png" width=500>
+<img src="../assets/figures/l1_l2.png" width="500">
 
 ## Approach 2: Solve for minumum
 
@@ -481,11 +481,11 @@ $$P(\theta) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{\theta^2}{2\sigma^2} }$$
 $$\theta = argmin\ [L(\theta) + C\theta^2]$$
 
 Laplace: compared with Guassian, more likely to take zero:
-<img src="../assets/figures/laplace.png" width=300>
+<img src="../assets/figures/laplace.png" width="300">
 
 # AUC and ROC curve
 
-<img src="../assets/figures/auc.png" width=300>
+<img src="../assets/figures/auc.png" width="300">
 
 - AUC: For a random (+) and a random (-) sample, the probability that S(+) > S(-)
 - Explains why AUC equals to the area under the curve of TPR and FPR:
