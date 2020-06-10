@@ -94,7 +94,7 @@ analytics:
 # Site Author
 author:
   name             : "Shi Wang"
-  avatar           : "/assets/images/shiwang.png"
+  avatar           : "/assets/figures/shiwang.png"
   bio              : "Data Scientist at Uber"
   location         : "Seattle, WA"
   email            : # "shiwang0211@gmail.com"
