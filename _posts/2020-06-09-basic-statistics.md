@@ -56,8 +56,7 @@ categories:
 
 - Number of successes
   $$P(X=K) = {N \choose k} p^k (1-p)^{N-k} $$
-  <img src="../assets/figures/bio_nor.png" width="300">
-
+  <img src="/assets/figures/bio_nor.png" width="300">
 
 ## Poisson Distribution
 
@@ -65,8 +64,7 @@ categories:
 - Note, when n is big and p is small, close to binomial distribution
 
 $$P(X=k) = \frac{\lambda^k}{k!}e^{-\lambda}$$
-<img src="../assets/figures/poisson.png" width="300">
-
+<img src="/assets/figures/poisson.png" width="300">
 
 ## Geometric Distribution
 
@@ -160,11 +158,9 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 
 - ${Z_1, Z_2,...}$ from $iid$
 - $E(Z) = \mu, Var(Z) = \sigma^2$
-
 - When $Z$ comes from normal distribution:
   $$\frac{\bar Z -\mu}{\sigma / \sqrt N} \sim N(0,1)$$
   $$\frac{\bar Z -\mu}{\hat \sigma / \sqrt N} \sim t(N-1)$$
-
 - When sample size is big:
   $$\frac{\bar Z -\mu}{\sigma / \sqrt N} \xrightarrow{N\to\infty} N(0,1)$$
   $$\frac{\bar Z -\mu}{\hat \sigma / \sqrt N} \xrightarrow{N\to\infty} N(0,1)$$
