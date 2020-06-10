@@ -1,5 +1,6 @@
 ---
 title: "Basic Statistics"
+categotogy: "Statistics"
 ---
 
 
