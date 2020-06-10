@@ -1,5 +1,6 @@
 ---
 title: "Basic Statistics"
+excerpt: "Distributions, Linear Regression, Statistical Significance"
 categories:
   - Statistics
 ---

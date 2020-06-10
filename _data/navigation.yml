@@ -12,7 +12,7 @@ main:
   #   url: /sitemap/
 
 docs:
-  - title: Learning Notes
+  - title: By Category
     children:
       - title: "Statistics"
         url: /categories/Statistics/
