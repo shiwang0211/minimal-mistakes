@@ -14,11 +14,5 @@ main:
 docs:
   - title: Learning Notes
     children:
-      - title: "Quick-Start Guide"
-        url: /about/
-      - title: "Structure"
-        url: /about/
-      - title: "Installation"
-        url: /about/
-      - title: "Upgrading"
-        url: /about/
+      - title: "Statistics"
+        url: /categories/Statistics/
