@@ -134,7 +134,7 @@ $$ Min \sum _i [1 - y _i f(x _i)] _+ + \lambda _1  \vert   \vert  w \vert   \ver
 
 <img src="../assets/figures/s3vm.png" width="200">
 
-<img src="../assets/figures/hinge _unlabelled.png" width="200">
+<img src="../assets/figures/hinge_unlabelled.png" width="200">
 
 ## Graph-based methods
 
@@ -435,7 +435,7 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
 # L1 and L2 Regularization
 
 ## Approach 1：From Figure
-<img src="../assets/figures/l1 _l2.png" width=500>
+<img src="../assets/figures/l1_l2.png" width=500>
 
 ## Approach 2: Solve for minumum
 
@@ -497,7 +497,7 @@ $$AUC = \sum P(S(+)>S(-) \vert  +,-) \cdot P(+,-) = \sum   _{-} P(S(+)>S(-) \ver
 ***Label Imbalance***
 -  One approach is to use label-aware loss function
 - ref: https://arxiv.org/pdf/1901.05555.pdf
-- <img src="../assets/figures/loss _func.png" width="300">
+- <img src="../assets/figures/loss_func.png" width="300">
 
 - With hyperparameter $\beta$ ranging from 0 to 1
     - when $\beta$ is 0: no weighing

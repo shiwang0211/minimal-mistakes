@@ -81,8 +81,8 @@ $$\frac{\chi^2_a/a}{\chi^2_b/b} \sim F(a,b)$$
 
 $$F = \frac{SS_B/(I-1)}{SS_W/[I(J-1)]} \sim F[I-1, I(J-1)]$$
 
-     - Under $H_0$, $E(numerator) = E(denominator) = \sigma^2$, so F should be close to 1
-     - Under $H_1$, when some $\alpha_i>0$, $E(numerator) >\sigma^2$, so F should be larger than 1 
+  - Under $H_0$, $E(numerator) = E(denominator) = \sigma^2$, so F should be close to 1
+  - Under $H_1$, when some $\alpha_i>0$, $E(numerator) >\sigma^2$, so F should be larger than 1 
 
 <img src="https://ecstep.com/wp-content/uploads/2017/12/F-distribution-2.png" width="400">
 
@@ -226,9 +226,6 @@ It is known that men and women are physiologically different and react different
 - Example: one dimension
 
 $$Q=\sum  _{i=1}^{k}\frac{(Y_i - np_i)^2}{np_i} = \sum \frac{(Expected - Observed)^2}{Expected} \sim \chi^2(k-1)$$
-
-
-<img src="https://onlinecourses.science.psu.edu/stat414/sites/onlinecourses.science.psu.edu.stat414/files/lesson44/e14/index.gif" width="400">
 
 - ExampleL: two dimension
     - the multi-variable distribution on $I$ changes across group $J$
