@@ -1,7 +1,7 @@
 ---
 title: "Statistical Analysis - 2"
 excerpt: "Paired Sample t-test, AVONA, Experiment Design, Categorical Analysis"
-categories:
+tags:
   - Statistics
 
 ---

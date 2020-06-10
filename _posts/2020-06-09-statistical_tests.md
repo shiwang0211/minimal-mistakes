@@ -1,7 +1,7 @@
 ---
 title: "Statistical Tests"
 excerpt: "Likelihood Tests, Causality Tests, Linearity Tests, etc."
-categories:
+tags:
   - Statistics
 
 

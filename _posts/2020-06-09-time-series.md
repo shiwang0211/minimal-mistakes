@@ -1,7 +1,7 @@
 ---
 title: "Time Series Analysis"
 excerpt: "AR model, MA model, ARIMA model, Dynamic Regression.  "
-categories:
+tags:
   - Statistics
 
 

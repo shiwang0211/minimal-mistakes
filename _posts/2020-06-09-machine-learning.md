@@ -1,7 +1,7 @@
 ---
 title: "Machine Learning"
 excerpt: "Bayesian, Clustering, Semi-supervised, Logistic Regression, SVM, Tree-based Methods, etc."
-categories:
+tags:
   - Statistics
 
 
