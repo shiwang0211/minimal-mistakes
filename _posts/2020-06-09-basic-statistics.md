@@ -62,7 +62,10 @@ title: "Basic Statistics"
 - Note, when n is big and p is small, close to binomial distribution
 
 $$P(X=k) = \frac{\lambda^k}{k!}e^{-\lambda}$$
+
 <img src="../assets/figures/poisson.png" width="300">
+
+
 
 ## Geometric Distribution
 
@@ -79,13 +82,16 @@ $$P(X=k) = \frac{\lambda^k}{k!}e^{-\lambda}$$
 $$f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2} }$$
 
 $$X \sim N(\mu_X, \sigma^2), Y \sim N(\mu_Y, \sigma^2)$$
+
 $$\bar X - \bar Y \sim N[(\mu_X - \mu_Y, \sigma^2(\frac{1}{N_X} + \frac{1}{N_Y})]$$
 
 
 ## $\chi^2$ Distribution
 
 $$X \sim N(\mu, \sigma^2)$$
+
 $$X_1^2 + X_2^2 +...+X_n^2 \sim \chi^2(n)$$
+
 $$\frac{(n-1)s^2}{\sigma^2} \sim \chi^2(n-1)$$
 
 <img src="http://www.statistics4u.info/fundstat_eng/img/hl_xdistri.png" width="400">
@@ -94,7 +100,9 @@ $$\frac{(n-1)s^2}{\sigma^2} \sim \chi^2(n-1)$$
 ## $t$ Distribution
 
 $$X \sim N(\mu, \sigma^2)$$
+
 $$\frac{X}{\sqrt{\chi^2(n)} } \sim t(n)$$
+
 <img src="https://andyjconnelly.files.wordpress.com/2017/05/distributions1.png" width="400">
 
 ## Other Distributions
@@ -114,9 +122,11 @@ $$\frac{X}{\sqrt{\chi^2(n)} } \sim t(n)$$
 $$X \geq 0 \rightarrow P(X \geq t) \leq \frac{E(X)}{t} \rightarrow P[X \geq kE(X)] \leq \frac{1}{k}$$
 
 **Chebyshev Inequality**
+
 $$P(|X-\mu| > t) \leq \frac{\sigma^2}{t^2}$$
 
 **Law of total expectation / Conditional expectation**
+
 $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 
 ## Variance
@@ -157,10 +167,15 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 - ${Z_1, Z_2,...}$ from $iid$
 - $E(Z) = \mu, Var(Z) = \sigma^2$
 - When $Z$ comes from normal distribution:
+
   $$\frac{\bar Z -\mu}{\sigma / \sqrt N} \sim N(0,1)$$
+  
   $$\frac{\bar Z -\mu}{\hat \sigma / \sqrt N} \sim t(N-1)$$
+  
 - When sample size is big:
+
   $$\frac{\bar Z -\mu}{\sigma / \sqrt N} \xrightarrow{N\to\infty} N(0,1)$$
+  
   $$\frac{\bar Z -\mu}{\hat \sigma / \sqrt N} \xrightarrow{N\to\infty} N(0,1)$$
 
 
@@ -174,16 +189,21 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 # Linear regression
 
 - Unbiased estimator of $\beta_1$:
+  
   $$\hat \beta_1=\dfrac{\sum\limits_{i=1}^n (x_i-\bar{x})(y_i-\bar{y})}{\sum\limits_{i=1}^n (x_i-\bar{x})^2}$$
 
 
 - Unbiased estimator of $\sigma^2$:
+  
   $$\hat \sigma^2=\frac{\sum e^2}{N-k}$$ 
 
 
 - Parameter Test
+  
   $$Z = \frac{\hat \beta_1 - 0}{\sigma_{\beta_1} } \sim N(0,1)$$
+  
   $$T = \frac{\hat \beta_1 - 0}{s_{\hat \beta_1} } \sim t\ (N-k)$$
+  
   $$s_{\hat \beta_1} = \sqrt{\hat \sigma^2\ /\sum{(x-\bar x)^2} }$$
 
 
