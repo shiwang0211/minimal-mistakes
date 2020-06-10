@@ -1,6 +1,11 @@
-```python
+---
+title: "Machine Learning"
+excerpt: "Bayesian, Clustering, Semi-supervised, Logistic Regression, SVM, Tree-based Methods, etc."
+categories:
+  - Statistics
 
-```
+
+---
 
 # Bayesian
 
@@ -128,6 +133,7 @@ To be solved by EM algorithm
 $$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_i)|)_+$$
 
 <img src="../assets/figures/s3vm.png" width="200">
+
 <img src="../assets/figures/hinge_unlabelled.png" width="200">
 
 ## Graph-based methods
@@ -161,10 +167,12 @@ $$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_
 
 
 - Decision Boundary and Multivariate Decision Tree
+  
     - When splitting node, select attribute *set* instead of single attribute (i.e., left: $w^Tx>0$ , right: $w^Tx<0$)
     
 - Node splitting for *Regression Tree*
     - Find feature $j$ and splitting point $s$ so that:
+    
      $$Min_{j,s} [min_{c_{left} }\sum_{left}(y_i - c_{left})^2 + min_{c_{right} }\sum_{left}(y_i - c_{right})^2]$$
 
  
@@ -240,8 +248,6 @@ Kernel function
 
 
 
-
-
 ## GBDT (Gradient Boosting Decision Tree)
 
 <img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p5.png" width = "500">
@@ -299,8 +305,6 @@ Kernel function
 
 - Obviously, $\phi^*_m(x)$ is not affected by the value of $\alpha_m >0$, 
     - $\phi^*_m(x)$ = $argmin \sum_i w_{m,i} I(y_i \neq \phi_m(x_i))$ (i.e., a classification tree)
-
-
 
 - $$\alpha^*_m(x) = argmin \sum_i w_{m,i} exp(-\alpha_m    y_i \phi^*_m(x_i)) = argmin[ \sum_{y_i = \phi_m(x_i)} w_{m,i} e^{-\alpha_m} + \sum_{y_i \neq \phi_m(x_i)} w_{m,i} e^{\alpha_m}] = argmin [(e^{\alpha_m} - e^{-\alpha_m})\sum_i w_{m,i}  I(y_i \neq \phi_m(x_i)) + e^{-\alpha_m} \sum_i w_{m,i}] = argmin [(e^{\alpha_m} - e^{-\alpha_m}) err_m + e^{-\alpha_m} \times 1] = \frac{1}{2}log \frac{1-err_m}{err_m}$$
 
@@ -453,20 +457,27 @@ Take L2 as example:
 ## Approach 3: Bayesian Posterior
 
 Recall the posterior for parameter:  
+
 $$P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}$$
 
 Remove constants:
+
 $$P(\theta|D) = P(D|\theta)P(\theta)$$
 
 Solve for $\theta$:
+
 $$\theta = argmin\ \{-[lnP(D|\theta) + lnP(\theta)]\} =  argmin\ [L(\theta) - ln(P(\theta)]$$
 
 For L1: $\theta$~Laplace Disribution
+
 $$P(\theta) = \frac{1}{2b}e^{-\frac{|\theta|}{2b} }$$
+
 $$\theta = argmin\ [L(\theta) + C|\theta|]$$
 
 For L2: $\theta$~Guassian Disribution
+
 $$P(\theta) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{\theta^2}{2\sigma^2} }$$
+
 $$\theta = argmin\ [L(\theta) + C\theta^2]$$
 
 Laplace: compared with Guassian, more likely to take zero:
@@ -508,17 +519,3 @@ $$AUC = \sum P(S(+)>S(-)|+,-) \cdot P(+,-) = \sum_{-} P(S(+)>S(-)|-) = \sum_{-}[
     - each model: high performance
     - between models: low correlation
 
-
-```python
-
-```
-
-
-```python
-
-```
-
-
-```python
-
-```

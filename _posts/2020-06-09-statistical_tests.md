@@ -1,3 +1,15 @@
+---
+title: "Statistical Tests"
+excerpt: "Likelihood Tests, Causality Tests, Linearity Tests, etc."
+categories:
+  - Statistics
+
+
+
+---
+
+
+
 # Prepare Data
 
 
@@ -290,9 +302,7 @@ num_tp = sum((e > e_prev & e > e_after) | (e < e_prev & e < e_after))
 num_tp
 ```
 
-
 74
-
 
 <img src = "https://wikimedia.org/api/rest_v1/media/math/render/svg/c1abc79ac72647ea2c419d6db5d3e33ba2520637" width = 100>
 
@@ -460,8 +470,3 @@ summary(new_model)
 
 
 <img src = "http://slideplayer.com/8016538/25/images/20/Negative+Binomial+Regression.jpg" width = 300>
-
-
-```R
-
-```
