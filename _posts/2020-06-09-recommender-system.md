@@ -12,38 +12,39 @@ tags:
 
 
 
-# Overview
+# Memory-based CF
+
+## Overview
 
 <img src="https://www.researchgate.net/profile/Shilad_Sen/publication/221607721/figure/fig1/AS:305580804722702@1449867549680/Intermediary-entities-center-relate-user-to-recommended-item.png" width="400">
 
 **General Workflow**
+
 - Generate features from user behavior (indirect) / user attributes (direct) for pairs of $(u,i)$
-    - Behavior weighing (view, click, purchase)
-    - Behavior time (recent or past)
-    - Behavior frequency
-    - Item popularity (more popular, less important)
-    
+  - Behavior weighing (view, click, purchase)
+  - Behavior time (recent or past)
+  - Behavior frequency
+  - Item popularity (more popular, less important)
+
 - Apply algorithms (as in following sections), and get candidate list of items
-    - For a give user feature vector, retrieve $(item, weight)$
-    - There can be multiple tables (e,g., one table for CF, one-table for content-based) or (e.g., one table for browse, one table for click)
+  - For a give user feature vector, retrieve $(item, weight)$
+  - There can be multiple tables (e,g., one table for CF, one-table for content-based) or (e.g., one table for browse, one table for click)
 
 
 - Filtering based on business rules
-    - For example, only recommend new products
-    
+  - For example, only recommend new products
+
 - Ranking by some criterias
-    - For example, variety
+  - For example, variety
 
 
 Input data also includes:
+
 - User Info (sex, income)
 - Item Info (BOW, TF-IDF)
 - User-Item Interaction
-    - active/explicit: rating
-    - passive/implicit: clickstream analysis
-
-
-# Memory-based CF
+  - active/explicit: rating
+  - passive/implicit: clickstream analysis
 
 ## Load some sample dataset
 
@@ -204,7 +205,7 @@ item_similarity.shape
     - $ \hat{x} _{k,m} = \bar x_k + \frac{\Delta}{Norm}  $
 
 
-- Adjustment = (similarity with another user) * (rating of another user - bias of another user)
+- Adjustment = (similarity with another user $k _0$) * (rating of item $m$ by another user $k _0$ - bias of another user $k _0$)
     - $ \Delta = \sum _{k_0}UserSim(k, k_0) \cdot (x _{k_0, m} - \bar x _{k0})$
 
     - $ Norm = \sum _{k_0} \vert UserSim(k, k_0) \vert $
@@ -236,16 +237,15 @@ cf.ui_predict(df_matrix, user_similarity).shape
 ```
 
 
-
-
     (943, 1682)
 
 
 
 ### Item-Item Filtering
+
 Users who liked this item also liked ...
-- $ \hat{x} _{k,m} = \frac{\sum _{m_0}ItemSim(m, m_0)}{Norm}  \cdot x _{k, m_0}$
-  
+- $ \hat{x} _{k,m} = \frac{1}{Norm}  \sum _{m_0}ItemSim(m, m_0) \cdot x _{k, m_0}$
+- $m_0 \in N(k)$ where user $k$ has already rated.  
 
 How to understand $ItemSim(m, m_0)$:
 - Dot product: number of users who like both item $m$ and item $m_0$ (If input matrix is not rating)
@@ -253,7 +253,8 @@ How to understand $ItemSim(m, m_0)$:
 
 Result:
 - Each item $m_0$ is contributing to rating of the target item $m$
-<img src="http://n.sinaimg.cn/sinacn23/279/w640h439/20180715/cbd7-hfkffak1630519.jpg" width="500">
+- This method may lead to poor novelty.
+- <img src="http://n.sinaimg.cn/sinacn23/279/w640h439/20180715/cbd7-hfkffak1630519.jpg" width="500">
 
 
 ```python
@@ -281,14 +282,15 @@ cf.ii_predict(df_matrix, item_similarity).shape
 
 
 ## Comparison between user-based and item-based
+
 |User-based       | Item-based           |
-| ------------- |:-------------:|
+| ------------- |:--------------|
 | more socialized      | more personalized |
 | fro example: news | for example: books|
 | update user-similarity matrix| update item-similarity matrix|
 | number of user << number of items | number of user >> number of items|
 | Not interpretable | Interpretable|
-| Cold starting: No problem for new items (after 1 action) | Cold starting: no problem for new users (after one action)|
+| Cold starting: No problem for new items (after 1 action) | Cold starting: no problem for new users (after 1 action) |
 
 # Model-Based CF - Matrix Decomposition
 
@@ -466,17 +468,83 @@ plot_model(model, to_file='../assets/figures/dl/model_ncf2.png')
 - Similarity is calculated based on item attribute (for example, location, price, cuisine, etc.)
     - Output: An item space with defined distance
 - One model for one user; No interaction between users
+- Approximate KNN to retrieve nearest K items: https://github.com/facebookresearch/faiss (to read...)
 
 
 ## Item2Vec
 - Similar with Word2Vec, where each item is converted to a embedding vector
 
 $$E = -\sum_i \sum_j logP(j \vert i)$$
-- y=1 if item j and i appears in the same user's selection (i.e., in the same sentence)
-- Difference from word2vec: no time window restriction
-- Also applies negative sampling 
-- Output: embedding of each item
+- y=1 if item j and i appears in the same user's selection during a given time period $T$ (i.e., in the same sentence)
+  - Assumption: these searches/selections are under the user's same need, and they are potentially similar
+- Comparison with *word2vec*: 
+  - Sometimes no time window restriction
+  - Also applies negative sampling 
+  - Output: embedding of each item
+- Positive Pairs: 
+  - Clicked Items and Clicked Items
+  - Clicked Items and Booked Items (with higher weights)
+- Negative Pairs:
+  - Clicked Items and Skipped Items
+- Example of Recommendation:
+  - Get the average embedding of of last $K$ item that clicked by user
+  - Find the closest item from the candidate pool
+- (+) No need for human label
+- (-) cannot cover new items
+  - possible solution: find the closest $M$ items that matches the new item in some important dimensions (pre-determined, e.g., price, city, etc., and use the average embedding of these items as the embedding of the new item
 - (-) how to address items as a network?
+- brief example in a Chinese B&B: https://www.infoq.cn/article/d6B7B9DD-Nc4SruOb27B
+
+### Airbnb
+
+ref:
+
+- https://mp.weixin.qq.com/s/vZN5Jr8DWsDQvOToOCxSOg
+- https://dl.acm.org/doi/pdf/10.1145/3219819.3219885
+- https://medium.com/airbnb-engineering/listing-embeddings-for-similar-listing-recommendations-and-real-time-personalization-in-search-601172f7603e
+
+
+<img src="../assets/figures/dl/airbnb.png" width="500">
+
+**Definition of loss function**
+
+- The combined negative sampling loss function: 
+  $$Loss = -[\sum _{(l, c) \in pos} log\ \sigma(u_c v_l^T) + \sum _{(l, c) \in neg_1} log\ \sigma(-u_c v_l^T) + log\ \sigma(u _{l_b} v_l^T) +  \sum _{(l, c) \in neg_2} log\ \sigma(-u_c v_l^T)]$$
+  - $l$: center listing, $c$: context listing
+
+- Center listing $l$: clicked listing
+- $pos$: positive context listings that was clicked by *same* user before and after center listing within a **window**. Goal is to push center listing *l* closer to listings in $pos$.
+- $neg_1$ comes from randomly sampled listing.
+- Third component: use **booked listing** as global context even it falls out of the context windows. Goal is to use center listing *l* closer to booked listing.
+- Fourth component: $neg_2$ comes from randomly sampled listing from **the same market** as center listing.
+
+**Application of embeddings in personalized ranking**
+
+- Base features:
+  - listing features
+  - user features
+  - query features
+  - cross-features
+- Define the set of listings that a user **clicked**/**skipped** (i.e., clicked a lower ranked listing) in the last 2 weeks. ($H_c$ and $H_s$).
+- Define the similarity of item embedding and user embedding $$EmbClickSim(l, H_c) = cosine(v_l, \sum _{l_h \in H_c} v _{l_h})$$
+- Similar for $EmbSkipSim$. Add these ***Listing Embedding Features*** to the model to improve performance.
+
+
+
+## YouTubeNet
+
+- Ref: https://research.google/pubs/pub45530/
+- Difference from Item2Vec:
+  - Use user features to learn item embeddings, while in Item2Vec only items are utilized.
+  - Note that the last layer is a **multi-class** classifcation layer
+  - The output would be user embeddings ***and*** item embeddings
+- User features
+  - Demographics
+  - Past clicked list
+- Prediction: inner product of user and item embeddings
+- Alternatives: two-part DNN (one for user as here, but another one for item, like the structure of NeuralCF)
+
+<img src="../assets/figures/dl/image-20200610163530588.png" alt="image-20200610163530588" style="zoom:67%;" />
 
 ## Graph Embedding
 
@@ -533,8 +601,7 @@ similarities in users’ behavior sequence.
 - Problem with traditional graph embedding: some items with few interaction. How to do cold-starting.
 
 
-- Motivation: use **side information** to enhance the embeddings (e.g., category, brand, price) with different weights
-
+- Motivation: use **side information** to enhance the embeddings (e.g., category, brand, price) with different weights.
 
 <img src="../assets/figures/dl/eges.png" width="500">
 
@@ -550,39 +617,6 @@ $$H_v = \frac{\sum_j e^{\alpha_j} \cdot w_j}{\sum e^{\alpha}} $$
     
 
 <img src="../assets/figures/dl/cold_start.png" width="500">
-
-### Airbnb:
-ref:
-- https://mp.weixin.qq.com/s/vZN5Jr8DWsDQvOToOCxSOg
-- https://dl.acm.org/doi/pdf/10.1145/3219819.3219885
-- https://medium.com/airbnb-engineering/listing-embeddings-for-similar-listing-recommendations-and-real-time-personalization-in-search-601172f7603e
-
-
-<img src="../assets/figures/dl/airbnb.png" width="500">
-
-**Definition of loss function**
-
-- The combined negative sampling loss function: 
-    $$Loss = -[\sum _{(l, c) \in pos} log\ \sigma(u_c v_l^T) + \sum _{(l, c) \in neg_1} log\ \sigma(-u_c v_l^T) + log\ \sigma(u _{l_b} v_l^T) +  \sum _{(l, c) \in neg_2} log\ \sigma(-u_c v_l^T)]$$
-    - $l$: center listing, $c$: context listing
-
-- Center listing $l$: clicked listing
-- $pos$: positive context listings that was clicked by *same* user before and after center listing within a **window**. Goal is to push center listing *l* closer to listings in $pos$.
-- $neg_1$ comes from randomly sampled listing.
-- Third component: use **booked listing** as global context even it falls out of the context windows. Goal is to ush center listing *l* closer to booked listing.
-- Fourth component: $neg_2$ comes from randomly sampled listing from **the same market** as center listing.
-
-**Application of embeddings in personalized ranking**
-
-- Base features:
-    - listing features
-    - user features
-    - query features
-    - cross-features
-    
-- Define the set of listings that a user **clicked**/**skipped** (i.e., clicked a lower ranked listing) in the last 2 weeks. ($H_c$ and $H_s$).
-- Define the similarity of item embedding and user embedding $$EmbClickSim(l, H_c) = cosine(v_l, \sum _{l_h \in H_c} v _{l_h})$$
-- Similar for $EmbSkipSim$. Add these ***Listing Embedding Features*** to the model to improve performance.
 
 
 ## More generalized item vectorization
@@ -845,6 +879,9 @@ Difference with ***Deep FM***:
 
 
 
+- Ref: https://www.infoq.cn/article/0ueIPm2VFrOqECLU3316
+- <img src="../assets/figures/dl/image-20200610164815888.png" alt="image-20200610164815888" style="zoom:40%;" />
+
 ### ONN：Operation-aware Neural Network
 - a combination of FFM and NN
     - have different embeddings for different feature interactions
@@ -1099,9 +1136,47 @@ $$ \alpha _{c,i} (x_t, x _{c,i}) 　＝ exp [ h^T ReLU( W[x_t;x _{c,i}] + b_1) +
     - Motivation: memorize the output $Z_L$ of the last FC layer as high-level abstraction of target ad.
     - Demonstrated the merit of RNN (i.e., accounts for historical behaviors) while reduces complexity
 
+
+
+### Tree-based Deep Model
+
+Ref: https://arxiv.org/abs/1801.02294
+
+- Motivation
+  - Reduce the time complexity of matching from $N$ to $log(N)$.
+  - Can connect with any deep model
+  - Divide large problem into smaller problems by having hierarchical search. Nodes are considered as coarse-grained interests, and leaves are considered as items.
+- Comparison with Item-based CF:
+  - Be able to search for the whole corpus
+- Comparison with inner-product of item embeddings:
+  - Be able to have more complicated relationships
+- Tree Initialization
+  - Use category information as the initial clustering criteria. All orders are randomly assigned.
+- Node Learning
+  - Learn the node and leaf embeddings of each node in the tree through a deep model
+  - See the figure below for positive sample and negative sample selection. Loss function of common binary classification model is utilized.
+  - The selection of positive/negative samples are under the goal of building a  **Max-Heap** like tree. Tree that learned in this way will be approximately a Max-Heap like tree, and would give justify the **Retrieval Algorithm** in the prediction below.
+- Tree Structure Learning
+  - Use leaf embeddings and k-means clustering to construct a new tree.
+  - After that, go back to node learning and iterate.
+- Prediction
+  - Complexity: $O(k ∗ log C ∗ t)$,
+    - $k$ is the required results size
+    - $C$ is the corpus size
+    - $t$ is the complexity of network’s single feed-forward pass
+  - <img src="../assets/figures/dl/image-20200610154040762.png" alt="image-20200610154040762" style="zoom:33%;" />
+  - <img src="../assets/figures/dl/image-20200610154132615.png" alt="image-20200610154132615" style="zoom:33%;" />
+  - ![image-20200610152923022](../assets/figures/dl/drn.png)
+
+
+
 ### DIEN - Deep Interest Envole Network
 
-### MIND
+To be added
+
+### MIND - Multi-Interest Network with Dynamic Routing
+
+To be added
 
 ## Modelling Approach - Reinforced Learning
 
