@@ -10,12 +10,10 @@
     - Discriminative models (like LR)
     - Generative models: based on $P(x|c)$
     
-    
 - For generative model:
     - $P(c|x) = \frac{P(x,c)}{P(x)} = \frac{P(c)P(x|c)}{P(x)}$
     - Prior: $P(c)$
     - Likelihood: $P(x|c)$
-    
     
 - How to describe $P(x|c)$
     - $P(x|c) = P(x|\theta_c)$
@@ -45,10 +43,10 @@
 - $LL(\Theta|X) = ln P(X|\Theta) = ln \sum_z P(X,Z|\Theta)$
 - For GMM clustering: $\mathbf Z = (k_1, k_2, ..., k_i, ...)$, the class label for each data point.
 
-- Expectation: $Q(\boldsymbol\theta|\boldsymbol\theta^{(t)}) = \operatorname{E}_{\mathbf{Z}|\mathbf{X},\boldsymbol\theta^{(t)}}\left[ \log L (\boldsymbol\theta;\mathbf{X},\mathbf{Z})  \right] $
+- Expectation: $Q(\boldsymbol\theta|\boldsymbol\theta^{(t)}) = \operatorname{E}_{\mathbf{Z}|\mathbf{X},\boldsymbol\theta^{(t)} }\left[ \log L (\boldsymbol\theta;\mathbf{X},\mathbf{Z})  \right] $
 
 
-- Maximization: $\boldsymbol\theta^{(t+1)} = \underset{\boldsymbol\theta}{\operatorname{arg\,max}} \ Q(\boldsymbol\theta|\boldsymbol\theta^{(t)})$
+- Maximization: $\boldsymbol\theta^{(t+1)} = \underset{\boldsymbol\theta}{\operatorname{arg\,max} } \ Q(\boldsymbol\theta|\boldsymbol\theta^{(t)})$
 
 
 # Unsupervised - Clustering
@@ -94,7 +92,6 @@
     - $\sigma^2_k = \frac{\sum_ip(k|x_i)(x_i-\mu_k)^2}{\sum_ip(k|x_i)}$
     - $\alpha_k = \frac{\sum_ip(k|x_i)}{N}$
     
-    
 - Detailed proof for GMM clsutering: https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm
 
 # Semi-supervised learning
@@ -112,7 +109,7 @@
 
 - One way of formulating:  $p(X_l, Y_l, X_u|\theta) = \sum_{Y_u}p(X_l, Y_l, X_u, Y_u|\theta)$
 
-- The combined log-likelihood: $${\underset {\Theta }{\operatorname {argmax} }}\left(\log p(\{x_{i},y_{i}\}_{i=1}^{l}|\theta )+\lambda \log p(\{x_{i}\}_{i=l+1}^{l+u}|\theta )\right)$$
+- The combined log-likelihood: $${\underset {\Theta }{\operatorname {argmax} } }\left(\log p(\{x_{i},y_{i}\}_{i=1}^{l}|\theta )+\lambda \log p(\{x_{i}\}_{i=l+1}^{l+u}|\theta )\right)$$
 
 Where: 
 - Labelled: $\log p(\{x_{i},y_{i}=k_i\}_{i=1}^{l}|\theta ) = \sum_i ln \ p(x_i,k_i|\theta) = \sum_i ln\ \alpha_{k_i}p(x_i|\mu_{k_i}, \sigma^2_{k_i}) $
@@ -130,8 +127,8 @@ To be solved by EM algorithm
 
 $$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_i)|)_+$$
 
-<img src="./fig/s3vm.png" width="200">
-<img src="./fig/hinge_unlabelled.png" width="200">
+<img src="../assets/figures/s3vm.png" width="200">
+<img src="../assets/figures/hinge_unlabelled.png" width="200">
 
 ## Graph-based methods
 
@@ -150,9 +147,8 @@ $$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_
 
 - Use Information Gain Ratio to split nodes    
     - Drawback of information gain: best result will be using "ID" column (i.e., perfect split)
-    - Fix: Information Gain *Ratio* $Gain\ Ratio = \frac{Gain}{IV_{feature}}$: to normalized based on number of distinct values
+    - Fix: Information Gain *Ratio* $Gain\ Ratio = \frac{Gain}{IV_{feature} }$: to normalized based on number of distinct values
     - ***Example: C4.5***: mixed use of information gain and information gain ratio
-    
     
 - Use Gini index to split node
     - Gini = $1 - \sum_k p^2_k$
@@ -167,10 +163,9 @@ $$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_
 - Decision Boundary and Multivariate Decision Tree
     - When splitting node, select attribute *set* instead of single attribute (i.e., left: $w^Tx>0$ , right: $w^Tx<0$)
     
-    
 - Node splitting for *Regression Tree*
     - Find feature $j$ and splitting point $s$ so that:
-     $$Min_{j,s} [min_{c_{left}}\sum_{left}(y_i - c_{left})^2 + min_{c_{right}}\sum_{left}(y_i - c_{right})^2]$$
+     $$Min_{j,s} [min_{c_{left} }\sum_{left}(y_i - c_{left})^2 + min_{c_{right} }\sum_{left}(y_i - c_{right})^2]$$
 
  
 
@@ -180,7 +175,6 @@ How to formulate the problem?
 - Most Intuitive formulation
     - Maximize Geometric Margin: $\gamma $
     - Constraint: $\gamma_i = \frac{y_i (w^Tx_i + b)}{||w||} \geq \gamma $
-    
     
 - Define functional margin:
     - $\gamma_i = \frac{\hat \gamma_i}{||w||}$, where ${\hat \gamma_i}$ is function margin: $y_i f(x_i$)
@@ -283,7 +277,7 @@ Kernel function
     - $l(y,f)=exp(-yf(x))$ , where y = -1, +1
     - Recovers Adaboost Algorithm
     - sensitive to noise data 
-<img src="./fig/ExponentialLoss.png" width="600">
+<img src="../assets/figures/ExponentialLoss.png" width="600">
 
 ---
 
@@ -313,12 +307,13 @@ Kernel function
 ---
 
 4. Logistic loss
-    
+   
+
 <img src="https://slideplayer.com/6982498/24/images/53/Boosting+and+Logistic+Regression.jpg" width="500">
 
 
 ## XGBT
-    
+
 - (***Regularization***) Added regularization for trees (Number of leaves + L2 norm of leave weights) for better generalization
 <img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p7.png" width = "300">
 
@@ -329,7 +324,7 @@ Kernel function
 <img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p8.png" width = "400">
 
 <img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p9.png" width = "500">
-   
+
 - (***Bind final objective with tree building***) The goal of tree each iteration is to find a decision tree $f_t(X)$ so as to minimize objective (Gain + Complexity Cost): $$\sum_i[g_if_t(x_i) + \frac {1}{2} h_i f_t^2(x_i)] + \Omega(f_t)$$
 
 - Next Step: find how to split into $J$ regions, and for each region, what is the optimal weight $w_j$.
@@ -350,7 +345,6 @@ Kernel function
 - From Microsoft
     - https://github.com/Microsoft/LightGBM/blob/master/docs/Features.rst#references
     
-    
 - Problem: 
     - too many features
     - too many data
@@ -364,7 +358,6 @@ Kernel function
 - (***Less Feature***) Exclusive Feature Bundling (EFB)
     - Bind sparse feature
     - From (Data $\times$ Features) to (Data $\times$ Bundles)
-    
     
 - (***Better Tree***) Leaf-wise grow instead of Level-wise grow 
     - The resulting tree may be towarding left side)
@@ -382,8 +375,8 @@ Kernel function
     - Reduces computation complexity (from no. data to no. bins).
     - Reduces memory usage/requirements 
     - Avoid unneccesary computation by calculating *Parent Node* and *One Child* with less data. The other child node can be calculated by *Parent* - *Child*
- 
- 
+
+
 - (***Better parallelizing***) reduces communication
     - Feature Parallel: each worker has full feature set of data (instead of subset); performs selection on subset; 
     - Data Parellel: merge histogram on local features set of each worker (instead of merging global histograms from all local histograms
@@ -394,7 +387,6 @@ Kernel function
     - Focus: reduce variance
     - Reduce variance by building independent trees and aggregating
     - Reduce bias by using deeper trees
-    
     
 - Boosting (GBDT)
     - Focus: reduce bias
@@ -411,8 +403,8 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
     - Ref: https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-trees-with-catboost-d511a9ccbd14
     
     <img src="https://miro.medium.com/max/1313/1*XfV0SkW-7NRac768CKU9LQ.png" width="500">
- 
- 
+
+
 - ***Treatment for combinations of categorical features***
     - Calculate Target Statistics for combinaitons of
         - categorical features already in the current tree
@@ -439,7 +431,7 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
 # L1 and L2 Regularization
 
 ## Approach 1：From Figure
-<img src="./fig/l1_l2.png" width=500>
+<img src="../assets/figures/l1_l2.png" width=500>
 
 ## Approach 2: Solve for minumum
 
@@ -470,19 +462,19 @@ Solve for $\theta$:
 $$\theta = argmin\ \{-[lnP(D|\theta) + lnP(\theta)]\} =  argmin\ [L(\theta) - ln(P(\theta)]$$
 
 For L1: $\theta$~Laplace Disribution
-$$P(\theta) = \frac{1}{2b}e^{-\frac{|\theta|}{2b}}$$
+$$P(\theta) = \frac{1}{2b}e^{-\frac{|\theta|}{2b} }$$
 $$\theta = argmin\ [L(\theta) + C|\theta|]$$
 
 For L2: $\theta$~Guassian Disribution
-$$P(\theta) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{\theta^2}{2\sigma^2}}$$
+$$P(\theta) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{\theta^2}{2\sigma^2} }$$
 $$\theta = argmin\ [L(\theta) + C\theta^2]$$
 
 Laplace: compared with Guassian, more likely to take zero:
-<img src="./fig/laplace.png" width=300>
+<img src="../assets/figures/laplace.png" width=300>
 
 # AUC and ROC curve
 
-<img src="./fig/auc.png" width=300>
+<img src="../assets/figures/auc.png" width=300>
 
 - AUC: For a random (+) and a random (-) sample, the probability that S(+) > S(-)
 - Explains why AUC equals to the area under the curve of TPR and FPR:
@@ -494,7 +486,7 @@ $$AUC = \sum P(S(+)>S(-)|+,-) \cdot P(+,-) = \sum_{-} P(S(+)>S(-)|-) = \sum_{-}[
 ***Label Imbalance***
 -  One approach is to use label-aware loss function
 - ref: https://arxiv.org/pdf/1901.05555.pdf
-- <img src="./fig/loss_func.png" width="300">
+- <img src="../assets/figures/loss_func.png" width="300">
 
 - With hyperparameter $\beta$ ranging from 0 to 1
     - when $\beta$ is 0: no weighing

@@ -34,7 +34,7 @@ model
 ```
 
 
-    
+​    
     Call:
     lm(formula = "y ~ x1 + x2 + 1", data = data)
     
@@ -50,13 +50,12 @@ model
     - Null model: all p = 0 except intercept
     - Alternative model: OLS
     
-    
-- Assume normal distribution of error term: $L(\theta) = (\frac{1}{\sqrt{2\pi\sigma^2}})^N exp(-\frac{1}{2\sigma^2}R)$
+- Assume normal distribution of error term: $L(\theta) = (\frac{1}{\sqrt{2\pi\sigma^2} })^N exp(-\frac{1}{2\sigma^2}R)$
      * $where\ R= \sum_{i=1}^{N}\hat e^2_i $
      * $\sigma$ unknown, $ \hat {\sigma}^2 = R / N$
- 
- 
-- So, $L(\theta) = (\frac{1}{\sqrt{2\pi\sigma^2}})^N exp(-\frac{N}{2})$
+
+
+- So, $L(\theta) = (\frac{1}{\sqrt{2\pi\sigma^2} })^N exp(-\frac{N}{2})$
 
 - So, $Log(L(\theta)) = -\frac{N}{2} [log(2\pi + ln(R) + 1)]$
 
@@ -249,7 +248,7 @@ F
 model_vif = lm("x1~x2+1", data)
 ```
 
-$R_2 = 1 - \frac{\hat e^2}{\sum_{i}{(y_i-\bar y)^2}}$
+$R_2 = 1 - \frac{\hat e^2}{\sum_{i}{(y_i-\bar y)^2} }$
 
 
 ```R
@@ -352,7 +351,7 @@ var_s
 112750
 
 
-$Z = \frac{S-1}{\sqrt {var(S)}}$
+$Z = \frac{S-1}{\sqrt {var(S)} }$
 
 
 ```R
@@ -377,7 +376,7 @@ Z
 
 
 * OLS: $\hat{\epsilon_t} = y_t - \hat{\alpha} - \hat{\beta} * x_t$
-* OLS: $\hat{\epsilon_t} = \rho \hat{\epsilon_{t-1}} + \omega_t,\ solve\ for\ \hat{\rho}$
+* OLS: $\hat{\epsilon_t} = \rho \hat{\epsilon_{t-1} } + \omega_t,\ solve\ for\ \hat{\rho}$
 * Re-formulate: $y_t^* = t_t - \rho y_{t-1} = \alpha(1-\hat{\rho}) + \beta* x_t^* + \omega_t,\ solve\ for\ \hat{\alpha}, \hat{\beta} $
 * Where $ y_t^* = t_t - \hat\rho y_{t-1}$
 * Re-iterate until convergence
@@ -394,7 +393,7 @@ summary(error_model)
 ```
 
 
-    
+​    
     Call:
     lm(formula = "e~.", data = e_data)
     
@@ -438,7 +437,7 @@ summary(new_model)
 ```
 
 
-    
+​    
     Call:
     lm(formula = "y~.", data = new_data)
     

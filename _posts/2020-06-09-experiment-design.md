@@ -31,8 +31,8 @@ categories:
 
 
 - Test Statistic (Actually for **one-sample t-test**):
-    - $$t = \frac{\bar D - \mu_D}{s_{\bar D}} \sim t\ (df=N-1)$$
-    - $${s_{\bar D}} = \frac{s_D}{\sqrt{N}} = \frac{\sqrt{\frac{1}{N-1}\sum(D_i-\bar D)^2}}{\sqrt{N}}$$
+    - $$t = \frac{\bar D - \mu_D}{s_{\bar D} } \sim t\ (df=N-1)$$
+    - $${s_{\bar D} } = \frac{s_D}{\sqrt{N} } = \frac{\sqrt{\frac{1}{N-1}\sum(D_i-\bar D)^2} }{\sqrt{N} }$$
 
 **Comparison with independent sample t-test**
 - When $\sigma_X = \sigma_Y$:
@@ -137,14 +137,14 @@ $$F = \frac{SS_B/(I-1)}{SS_W/[I(J-1)]} \sim F[I-1, I(J-1)]$$
 
 
 - Test statistic
-$$Q = max_i \frac{\bar y_{i.}}{\sqrt{MS_E/n}} - min_j \frac{\bar y_{j.}}{\sqrt{MS_E/n}} \sim q(g, v)$$
+$$Q = max_i \frac{\bar y_{i.} }{\sqrt{MS_E/n} } - min_j \frac{\bar y_{j.} }{\sqrt{MS_E/n} } \sim q(g, v)$$
 
 - When sample size is different:<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/9d01f8ffa3951483d2acdc9a9b715377901bebdf" width="300">
 - When sample size is same:
-$$\bar y_{i.} - \bar y_{j.} \pm \frac {q(\alpha, k, N-k)}{\sqrt{2}} \hat \sigma_{\epsilon} \sqrt{\frac{1}{n} +\frac{1}{n}}$$
+$$\bar y_{i.} - \bar y_{j.} \pm \frac {q(\alpha, k, N-k)}{\sqrt{2} } \hat \sigma_{\epsilon} \sqrt{\frac{1}{n} +\frac{1}{n} }$$
 
 - Compare with Bonferroni
-$$\bar y_{i.} - \bar y_{j.} \pm t_{(\alpha/2K,v)}  \hat \sigma_{\epsilon} \sqrt{\frac{1}{n} +\frac{1}{n}}$$
+$$\bar y_{i.} - \bar y_{j.} \pm t_{(\alpha/2K,v)}  \hat \sigma_{\epsilon} \sqrt{\frac{1}{n} +\frac{1}{n} }$$
 
 **To be added**
 - http://www2.hawaii.edu/~taylor/z631/multcomp.pdf
@@ -171,7 +171,7 @@ $$SS_{AB}/\sigma^2 \sim \chi^2[(I-1)(J-1)]$$
 
 **Three F-statistics**
 
-$$F=\frac{MS_?}{MS_E} = \frac{{SS}_?/{df}_?}{SS_E/[IJ(K-1)]} \sim F[df_?, IJ(K-1)]$$
+$$F=\frac{MS_?}{MS_E} = \frac{ {SS}_?/{df}_?}{SS_E/[IJ(K-1)]} \sim F[df_?, IJ(K-1)]$$
 
 ---
 <img src ="../assets/figures/anova_2_table.png" width="400">
@@ -234,7 +234,7 @@ $$Q=\sum_{i=1}^{k}\frac{(Y_i - np_i)^2}{np_i} = \sum \frac{(Expected - Observed)
     - the multi-variable distribution on $I$ changes across group $J$
     
 
-$$E_{ij} = \frac{n_{i.}n_{.j}}{n_{..}}$$
+$$E_{ij} = \frac{n_{i.}n_{.j} }{n_{..} }$$
 
 $$df = (I-1)(J-1)$$
 

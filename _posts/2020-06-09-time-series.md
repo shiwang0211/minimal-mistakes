@@ -14,11 +14,9 @@ Decompose into:
 - Moving Average
     * For example: 7 \* MA for weekly data
     
-    
 - Moving Average of Moving Average 
     * For example: 2 \* 12 MA for monthly data, 2 * 4 MA for quarterly data
     * In R: `ma(time_series, order=12, centre = TRUE)` 2 \* 12 MA 
-    
     
 - Weighted Moving Average
     * 2 * 4 MA is a special case. i.e., W = [1/8, 1/4, 1/4, 1/4, 1/8] 
@@ -29,7 +27,6 @@ Basic Approach:
 1. Simple average of, for example, all January data. Adjust 12 values to sum up to zero. **S**
 1. The remainder is error **E**
 
-
 ---
 
 
@@ -37,7 +34,6 @@ Issues:
 - No observation for beginning/ending
 - Constant seasonal components over years
 - Not robust to outliers
-
 
 ---
 
@@ -61,7 +57,7 @@ Forecast with decompositions:
 
 # Time series forecasting
 
-<img src="./fig/ExponentialSmoothing.jpeg" width="600">
+<img src="../assets/figures/ExponentialSmoothing.jpeg" width="600">
 
 Ref: https://robjhyndman.com/talks/MelbourneRUG.pdf
 
@@ -153,17 +149,15 @@ $ Y_t = c + \phi Y_{t-1} + \epsilon_t,\ where\ \epsilon\ - iid(0, \sigma^2) $
 
 - Variance
     - If c=0, $Y_t - \phi Y_{t-1} = (1-\phi B) = \epsilon_t$
-    - If c=0, $\sigma^2_Y = \phi^2 \sigma^2_Y + \sigma^2_{\epsilon}$, $\sigma^2_Y = \frac{\sigma^2_{\epsilon}}{1- \phi^2}$
-    
+    - If c=0, $\sigma^2_Y = \phi^2 \sigma^2_Y + \sigma^2_{\epsilon}$, $\sigma^2_Y = \frac{\sigma^2_{\epsilon} }{1- \phi^2}$
     
 - Autocovariance
     - If c=0, $\gamma_k = E(Y_{t-k}Y_t) = E[Y_{t-k}(\phi Y_{t-1} + \epsilon_t)] = \phi  E(Y_{t-k}Y_{t-1}) = \phi \gamma_{k-1}$
     - $\gamma_0 = E(Y_{t}Y_t) = \sigma^2_Y$
     
-    
 - Representation by error term
     - If c=0, $Y_t = \epsilon_t + \phi \epsilon_{t-1} + \phi^2 \epsilon_{t-1} + ...$
-    - $Y_t = \sum_{j=0}{}{\phi^j \epsilon_{t-j}}$, which is $MA(\infty$) with special structure for weights
+    - $Y_t = \sum_{j=0}{}{\phi^j \epsilon_{t-j} }$, which is $MA(\infty$) with special structure for weights
     - Indication: **keep "long" memory with decreasing weights**
 
 
@@ -177,11 +171,9 @@ $ Y_t = c + \epsilon_t - \theta\epsilon_{t-1},\ where\ \epsilon\ - iid(0, \sigma
 - Mean
     - $E(Y_t) = \mu$
     
-
 - Variance
     - $\sigma^2_Y = E(Y^2_t) = \sigma^2_{\epsilon}(1+\theta^2)$
     
-
 - Covariance
     - $\gamma_1 = E(Y_t Y_{t-1}) = -\theta \sigma_{\epsilon}^2$
     - $\gamma_2 = \gamma_3 = ... = 0$
@@ -230,14 +222,13 @@ $ Y_t = c + \phi Y_{t-1} + \epsilon_t$
     - $E(Y_t) = ct$
     - $\sigma^2_Y = \sigma^2_{\epsilon}t$
     - $cov(t, t+k) = \sigma^2_{\epsilon}t$
-<img src="./fig/random_walk.png" width="300">
+<img src="../assets/figures/random_walk.png" width="300">
 
 ***Simple Exponential Smooth (SES)***
 
 * $ y_t = Y_t - Y_{t-1} = \mu - \theta \epsilon_{t-1} + \epsilon_t$, where it is a combination of *deterministic trend* and *stochastic trend*.
 * $ \mu$ is the constant term. Let $\mu=0, |\phi|<1$,
     - $E(Y_t) = \mu t$. If $\mu$ = 0, $ Y_t - Y_{t-1} =  - \theta \epsilon_{t-1} + \epsilon_t$.
-    
     
 * $ Y_t = \epsilon_t + Y_{t-1} - \theta\epsilon_{t-1} = \epsilon_t + Y_{t-1} - \theta(Y_{t-1} - Y_{t-2} + \theta\epsilon_{t-2}) + ...... $
 * $ Y_t = \epsilon_t + (1-\theta) Y_{t-1}  + \theta(1-\theta)Y_{t-2} + \theta^2(1-\theta) Y_{t-3} +......$
@@ -299,7 +290,6 @@ $ Y_t = c + \phi Y_{t-1} + \epsilon_t$
     - Regular differencing
     - Seasonal difference
     
-    
 - Log: fix exponentially trending
 - Detrend: Y = (mean + trend * t) + error; Model trend from here 
 - Differencing: 
@@ -315,7 +305,6 @@ $ Y_t = c + \phi Y_{t-1} + \epsilon_t$
     * AR(1): Gradually decrease with lag k
     * MA(1): Spike at lag 1, then zero for lag k > 1
     
-    
 - Partial Correlation Function (PACF):
     * Only measure the association between $Y_t, Y_{t-k}$
     * Exclude the effect of $Y_{t-1}, ..., Y_{t-(k-1)} $
@@ -323,15 +312,16 @@ $ Y_t = c + \phi Y_{t-1} + \epsilon_t$
     * $Y_{t-3} = \gamma_1 Y_{t-1} + \gamma_2 Y_{t-2} + v_t$
     * $PACF(t, t-3) = corr(u_t, v_t)$
     
-<img src="./fig/acf_pacf.png" width="500">
+
+<img src="../assets/figures/acf_pacf.png" width="500">
 
 ---
 
-<img src="./fig/acf_pacf_2.png" width="500">
+<img src="../assets/figures/acf_pacf_2.png" width="500">
 
 ---
 
-<img src="./fig/acf_pacf_3.png" width="500">
+<img src="../assets/figures/acf_pacf_3.png" width="500">
 
 
 
@@ -342,7 +332,7 @@ $ Y_t = c + \phi Y_{t-1} + \epsilon_t$
     - $AIC = -2log(L) + 2K = Tln \hat\sigma^2_{\epsilon} + 2K$
     - Error + Number of parameters
 - Start from base ARIMA and add variations until no lower $AIC$ found
-<img src="./fig/aic_bic.png" width="500">
+<img src="../assets/figures/aic_bic.png" width="500">
 
 
 
@@ -376,7 +366,6 @@ $ Y_t = c + \phi Y_{t-1} + \epsilon_t$
     * $\partial Y / \partial X = -\theta / \phi$
     * If X permanently increase by 1%, what percent with Y change
     
-    
 - Short Term effect: Not clear
 
 ### If X and Y are I(1)
@@ -391,12 +380,10 @@ $Y_t = \alpha + \beta X_t + e_t$
     - Cannot use t tests because distributionb is no longer **t** or normal (error structure)
     - Possible fix: $\Delta Y_t = \Delta X_t + \Delta e_t$ as long as e is I(1), then $\Delta e_t$ is stationary. But different interpretation.
     
-
 - **Cointegration**:
     -$e_t$ does **NOT** has a unit root --> $e_t$ is stationary, and is called **equilibrium error**
     - Premise: there exist unit root for X and Y
     - Test method (Engle-Granger Test): run unit root test (Dickey-Fuller Test) on residual $\hat Y_t - \hat\alpha - \hat\beta X_t $
-    
     
 - Under coitergration: still can run OLS with Y on X (**Cointegrating Regression**)
     - OLS: Estimate $Y_t = \alpha + \beta X_t $
@@ -429,7 +416,7 @@ Ref: http://web.sgh.waw.pl/~atoroj/econometric_methods/lecture_6_ecm.pdf
     * $ Assume\ \epsilon_t = \rho \epsilon_{t-1} + \omega_t\ where\ \omega\ - iid(0, \sigma^2) $ <br/>
     * Note: More appropriate ARMA model can be available
     * Similary, it can be shown/proved that the series $ \epsilon_t $ is stationary
-  
+
 
 - Rewrite assumtpion for stationary error
     * $ E(\epsilon ) = 0 $ <br/>
@@ -441,11 +428,10 @@ Ref: http://web.sgh.waw.pl/~atoroj/econometric_methods/lecture_6_ecm.pdf
     * Stationarity for Y and X
     * Differencing may be needed
     
-
 - How to solve for $\beta$?
     * One way: **Cochrane-Orcutt Method (Yule-Walker Method)**
     * OLS: $\hat{\epsilon_t} = y_t - \hat{\alpha} - \hat{\beta} * x_t$
-    * OLS: $\hat{\epsilon_t} = \rho \hat{\epsilon_{t-1}} + \omega_t,\ solve\ for\ \hat{\rho}$
+    * OLS: $\hat{\epsilon_t} = \rho \hat{\epsilon_{t-1} } + \omega_t,\ solve\ for\ \hat{\rho}$
     * Re-formulate: $y_t^* = t_t - \rho y_{t-1} = \alpha(1-\hat{\rho}) + \beta* x_t^* + \omega_t,\ solve\ for\ \hat{\alpha}, \hat{\beta} $
     * Where $ y_t^* = t_t - \hat\rho y_{t-1}$
     * Re-iterate until convergence
@@ -828,7 +814,7 @@ Box.test(residuals(fit), lag=24, fitdf=4, type="Ljung")
 ```
 
 
-    
+​    
     	Box-Ljung test
     
     data:  residuals(fit)
