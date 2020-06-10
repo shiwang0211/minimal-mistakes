@@ -57,7 +57,7 @@ tags:
 
 - Number of successes
   $$P(X=K) = {N \choose k} p^k (1-p)^{N-k} $$
-  <img src="../assets/figures/bio_nor.png" width="300">
+  <img src="../assets/figures/stats/bio_nor.png" width="300">
 
 ## Poisson Distribution
 
@@ -66,7 +66,7 @@ tags:
 
 $$P(X=k) = \frac{\lambda^k}{k!}e^{-\lambda}$$
 
-<img src="../assets/figures/poisson.png" width="300">
+<img src="../assets/figures/stats/poisson.png" width="300">
 
 
 

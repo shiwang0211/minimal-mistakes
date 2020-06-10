@@ -132,9 +132,9 @@ To be solved by EM algorithm
 
 $$ Min \sum _i [1 - y _i f(x _i)] _+ + \lambda _1  \vert   \vert  w \vert   \vert  ^2 + \lambda _2 \sum _i (1- \vert  f(x _i) \vert  ) _+$$
 
-<img src="../assets/figures/s3vm.png" width="200">
+<img src="../assets/figures/stats/s3vm.png" width="200">
 
-<img src="../assets/figures/hinge_unlabelled.png" width="200">
+<img src="../assets/figures/stats/hinge_unlabelled.png" width="200">
 
 ## Graph-based methods
 
@@ -283,7 +283,7 @@ Kernel function
     - $l(y,f)=exp(-yf(x))$ , where y = -1, +1
     - Recovers Adaboost Algorithm
     - sensitive to noise data 
-<img src="../assets/figures/ExponentialLoss.png" width="600">
+<img src="../assets/figures/stats/ExponentialLoss.png" width="600">
 
 ---
 
@@ -435,7 +435,7 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
 # L1 and L2 Regularization
 
 ## Approach 1：From Figure
-<img src="../assets/figures/l1_l2.png" width="500">
+<img src="../assets/figures/stats/l1_l2.png" width="500">
 
 ## Approach 2: Solve for minumum
 
@@ -481,11 +481,11 @@ $$P(\theta) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{\theta^2}{2\sigma^2} }$$
 $$\theta = argmin\ [L(\theta) + C\theta^2]$$
 
 Laplace: compared with Guassian, more likely to take zero:
-<img src="../assets/figures/laplace.png" width="300">
+<img src="../assets/figures/stats/laplace.png" width="300">
 
 # AUC and ROC curve
 
-<img src="../assets/figures/auc.png" width="300">
+<img src="../assets/figures/stats/auc.png" width="300">
 
 - AUC: For a random (+) and a random (-) sample, the probability that S(+) > S(-)
 - Explains why AUC equals to the area under the curve of TPR and FPR:
@@ -497,7 +497,7 @@ $$AUC = \sum P(S(+)>S(-) \vert  +,-) \cdot P(+,-) = \sum   _{-} P(S(+)>S(-) \ver
 ***Label Imbalance***
 -  One approach is to use label-aware loss function
 - ref: https://arxiv.org/pdf/1901.05555.pdf
-- <img src="../assets/figures/loss_func.png" width="300">
+- <img src="../assets/figures/stats/loss_func.png" width="300">
 
 - With hyperparameter $\beta$ ranging from 0 to 1
     - when $\beta$ is 0: no weighing

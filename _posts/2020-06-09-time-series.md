@@ -70,7 +70,7 @@ Forecast with decompositions:
 
 # Time series forecasting
 
-<img src="../assets/figures/ExponentialSmoothing.png" width="600">
+<img src="../assets/figures/stats/ExponentialSmoothing.png" width="600">
 
 Ref: 
   - https://robjhyndman.com/talks/MelbourneRUG.pdf
@@ -238,7 +238,7 @@ $$ Y _t = c + \phi Y _{t-1} + \epsilon _t$$
     - $E(Y _t) = ct $ 
     - $\sigma^2 _Y = \sigma^2 _{\epsilon}t$
     - $cov(t, t+k) = \sigma^2 _{\epsilon}t$
-<img src="../assets/figures/random_walk.png" width="300">
+<img src="../assets/figures/stats/random_walk.png" width="300">
 
 ***Simple Exponential Smooth (SES)***
 
@@ -329,15 +329,15 @@ $$ Y _t = c + \phi Y _{t-1} + \epsilon _t$$
     * $PACF(t, t-3) = corr(u _t, v _t)$
     
 
-<img src="../assets/figures/acf_pacf.png" width="500">
+<img src="../assets/figures/stats/acf_pacf.png" width="500">
 
 ---
 
-<img src="../assets/figures/acf_pacf_2.png" width="500">
+<img src="../assets/figures/stats/acf_pacf_2.png" width="500">
 
 ---
 
-<img src="../assets/figures/acf_pacf_3.png" width="500">
+<img src="../assets/figures/stats/acf_pacf_3.png" width="500">
 
 
 
@@ -348,7 +348,7 @@ $$ Y _t = c + \phi Y _{t-1} + \epsilon _t$$
     - $AIC = -2log(L) + 2K = Tln \hat\sigma^2 _{\epsilon} + 2K$
     - Error + Number of parameters
 - Start from base ARIMA and add variations until no lower $AIC$ found
-<img src="../assets/figures/aic_bic.png" width="500">
+<img src="../assets/figures/stats/aic_bic.png" width="500">
 
 
 

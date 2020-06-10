@@ -95,7 +95,7 @@ $$F = \frac{SS_B/(I-1)}{SS_W/[I(J-1)]} \sim F[I-1, I(J-1)]$$
 - F-test for a set of parametrs between complicated model and a reduced/simple model
 
 **Example**
-<img src="../assets/figures/anova.png" width="800">
+<img src="../assets/figures/stats/anova.png" width="800">
 
 ## Multiple Comparison
 
@@ -174,7 +174,7 @@ $$SS  _{AB}/\sigma^2 \sim \chi^2[(I-1)(J-1)]$$
 $$F=\frac{MS_?}{MS_E} = \frac{ {SS}_?/{df}_?}{SS_E/[IJ(K-1)]} \sim F[df_?, IJ(K-1)]$$
 
 ---
-<img src ="../assets/figures/anova_2_table.png" width="400">
+<img src ="../assets/figures/stats/anova_2_table.png" width="400">
 
 # Experiment Design
 
@@ -198,7 +198,7 @@ $$F=\frac{MS_?}{MS_E} = \frac{ {SS}_?/{df}_?}{SS_E/[IJ(K-1)]} \sim F[df_?, IJ(K-
 $$y  _{ij} = \mu + \alpha_i + \beta_j + \epsilon  _{ij}$$
 
 - The **computation** of estimated effects, sums of squares, contrasts, and so on is done exactly as for a two-way factorial, but **design** is different.
-<img src="../assets/figures/anova_table.png" width="300">
+<img src="../assets/figures/stats/anova_table.png" width="300">
 
 
 - With a randomized block design, the experimenter divides subjects into subgroups called **blocks**, such that the variability within blocks is less than the variability between blocks. Then, subjects within each block are randomly assigned to treatment conditions. 
@@ -237,7 +237,7 @@ $$df = (I-1)(J-1)$$
 
 - Example: Pair nomial data
 
-<img src="../assets/figures/chi.png" width="400">
+<img src="../assets/figures/stats/chi.png" width="400">
 
 - Null hypothesis:
     - P(Negative to Positive) = P(Positive to Negative):  $p_b = p_c$
