@@ -11,47 +11,47 @@ tags:
 
 ## Overview
 
-- Want to: learn $P(c|x)$
+- Want to: learn $P(c\vert x)$
     - Discriminative models (like LR)
-    - Generative models: based on $P(x|c)$
+    - Generative models: based on $P(x\vert c)$
     
 - For generative model:
-    - $P(c|x) = \frac{P(x,c)}{P(x)} = \frac{P(c)P(x|c)}{P(x)}$
+    - $P(c\vert x) = \frac{P(x,c)}{P(x)} = \frac{P(c)P(x\vert c)}{P(x)}$
     - Prior: $P(c)$
-    - Likelihood: $P(x|c)$
+    - Likelihood: $P(x\vert c)$
     
-- How to describe $P(x|c)$
-    - $P(x|c) = P(x|\theta_c)$
-    - For continuous variables: $P(x|c) = N(\mu_c, \sigma^2_c)$ (*depends on right assumption*)
+- How to describe $P(x\vert c)$
+    - $P(x\vert c) = P(x\vert \theta _c)$
+    - For continuous variables: $P(x\vert c) = N(\mu _c, \sigma^2 _c)$ (*depends on right assumption*)
 
 ## Naive Bayes
 
-- Motivation: Calculate $P(x|c)$, which is a joint distribution, cannot be estimated from limited samples (curse of dimension).
+- Motivation: Calculate $P(x\vert c)$, which is a joint distribution, cannot be estimated from limited samples (curse of dimension).
 
-- Attribute conditional independence assumption: $P(x|c) = \prod_i P(x_i|c)$
+- Attribute conditional independence assumption: $P(x\vert c) = \prod _i P(x _i\vert c)$
 
 ## Bayesian Inference
 
 **Example: flip coins**
-- Represent data by some parameters: $P(D|\theta) = \prod_i P(Y_i|\theta) = \theta^{N_+} (1-\theta)^{N_-}$
+- Represent data by some parameters: $P(D\vert \theta) = \prod _i P(Y _i\vert \theta) = \theta^{N _+} (1-\theta)^{N _-}$
 
 - Set prior for $\theta$: $P(\theta)$
 
-- Calculate posterior for $\theta$: $P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}$
+- Calculate posterior for $\theta$: $P(\theta\vert D) = \frac{P(D\vert \theta)P(\theta)}{P(D)}$
 
 
 
 ## EM (Expectation-Maximization) algorithm
 
 - $Z$ is latent variable. Cannot be obsewrved.
-- $LL(\Theta|X,Z) = ln P(X,Z|\Theta)$
-- $LL(\Theta|X) = ln P(X|\Theta) = ln \sum_z P(X,Z|\Theta)$
-- For GMM clustering: $\mathbf Z = (k_1, k_2, ..., k_i, ...)$, the class label for each data point.
+- $LL(\Theta\vert X,Z) = ln P(X,Z\vert \Theta)$
+- $LL(\Theta\vert X) = ln P(X\vert \Theta) = ln \sum _z P(X,Z\vert \Theta)$
+- For GMM clustering: $\mathbf Z = (k _1, k _2, ..., k _i, ...)$, the class label for each data point.
 
-- Expectation: $Q(\boldsymbol\theta|\boldsymbol\theta^{(t)}) = \operatorname{E}_{\mathbf{Z}|\mathbf{X},\boldsymbol\theta^{(t)} }\left[ \log L (\boldsymbol\theta;\mathbf{X},\mathbf{Z})  \right] $
+- Expectation: $Q(\boldsymbol\theta\vert \boldsymbol\theta^{(t)}) = \operatorname{E}   _{\mathbf{Z}\vert \mathbf{X},\boldsymbol\theta^{(t)} }\left[ \log L (\boldsymbol\theta;\mathbf{X},\mathbf{Z})  \right] $
 
 
-- Maximization: $\boldsymbol\theta^{(t+1)} = \underset{\boldsymbol\theta}{\operatorname{arg\,max} } \ Q(\boldsymbol\theta|\boldsymbol\theta^{(t)})$
+- Maximization: $\boldsymbol\theta^{(t+1)} = \underset{\boldsymbol\theta}{\operatorname{arg\,max} } \ Q(\boldsymbol\theta\vert \boldsymbol\theta^{(t)})$
 
 
 # Unsupervised - Clustering
@@ -70,40 +70,40 @@ tags:
 ## GMM (Gaussian Mixture Model)
 
 **Known class labels:**
-- $\mu_k=\sum_i x_{i,k} / N_k$
-- $\sigma^2_k = \frac{\sum_i (x_{i,k} - \mu_k)^2}{N_k}$
+- $\mu _k=\sum _i x   _{i,k} / N _k$
+- $\sigma^2 _k = \frac{\sum _i (x   _{i,k} - \mu _k)^2}{N _k}$
 
 **Unknown class labels**:
 - Objective is to maximize likelihood
-    - $P(\mathbf X) = P(\mathbf X |\mu,\sigma^2, \alpha) = \sum_k \alpha_k P(\mathbf X|\mu_k,\sigma^2_k) $
+    - $P(\mathbf X) = P(\mathbf X \vert \mu,\sigma^2, \alpha) = \sum _k \alpha _k P(\mathbf X\vert \mu _k,\sigma^2 _k) $
 - Approach: *Soft Labels*
 
 
 - Initialization to assign each sample $i$ to class $k$.
-- $\mu_k=\sum_i x_{i,k} / N_k$
-- $\sigma^2_k = \frac{\sum_i (x_{i,k} - \mu_k)^2}{N_k}$
-- $\alpha_k = \frac{N_k}{N}$
+- $\mu _k=\sum _i x   _{i,k} / N _k$
+- $\sigma^2 _k = \frac{\sum _i (x   _{i,k} - \mu _k)^2}{N _k}$
+- $\alpha _k = \frac{N _k}{N}$
 
 
 ***Until Convergence***
 - Expectation (E) step: 
     - Calculate the probability of sample $i$ belongs to each class from 1 to $K$
-    - $p(k|x_i) = \frac{p(k)p(x_i|k)}{p(x_i)} = \frac{\alpha_{k}N(x_i|\mu_{k}, \sigma^2_{k})}{\sum_{k}\alpha_{k}N(x_i|\mu_{k}, \sigma^2_{k})}$
+    - $p(k\vert x _i) = \frac{p(k)p(x _i\vert k)}{p(x _i)} = \frac{\alpha   _{k}N(x _i\vert \mu   _{k}, \sigma^2   _{k})}{\sum   _{k}\alpha   _{k}N(x _i\vert \mu   _{k}, \sigma^2   _{k})}$
 
 
 - Maximization (M) step: 
     - Re-estimate paramaters
-    - $\mu_k = \frac{\sum_ip(k|x_i)x_i}{\sum_ip(k|x_i)}$
-    - $\sigma^2_k = \frac{\sum_ip(k|x_i)(x_i-\mu_k)^2}{\sum_ip(k|x_i)}$
-    - $\alpha_k = \frac{\sum_ip(k|x_i)}{N}$
+    - $\mu _k = \frac{\sum _ip(k\vert x _i)x _i}{\sum _ip(k\vert x _i)}$
+    - $\sigma^2 _k = \frac{\sum _ip(k\vert x _i)(x _i-\mu _k)^2}{\sum _ip(k\vert x _i)}$
+    - $\alpha _k = \frac{\sum _ip(k\vert x _i)}{N}$
     
-- Detailed proof for GMM clsutering: https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm
+- Detailed proof for GMM clsutering: https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization _algorithm
 
 # Semi-supervised learning
 
 ## Self-training
-- Train $f$ from $(X_ll, Y_l)$
-- Predict on $x ∈ X_u$
+- Train $f$ from $(X _ll, Y _l)$
+- Predict on $x ∈ X _u$
 - Add $(x, f(x))$ to labeled data
 - Repeat
 
@@ -112,15 +112,15 @@ tags:
 - Assumption: labeled and unlabelled comes from the same mixed distribution
 - Compare with GMM-based clustering: labels of unlabelled data can be viewed as latent variable $Z$
 
-- One way of formulating:  $p(X_l, Y_l, X_u|\theta) = \sum_{Y_u}p(X_l, Y_l, X_u, Y_u|\theta)$
+- One way of formulating:  $p(X _l, Y _l, X _u\vert \theta) = \sum   _{Y _u}p(X _l, Y _l, X _u, Y _u\vert \theta)$
 
-- The combined log-likelihood: $${\underset {\Theta }{\operatorname {argmax} } }\left(\log p(\{x_{i},y_{i}\}_{i=1}^{l}|\theta )+\lambda \log p(\{x_{i}\}_{i=l+1}^{l+u}|\theta )\right)$$
+- The combined log-likelihood: $${\underset {\Theta }{\operatorname {argmax} } }\left(\log p(\{x   _{i},y   _{i}\}   _{i=1}^{l}\vert \theta )+\lambda \log p(\{x   _{i}\}   _{i=l+1}^{l+u}\vert \theta )\right)$$
 
 Where: 
-- Labelled: $\log p(\{x_{i},y_{i}=k_i\}_{i=1}^{l}|\theta ) = \sum_i ln \ p(x_i,k_i|\theta) = \sum_i ln\ \alpha_{k_i}p(x_i|\mu_{k_i}, \sigma^2_{k_i}) $
+- Labelled: $\log p(\{x   _{i},y   _{i}=k _i\}   _{i=1}^{l}\vert \theta ) = \sum _i ln \ p(x _i,k _i\vert \theta) = \sum _i ln\ \alpha   _{k _i}p(x _i\vert \mu   _{k _i}, \sigma^2   _{k _i}) $
 
 
-- Unlabelled: $\log p(\{x_{i}\}_{i=l+1}^{l+u}|\theta ) = \ln \sum_i p(x_i|\theta) = \sum_i \sum_k \ln \alpha_k  p(x_i|\mu_k, \sigma^2_k) $
+- Unlabelled: $\log p(\{x   _{i}\}   _{i=l+1}^{l+u}\vert \theta ) = \ln \sum _i p(x _i\vert \theta) = \sum _i \sum _k \ln \alpha _k  p(x _i\vert \mu _k, \sigma^2 _k) $
 
 To be solved by EM algorithm
 
@@ -130,11 +130,11 @@ To be solved by EM algorithm
 - Main idea: Add loss/penalty term for unlabelled data:
 - The third term prefers unlabeled points outside the margin
 
-$$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_i)|)_+$$
+$$ Min \sum _i [1 - y _i f(x _i)] _+ + \lambda _1 \vert \vert w\vert \vert ^2 + \lambda _2 \sum _i (1-\vert f(x _i)\vert ) _+$$
 
 <img src="../assets/figures/s3vm.png" width="200">
 
-<img src="../assets/figures/hinge_unlabelled.png" width="200">
+<img src="../assets/figures/hinge _unlabelled.png" width="200">
 
 ## Graph-based methods
 
@@ -145,20 +145,20 @@ $$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_
 # Trees
 
 - Use Information Gain to split nodes
-    - Information entropy: $E_0 = -\sum_k p_k log_2p_k$, where $k$ is class index
-    - Information Gain $Gain= E_0 - \sum_{node} N_{node}\% \times E_{node}$ 
+    - Information entropy: $E _0 = -\sum _k p _k log _2p _k$, where $k$ is class index
+    - Information Gain $Gain= E _0 - \sum   _{node} N   _{node}\% \times E   _{node}$ 
     - Maximize information gain -> Increase in "purity"
     - ***Example: ID3***
 
 
 - Use Information Gain Ratio to split nodes    
     - Drawback of information gain: best result will be using "ID" column (i.e., perfect split)
-    - Fix: Information Gain *Ratio* $Gain\ Ratio = \frac{Gain}{IV_{feature} }$: to normalized based on number of distinct values
+    - Fix: Information Gain *Ratio* $Gain\ Ratio = \frac{Gain}{IV   _{feature} }$: to normalized based on number of distinct values
     - ***Example: C4.5***: mixed use of information gain and information gain ratio
     
 - Use Gini index to split node
-    - Gini = $1 - \sum_k p^2_k$
-    - Gini index $= \sum_{node} N_{node} \times Gini_{node}$ 
+    - Gini = $1 - \sum _k p^2 _k$
+    - Gini index $= \sum   _{node} N   _{node} \times Gini   _{node}$ 
     - Minimize gini index -> Increase in "purity"
     - ***Example: CART***
 
@@ -173,7 +173,7 @@ $$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_
 - Node splitting for *Regression Tree*
     - Find feature $j$ and splitting point $s$ so that:
     
-     $$Min_{j,s} [min_{c_{left} }\sum_{left}(y_i - c_{left})^2 + min_{c_{right} }\sum_{left}(y_i - c_{right})^2]$$
+     $$Min   _{j,s} [min   _{c   _{left} }\sum   _{left}(y _i - c   _{left})^2 + min   _{c   _{right} }\sum   _{left}(y _i - c   _{right})^2]$$
 
  
 
@@ -182,32 +182,32 @@ $$ Min \sum_i [1 - y_i f(x_i)]_+ + \lambda_1 ||w||^2 + \lambda_2 \sum_i (1-|f(x_
 How to formulate the problem?
 - Most Intuitive formulation
     - Maximize Geometric Margin: $\gamma $
-    - Constraint: $\gamma_i = \frac{y_i (w^Tx_i + b)}{||w||} \geq \gamma $
+    - Constraint: $\gamma _i = \frac{y _i (w^Tx _i + b)}{\vert \vert w\vert \vert } \geq \gamma $
     
 - Define functional margin:
-    - $\gamma_i = \frac{\hat \gamma_i}{||w||}$, where ${\hat \gamma_i}$ is function margin: $y_i f(x_i$)
-    - Maximize Functional Margin:$Max \frac{\hat \gamma}{||w||}$
-    - Constraint: $\hat \gamma_i = {y_i (w^Tx_i + b)} \geq \hat \gamma $
+    - $\gamma _i = \frac{\hat \gamma _i}{\vert \vert w\vert \vert }$, where ${\hat \gamma _i}$ is function margin: $y _i f(x _i$)
+    - Maximize Functional Margin:$Max \frac{\hat \gamma}{\vert \vert w\vert \vert }$
+    - Constraint: $\hat \gamma _i = {y _i (w^Tx _i + b)} \geq \hat \gamma $
 
 
 - Take a step further:
     - Scaling $w$ and $b$ by $\hat \gamma$ will not affect decision boundary
-    - Maximize: $\frac{1}{||w||}$
-    - Constraint: ${y_i (w^Tx_i + b)} \geq 1$
+    - Maximize: $\frac{1}{\vert \vert w\vert \vert }$
+    - Constraint: ${y _i (w^Tx _i + b)} \geq 1$
 
 See Notes below for how to re-formulate the problem:
-- 1) Original problem: $Min ||w||^2$
-- 2) Unconstraint problem $Min_w\ Max_{\alpha, \beta}\ L(\alpha, \beta, w)$
-- 3) Dual problem: $Max_{\alpha, \beta}\ Min_w\ L(\alpha, \beta, w)$ with constraints.
+- 1) Original problem: $Min \vert \vert w\vert \vert ^2$
+- 2) Unconstraint problem $Min _w\ Max   _{\alpha, \beta}\ L(\alpha, \beta, w)$
+- 3) Dual problem: $Max   _{\alpha, \beta}\ Min _w\ L(\alpha, \beta, w)$ with constraints.
 - 4) With SVM satisfying *Slater Condition*, solve dual problem equivalent to orginal problem
 
 Loss function:
-- Min $\lambda ||w||^2 + \sum_i[1-y_i(w^Tx_i + b)]_+$
+- Min $\lambda \vert \vert w\vert \vert ^2 + \sum _i[1-y _i(w^Tx _i + b)] _+$
 
 Kernel function
 - Popular kernels (linear, Polynomial, RBF)
-    - Polynomial: $k(x_1, x_2) = (x_1, x_2 +c)^d$
-    - RBF: $k(x_1, x_2) = exp(- \frac{||x_1 - x_2||^2}{2\sigma^2})$
+    - Polynomial: $k(x _1, x _2) = (x _1, x _2 +c)^d$
+    - RBF: $k(x _1, x _2) = exp(- \frac{\vert \vert x _1 - x _2\vert \vert ^2}{2\sigma^2})$
 - How to select kernel
     - CV
 
@@ -222,7 +222,7 @@ Kernel function
 
 - Prediction function: $p = \frac{1}{1+exp(-f(x))}$, where $f(x) = \theta^Tx$
 - Loss function: 
-    - $L = \sum_i ln[p(y_i|x_i;\mathbf w)]$; where y = 0,1
+    - $L = \sum _i ln[p(y _i\vert x _i;\mathbf w)]$; where y = 0,1
     - $l(y, p) = -[y ln(p) + (1-y)ln(1-p)]$ ; where y = 0,1
 
 
@@ -232,17 +232,17 @@ Kernel function
 
 
 - Gradient wrt $f(x)$
-    - $r_{m-1} = \frac{\partial l}{\partial f} = (y-p)$; where y = 0,1
-    - $r_{m-1} = \frac{\partial l}{\partial f} = \frac{y}{1+exp(yf(x))}$, where y = -1, +1
+    - $r   _{m-1} = \frac{\partial l}{\partial f} = (y-p)$; where y = 0,1
+    - $r   _{m-1} = \frac{\partial l}{\partial f} = \frac{y}{1+exp(yf(x))}$, where y = -1, +1
 
 
 - Gradient wrt $\theta$
-    - $\frac{\partial L}{\partial \theta_j} = \frac{\partial L}{\partial f} \frac{\partial f}{\partial \theta_j} = \sum_i(p_i-y_i)x_i^j$ ; where y = 0,1
-    - $\theta_j := \theta_j - \alpha \frac{\partial L}{\partial \theta_j}$
+    - $\frac{\partial L}{\partial \theta _j} = \frac{\partial L}{\partial f} \frac{\partial f}{\partial \theta _j} = \sum _i(p _i-y _i)x _i^j$ ; where y = 0,1
+    - $\theta _j := \theta _j - \alpha \frac{\partial L}{\partial \theta _j}$
 
 
 - How to prove convex optimization: 
-    - $L = \sum_i [-y_i \mathbf w x_i + ln (1+e^{\mathbf w x_i})]$ ; where y = 0,1
+    - $L = \sum _i [-y _i \mathbf w x _i + ln (1+e^{\mathbf w x _i})]$ ; where y = 0,1
 
 # Boosting
 
@@ -262,7 +262,7 @@ Kernel function
 
 
 **Summary**:
-- $r_{i,m}$ is the negative gradient direction for function $f$.
+- $r   _{i,m}$ is the negative gradient direction for function $f$.
 - A regression tree is used to fit the negative gradient direction. (e.g., residual vector in squared error loss)
 - Each node split, find best **feature** and **split point**
 - Another optimization problem is solved to find estimated value for each region (i.e., linear search for step size)
@@ -289,24 +289,24 @@ Kernel function
 
 **Adaboost**
 
-- Classifer at iteration $m-1$: $f_{m-1}(x) = \alpha_{1}\phi_{1}(x) + \alpha_{2}\phi_{2}(x) + ... + \alpha_{m-1}\phi_{m-1}(x)  $
+- Classifer at iteration $m-1$: $f   _{m-1}(x) = \alpha   _{1}\phi   _{1}(x) + \alpha   _{2}\phi   _{2}(x) + ... + \alpha   _{m-1}\phi   _{m-1}(x)  $
 
-- Classifer at iteration $m$: $f_m(x) = f_{m-1}(x) + \alpha_m \phi_m(x)$
-
-
-- Minimize exponential Loss: $L(y, f) = exp(-yf(x)) =\sum_i exp(-y_i f_m(x_i)) = \sum_i [exp(-y_i f_{m-1}(x_i)][exp(-\alpha_m y_i \phi_m(x_i))] = \sum_i w_{m,i}\ exp(-\alpha_m y_i \phi_m(x_i))$
-- It can be shown that $w_{m,i}= exp(- \alpha_{m-1}y_i \phi_{m-1}(x_i)) \times ... \times  exp(- \alpha_{1}y_i \phi_{1}(x_i))$
-    - $w_{m+1, i} = w_{m,i} \times exp(-\alpha_t)$ when correct
-    - $w_{m+1, i} = w_{m,i} \times exp(\alpha_t)$ when wrong
+- Classifer at iteration $m$: $f _m(x) = f   _{m-1}(x) + \alpha _m \phi _m(x)$
 
 
-- Optimal solution: ($\alpha^*_m, \phi^*_m(x)) = argmin\ L $
+- Minimize exponential Loss: $L(y, f) = exp(-yf(x)) =\sum _i exp(-y _i f _m(x _i)) = \sum _i [exp(-y _i f   _{m-1}(x _i)][exp(-\alpha _m y _i \phi _m(x _i))] = \sum _i w   _{m,i}\ exp(-\alpha _m y _i \phi _m(x _i))$
+- It can be shown that $w   _{m,i}= exp(- \alpha   _{m-1}y _i \phi   _{m-1}(x _i)) \times ... \times  exp(- \alpha   _{1}y _i \phi   _{1}(x _i))$
+    - $w   _{m+1, i} = w   _{m,i} \times exp(-\alpha _t)$ when correct
+    - $w   _{m+1, i} = w   _{m,i} \times exp(\alpha _t)$ when wrong
 
 
-- Obviously, $\phi^*_m(x)$ is not affected by the value of $\alpha_m >0$, 
-    - $\phi^*_m(x)$ = $argmin \sum_i w_{m,i} I(y_i \neq \phi_m(x_i))$ (i.e., a classification tree)
+- Optimal solution: ($\alpha^* _m, \phi^* _m(x)) = argmin\ L $
 
-- $$\alpha^*_m(x) = argmin \sum_i w_{m,i} exp(-\alpha_m    y_i \phi^*_m(x_i)) = argmin[ \sum_{y_i = \phi_m(x_i)} w_{m,i} e^{-\alpha_m} + \sum_{y_i \neq \phi_m(x_i)} w_{m,i} e^{\alpha_m}] = argmin [(e^{\alpha_m} - e^{-\alpha_m})\sum_i w_{m,i}  I(y_i \neq \phi_m(x_i)) + e^{-\alpha_m} \sum_i w_{m,i}] = argmin [(e^{\alpha_m} - e^{-\alpha_m}) err_m + e^{-\alpha_m} \times 1] = \frac{1}{2}log \frac{1-err_m}{err_m}$$
+
+- Obviously, $\phi^* _m(x)$ is not affected by the value of $\alpha _m >0$, 
+    - $\phi^* _m(x)$ = $argmin \sum _i w   _{m,i} I(y _i \neq \phi _m(x _i))$ (i.e., a classification tree)
+
+- $$\alpha^* _m(x) = argmin \sum _i w   _{m,i} exp(-\alpha _m    y _i \phi^* _m(x _i)) = argmin[ \sum   _{y _i = \phi _m(x _i)} w   _{m,i} e^{-\alpha _m} + \sum   _{y _i \neq \phi _m(x _i)} w   _{m,i} e^{\alpha _m}] = argmin [(e^{\alpha _m} - e^{-\alpha _m})\sum _i w   _{m,i}  I(y _i \neq \phi _m(x _i)) + e^{-\alpha _m} \sum _i w   _{m,i}] = argmin [(e^{\alpha _m} - e^{-\alpha _m}) err _m + e^{-\alpha _m} \times 1] = \frac{1}{2}log \frac{1-err _m}{err _m}$$
 
 ---
 
@@ -329,11 +329,11 @@ Kernel function
 
 <img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p9.png" width = "500">
 
-- (***Bind final objective with tree building***) The goal of tree each iteration is to find a decision tree $f_t(X)$ so as to minimize objective (Gain + Complexity Cost): $$\sum_i[g_if_t(x_i) + \frac {1}{2} h_i f_t^2(x_i)] + \Omega(f_t)$$
+- (***Bind final objective with tree building***) The goal of tree each iteration is to find a decision tree $f _t(X)$ so as to minimize objective (Gain + Complexity Cost): $$\sum _i[g _if _t(x _i) + \frac {1}{2} h _i f _t^2(x _i)] + \Omega(f _t)$$
 
-- Next Step: find how to split into $J$ regions, and for each region, what is the optimal weight $w_j$.
+- Next Step: find how to split into $J$ regions, and for each region, what is the optimal weight $w _j$.
 
-- $w^*_j$ is derived first, then node split
+- $w^* _j$ is derived first, then node split
     - In GBDT, squared error is minimized for node splitting
     - In XGBoost, directly bind the split criteria to the minimization goal defined in previous step
 
@@ -435,44 +435,44 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
 # L1 and L2 Regularization
 
 ## Approach 1：From Figure
-<img src="../assets/figures/l1_l2.png" width=500>
+<img src="../assets/figures/l1 _l2.png" width=500>
 
 ## Approach 2: Solve for minumum
 
 Difference in loss function:
-- L1: $L_1(w) = L(w) + C|w|$ 
-- L2: $L_2(w) = L(w) + Cw^2$ 
+- L1: $L _1(w) = L(w) + C\vert w\vert $ 
+- L2: $L _2(w) = L(w) + Cw^2$ 
 
 Take L1 as example:
-- Calculate: $\frac{\partial L_1(w)}{\partial w}$
-- When w<0: $f_l = \frac{\partial L_1(w)}{\partial w} = L'(w) - C$
-- When w>0: $f_r = \frac{\partial L_1(w)}{\partial w} = L'(w) + C$
-- If $|L'(w)|<C$ is met (i.e., C is large enough), then we have $f_l<0$ and $f_r>0$, thus minimum is find at $w=0$
+- Calculate: $\frac{\partial L _1(w)}{\partial w}$
+- When w<0: $f _l = \frac{\partial L _1(w)}{\partial w} = L'(w) - C$
+- When w>0: $f _r = \frac{\partial L _1(w)}{\partial w} = L'(w) + C$
+- If $\vert L'(w)\vert <C$ is met (i.e., C is large enough), then we have $f _l<0$ and $f _r>0$, thus minimum is find at $w=0$
 
 
 Take L2 as example:
-- $\frac{\partial L_2(w)}{\partial w} = L'(w) + 2Cw$
+- $\frac{\partial L _2(w)}{\partial w} = L'(w) + 2Cw$
 - Unless $L'(w=0) =0$, minimum is not at $w=0$.
 
 ## Approach 3: Bayesian Posterior
 
 Recall the posterior for parameter:  
 
-$$P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}$$
+$$P(\theta\vert D) = \frac{P(D\vert \theta)P(\theta)}{P(D)}$$
 
 Remove constants:
 
-$$P(\theta|D) = P(D|\theta)P(\theta)$$
+$$P(\theta\vert D) = P(D\vert \theta)P(\theta)$$
 
 Solve for $\theta$:
 
-$$\theta = argmin\ \{-[lnP(D|\theta) + lnP(\theta)]\} =  argmin\ [L(\theta) - ln(P(\theta)]$$
+$$\theta = argmin\ \{-[lnP(D\vert \theta) + lnP(\theta)]\} =  argmin\ [L(\theta) - ln(P(\theta)]$$
 
 For L1: $\theta$~Laplace Disribution
 
-$$P(\theta) = \frac{1}{2b}e^{-\frac{|\theta|}{2b} }$$
+$$P(\theta) = \frac{1}{2b}e^{-\frac{\vert \theta\vert }{2b} }$$
 
-$$\theta = argmin\ [L(\theta) + C|\theta|]$$
+$$\theta = argmin\ [L(\theta) + C\vert \theta\vert ]$$
 
 For L2: $\theta$~Guassian Disribution
 
@@ -490,14 +490,14 @@ Laplace: compared with Guassian, more likely to take zero:
 - AUC: For a random (+) and a random (-) sample, the probability that S(+) > S(-)
 - Explains why AUC equals to the area under the curve of TPR and FPR:
 
-$$AUC = \sum P(S(+)>S(-)|+,-) \cdot P(+,-) = \sum_{-} P(S(+)>S(-)|-) = \sum_{-}[TPR|Threshold = S(-)]$$
+$$AUC = \sum P(S(+)>S(-)\vert +,-) \cdot P(+,-) = \sum   _{-} P(S(+)>S(-)\vert -) = \sum   _{-}[TPR\vert Threshold = S(-)]$$
 
 # Miscellaneous
 
 ***Label Imbalance***
 -  One approach is to use label-aware loss function
 - ref: https://arxiv.org/pdf/1901.05555.pdf
-- <img src="../assets/figures/loss_func.png" width="300">
+- <img src="../assets/figures/loss _func.png" width="300">
 
 - With hyperparameter $\beta$ ranging from 0 to 1
     - when $\beta$ is 0: no weighing
@@ -509,7 +509,7 @@ $$AUC = \sum P(S(+)>S(-)|+,-) \cdot P(+,-) = \sum_{-} P(S(+)>S(-)|-) = \sum_{-}[
 - A high AUC suggests different distribution.
 
 ***Selection of loss function for regression***
-- ref: [here](https://mp.weixin.qq.com/s?__biz=MzU1Nzc1NjI0Nw==&mid=2247484165&idx=1&sn=86b4e59faaabe297b5e09abba4bb9410&chksm=fc31b93dcb46302b7ab63abf6c371deadc8aaf2a6c85939c78e10d25fa0d1ff60357229d05a2&token=1433307692&lang=zh_CN&scene=21#wechat_redirect)
+- ref: [here](https://mp.weixin.qq.com/s? _ _biz=MzU1Nzc1NjI0Nw==&mid=2247484165&idx=1&sn=86b4e59faaabe297b5e09abba4bb9410&chksm=fc31b93dcb46302b7ab63abf6c371deadc8aaf2a6c85939c78e10d25fa0d1ff60357229d05a2&token=1433307692&lang=zh _CN&scene=21#wechat _redirect)
 - for high and low values: use MSE 
 - for medium values: use MAE
 - exclude the X% subset with lowest performance in the training

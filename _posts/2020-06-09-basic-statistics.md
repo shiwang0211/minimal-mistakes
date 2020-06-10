@@ -126,11 +126,11 @@ $$X \geq 0 \rightarrow P(X \geq t) \leq \frac{E(X)}{t} \rightarrow P[X \geq kE(X
 
 **Chebyshev Inequality**
 
-$$P(|X-\mu| > t) \leq \frac{\sigma^2}{t^2}$$
+$$P(\vert X-\mu\vert  > t) \leq \frac{\sigma^2}{t^2}$$
 
 **Law of total expectation / Conditional expectation**
 
-$${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
+$${E} (X)=\sum   _{i}{\operatorname {E} (X\mid A  _{i})\operatorname {P} (A  _{i})}$$
 
 ## Variance
 
@@ -187,13 +187,13 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
   - Null: p = 0.50
   - Mean: $np$ = 50
   - Variance: $np(1-p)$ = 25
-  - Normal Distribution: $P(X \geq 60) = P(\frac{X-50}{\sqrt{25} } \geq \frac{60-50}{\sqrt{25} }) = P(Z_{N(0,1)} \geq2)$
+  - Normal Distribution: $P(X \geq 60) = P(\frac{X-50}{\sqrt{25} } \geq \frac{60-50}{\sqrt{25} }) = P(Z  _{N(0,1)} \geq2)$
 
 # Linear regression
 
 - Unbiased estimator of $\beta_1$:
 
-  $$\hat \beta_1=\dfrac{\sum\limits_{i=1}^n (x_i-\bar{x})(y_i-\bar{y})}{\sum\limits_{i=1}^n (x_i-\bar{x})^2}$$
+  $$\hat \beta_1=\dfrac{\sum\limits  _{i=1}^n (x_i-\bar{x})(y_i-\bar{y})}{\sum\limits  _{i=1}^n (x_i-\bar{x})^2}$$
 
 
 - Unbiased estimator of $\sigma^2$:
@@ -203,11 +203,11 @@ $${E} (X)=\sum _{i}{\operatorname {E} (X\mid A_{i})\operatorname {P} (A_{i})}$$
 
 - Parameter Test
 
-  $$Z = \frac{\hat \beta_1 - 0}{\sigma_{\beta_1} } \sim N(0,1)$$
+  $$Z = \frac{\hat \beta_1 - 0}{\sigma  _{\beta_1} } \sim N(0,1)$$
 
-  $$T = \frac{\hat \beta_1 - 0}{s_{\hat \beta_1} } \sim t\ (N-k)$$
+  $$T = \frac{\hat \beta_1 - 0}{s  _{\hat \beta_1} } \sim t\ (N-k)$$
 
-  $$s_{\hat \beta_1} = \sqrt{\hat \sigma^2\ /\sum{(x-\bar x)^2} }$$
+  $$s  _{\hat \beta_1} = \sqrt{\hat \sigma^2\ /\sum{(x-\bar x)^2} }$$
 
 
 
