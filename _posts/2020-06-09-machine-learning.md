@@ -132,9 +132,9 @@ To be solved by EM algorithm
 
 $$ Min \sum _i [1 - y _i f(x _i)] _+ + \lambda _1  \vert   \vert  w \vert   \vert  ^2 + \lambda _2 \sum _i (1- \vert  f(x _i) \vert  ) _+$$
 
-<img src="../assets/figures/s3vm.png" width="200">
+<img align="center" src="../assets/figures/s3vm.png" width="200">
 
-<img src="../assets/figures/hinge_unlabelled.png" width="200">
+<img align="center" src="../assets/figures/hinge_unlabelled.png" width="200">
 
 ## Graph-based methods
 
@@ -250,15 +250,15 @@ Kernel function
 
 ## GBDT (Gradient Boosting Decision Tree)
 
-<img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p5.png" width = "500">
+<img align="center" src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p5.png" width = "500">
 
 ---
 
-<img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p6.png" width = "500">
+<img align="center" src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p6.png" width = "500">
 
 ---
 
-<img src = "http://explained.ai/gradient-boosting/images/latex-CB3574D4B05979222377D8458B38FCF4.svg" width = "500">
+<img align="center" src = "http://explained.ai/gradient-boosting/images/latex-CB3574D4B05979222377D8458B38FCF4.svg" width = "500">
 
 
 **Summary**:
@@ -272,18 +272,18 @@ Kernel function
 
 1. Square error --> Boosting Decesion Tree to fit residuals
 
-<img src = "http://explained.ai/gradient-boosting/images/latex-321A7951E78381FB73D2A6874916134D.svg" width = "500">
+<img align="center" src = "http://explained.ai/gradient-boosting/images/latex-321A7951E78381FB73D2A6874916134D.svg" width = "500">
 
 
 2. Absolute error
 
-<img src = "http://explained.ai/gradient-boosting/images/latex-99749CB3C601B0DD9BEE5A9E91049D4B.svg" width = "500">
+<img align="center" src = "http://explained.ai/gradient-boosting/images/latex-99749CB3C601B0DD9BEE5A9E91049D4B.svg" width = "500">
 
 3. Exponential error
     - $l(y,f)=exp(-yf(x))$ , where y = -1, +1
     - Recovers Adaboost Algorithm
     - sensitive to noise data 
-<img src="../assets/figures/ExponentialLoss.png" width="600">
+<img align="center" src="../assets/figures/ExponentialLoss.png" width="600">
 
 ---
 
@@ -313,21 +313,21 @@ Kernel function
 4. Logistic loss
    
 
-<img src="https://slideplayer.com/6982498/24/images/53/Boosting+and+Logistic+Regression.jpg" width="500">
+<img align="center" src="https://slideplayer.com/6982498/24/images/53/Boosting+and+Logistic+Regression.jpg" width="500">
 
 
 ## XGBT
 
 - (***Regularization***) Added regularization for trees (Number of leaves + L2 norm of leave weights) for better generalization
-<img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p7.png" width = "300">
+<img align="center" src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p7.png" width = "300">
 
 - (***Second Order***) Taylor Expansion Approximation of Loss
     - In GBDT, we have first-order derivative (negative gradient)
     - Generally we have $f(x + \Delta x) = f(x) + f'(x)\Delta x + \frac{1}{2}f''(x) (\Delta x)^2 + ...$
     - In this case: ($3^{rd}$ order is useless since $\frac{\partial^3 L}{\partial f} = 0$
-<img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p8.png" width = "400">
+<img align="center" src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p8.png" width = "400">
 
-<img src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p9.png" width = "500">
+<img align="center" src = "http://xijun-album.oss-cn-hangzhou.aliyuncs.com/Ensembling/p9.png" width = "500">
 
 - (***Bind final objective with tree building***) The goal of tree each iteration is to find a decision tree $f _t(X)$ so as to minimize objective (Gain + Complexity Cost): $$\sum _i[g _if _t(x _i) + \frac {1}{2} h _i f _t^2(x _i)] + \Omega(f _t)$$
 
@@ -406,7 +406,7 @@ Kernel function
 https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-trees-with-catboost-d511a9ccbd14
     - Ref: https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-trees-with-catboost-d511a9ccbd14
     
-    <img src="https://miro.medium.com/max/1313/1*XfV0SkW-7NRac768CKU9LQ.png" width="500">
+    <img align="center" src="https://miro.medium.com/max/1313/1*XfV0SkW-7NRac768CKU9LQ.png" width="500">
 
 
 - ***Treatment for combinations of categorical features***
@@ -419,15 +419,15 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
     - A special way to address **Prediction Shift** with a modification of standard gradient boosting algorithm, that avoid **Target Leakage**
     - detailed to add.
     
-        <img src="https://miro.medium.com/max/1757/1*AjrRnwvBuu-zK8CvEfM29w.png" width="500">
+        <img align="center" src="https://miro.medium.com/max/1757/1*AjrRnwvBuu-zK8CvEfM29w.png" width="500">
 
 # EVD and SVD 
 
 ## EVD
-<img src="https://cdn-images-1.medium.com/max/1600/1*NhjyqD7L6N4S7Nf-FCYT-Q.png" width="500">
+<img align="center" src="https://cdn-images-1.medium.com/max/1600/1*NhjyqD7L6N4S7Nf-FCYT-Q.png" width="500">
 
 ## SVD
-<img src="https://blogs.sas.com/content/iml/files/2017/08/svd1.png" width="500">
+<img align="center" src="https://blogs.sas.com/content/iml/files/2017/08/svd1.png" width="500">
 
 - http://explained.ai/gradient-boosting/index.html
 - https://homes.cs.washington.edu/~tqchen/pdf/BoostedTree.pdf
@@ -435,7 +435,7 @@ https://towardsdatascience.com/introduction-to-gradient-boosting-on-decision-tre
 # L1 and L2 Regularization
 
 ## Approach 1：From Figure
-<img src="../assets/figures/l1_l2.png" width="500">
+<img align="center" src="../assets/figures/l1_l2.png" width="500">
 
 ## Approach 2: Solve for minumum
 
@@ -481,11 +481,11 @@ $$P(\theta) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{\theta^2}{2\sigma^2} }$$
 $$\theta = argmin\ [L(\theta) + C\theta^2]$$
 
 Laplace: compared with Guassian, more likely to take zero:
-<img src="../assets/figures/laplace.png" width="300">
+<img align="center" src="../assets/figures/laplace.png" width="300">
 
 # AUC and ROC curve
 
-<img src="../assets/figures/auc.png" width="300">
+<img align="center" src="../assets/figures/auc.png" width="300">
 
 - AUC: For a random (+) and a random (-) sample, the probability that S(+) > S(-)
 - Explains why AUC equals to the area under the curve of TPR and FPR:
@@ -497,7 +497,7 @@ $$AUC = \sum P(S(+)>S(-) \vert  +,-) \cdot P(+,-) = \sum   _{-} P(S(+)>S(-) \ver
 ***Label Imbalance***
 -  One approach is to use label-aware loss function
 - ref: https://arxiv.org/pdf/1901.05555.pdf
-- <img src="../assets/figures/loss_func.png" width="300">
+- <img align="center" src="../assets/figures/loss_func.png" width="300">
 
 - With hyperparameter $\beta$ ranging from 0 to 1
     - when $\beta$ is 0: no weighing
