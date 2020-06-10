@@ -1,8 +1,8 @@
 ---
 
 title: Notes on Statistics
-layout: category
-permalink: /categories/Statistics/
+layout: tag
+permalink: /tags/Statistics/
 taxonomy: Statistics
 
 ---

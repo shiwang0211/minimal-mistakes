@@ -1,7 +1,7 @@
 ---
 title: "Basic Statistics"
 excerpt: "Distributions, Linear Regression, Statistical Significance"
-categories:
+tags:
   - Statistics
 ---
 
