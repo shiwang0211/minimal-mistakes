@@ -275,8 +275,6 @@ cf.ii_predict(df_matrix, item_similarity).shape
 ```
 
 
-
-
     (943, 1682)
 
 
@@ -357,7 +355,7 @@ X_pred = np.dot(np.dot(u, s_diag_matrix), vt)
 ### Idea 1
 - One-hot encoding for user i
 - Hiddern layer: Embedding layer for users
-    
+  
     - Weights: latent vector for users
     
 - Output layer: output ratings for each item j
@@ -479,7 +477,7 @@ $$E = -\sum_i \sum_j logP(j \vert i)$$
   - Assumption: these searches/selections are under the user's same need, and they are potentially similar
 - Comparison with *word2vec*: 
   - Sometimes no time window restriction
-  - Also applies negative sampling 
+  - Also applies negative sampling ``
   - Output: embedding of each item
 - Positive Pairs: 
   - Clicked Items and Clicked Items
@@ -534,15 +532,30 @@ ref:
 ## YouTubeNet
 
 - Ref: https://research.google/pubs/pub45530/
+
 - Difference from Item2Vec:
   - Use user features to learn item embeddings, while in Item2Vec only items are utilized.
   - Note that the last layer is a **multi-class** classifcation layer
   - The output would be user embeddings ***and*** item embeddings
+  
 - User features
   - Demographics
   - Past clicked list
+  
+- Output Probability: 
+
+  
+
+  $$P(v=i|User = u) = \frac{e^{v_i u}}{\sum_{j \in V}{e^{v_j u}}}$$
+
+  
+
 - Prediction: inner product of user and item embeddings
+
 - Alternatives: two-part DNN (one for user as here, but another one for item, like the structure of NeuralCF)
+
+  - User-side: The clicked/watched list will be changed online. So it will be updated real-time.
+  - Item-side: The item embedding is usually only updated daily.
 
 <img src="../assets/figures/dl/image-20200610163530588.png" alt="image-20200610163530588" style="zoom:67%;" />
 
@@ -729,7 +742,7 @@ Given (user, item, context): predict click = 0/1
 ### Degree-2 Polynomial Mappings 
 - Combine features by $y(X)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \sum _{i=1}^{N}\sum _{j=i+1}^{N}{w _{2ij}x_ix_j} $, where N is number of features
 - Sparse data (Cannot solve if there is even no $x_i = x_j = 0$ for some $i, j$)
-- High dimension: $O(n^2)$
+- High dimension: $O(N^2)$
 - Make trivial prediction on those unseen pairs
   
 
@@ -741,6 +754,7 @@ Given (user, item, context): predict click = 0/1
 ### Factorization Machine (FM)
 - Known: for matrix $W$, and a large $K$, $W \approx \mathbf V\mathbf V^T$, i.e., $w _{ij} \approx <\mathbf v_i, \mathbf v_j>$ 
 -  $y(\mathbf x)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \sum _{i=1}^{N}\sum _{j=i+1}^{N}{<\mathbf v_i, \mathbf v_j>x_ix_j} $
+-  It can be re-written as: $ y(\mathbf x)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \frac{1}{2}[(\sum _{i=1}\mathbf v_i)^2 - \sum_{i=1}(\mathbf v_i)^2] $
 - $\mathbf v_i, \mathbf v_j - R^{N \times K}$, latent vector for feature $i$ and $j$ with embedding length $K$, and totally $N$ features
     - $\mathbf v_i = (v _{i,1}, v _{i,2},...,v _{i,f},...)$, where $i$ is index for feature, $f$ is index for feature space
     - $\frac{\partial y}{\partial v _{i,f}} = x_i \sum _{j=1}^N v _{j,f}x_j-v _{i,f}x_i^2$. 
@@ -757,12 +771,24 @@ Given (user, item, context): predict click = 0/1
 - Split the original latent space into many “smaller” latent spaces,  and depending on the fields of features, one of them is used.
 - For example: weather, location, gender; intuitively, they should have different interactions
 - $y(X)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \sum _{i=1}^{N}\sum _{j=i+1}^{N}{<\mathbf v _{i, f_j}, \mathbf v _{j, f_i}>x_ix_j} $
-<img src="http://ailab.criteo.com/wp-content/uploads/2017/03/Screen-Shot-2017-02-10-at-11.13.03-AM-768x230.png" width="400"> 
+- $f_i,f_j \in {1,2,...,F}$ and $F$ is number of fields
+- <img src="http://ailab.criteo.com/wp-content/uploads/2017/03/Screen-Shot-2017-02-10-at-11.13.03-AM-768x230.png" width="400"> 
 - Higher dimension: $O(N \times K \times F)$, where $F$ is number of fields
+
+### Field-weighted Factorization Machines (FwFM)
+
+
+
+$$y(X)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \sum _{i=1}^{N}\sum _{j=i+1}^{N}{<\mathbf v _{i}, \mathbf v _{j}>x_ix_j} R_{f_i, f_j} $$
+
+
+
+A symmetric matrix $R$ is used to replace field-specific embeddings, and implicitly models the importance of field $i$ and $j$ during the feature interaction
 
 
 
 ### GBDT + LR (Mixed)
+
 - **Motivation**: GBDT transforms features, reduced dimensions, combined attributes
 - The leaves serve as new input features for LR
 - Drawback:
@@ -851,12 +877,11 @@ reference: https://arxiv.org/pdf/1708.04617.pdf
 ### NFM - Neural Factorization Machines
 
 -  Combine features by $y(X)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + f(x)$, where N is number of features
-- Define Bi-interaction layer: $f _{BI}\mathbf (V) = \sum_i \sum_j x_i v_i \odot x_j v_j$ (i.e., sum pooling with an output of $K$ dimension vector)
+-  Define Bi-interaction layer: $f _{BI}\mathbf (V) = \sum_i \sum_j x_i v_i \odot x_j v_j$ 
+   - $x_i, x_j \in {0,1}, v_i, v_j \in R^K$
+   -  sum pooling gives an output of $K$ dimension vector
 
-<img src="../assets/figures/dl/element.png" width="300">
-
-
-Below is the deep part of NFM (i.e, $f(x)$ term). It needs to be concatenated with 0 and 1 order terms (i.e., $wx + b)$ as the final output $\hat y$.
+<img src="../assets/figures/dl/image-20200616170525995.png" alt="image-20200616170525995" style="zoom:50%;" />
 
 Difference with ***Deep FM***:
 
@@ -875,14 +900,44 @@ Difference with ***Deep FM***:
 
 ---
 
+
+
 <img src = "../assets/figures/dl/nfm.png" width = "700">
 
+### NFwFM
+
+- Ref: https://arxiv.org/pdf/1911.04690.pdf
+
+- A new field-wise bi-interaction layer $FwBI$ becomes mixture of:
+
+  1. First-order terms
+  2. FwFM - element-wise (across $M$ fields) - An advatage compared with FFM is reduction in complexity by $M$ since there is no field-specific embeddings. Only across -field weights are estimated.
+  3. FM - element-wise (within each field $m \in 1,2,...,M$)
+
+  <img src="../assets/figures/dl/image-20200616181441566.png" alt="image-20200616181441566" style="zoom:50%;" />
+
+- Dimension analysis
+
+  - For each sample $x$: feature vector $ x = [ x_1, x_n, x_N]$, where $x_n \in R^{K_n}$
+  - For each feature $x_n$: $f_n = V_n x_n$, where $f_n \in R^{K_e}$
+  - For each field $m$: $e_m = \sum f_n$, where $x_n$ is in field $m$, $e_m \in R^{K_e}$ 
+  - The dimension of 1st component: mapping from $N$ to$1$.
+  - The dimension of 2nd inter-field component: mapping from $MK_e$ to $K_e$
+  - The dimension of 3rd intra-field component: mapping from $MK_e$ to $K_e$
+  - The dimension of  concatenated FwBI output: $K_e + 1$
+
+  ---
+
+  
+
+<img src="../assets/figures/dl/image-20200616180218117.png" alt="image-20200616180218117" style="zoom:67%;" />
 
 
-- Ref: https://www.infoq.cn/article/0ueIPm2VFrOqECLU3316
-- <img src="../assets/figures/dl/image-20200610164815888.png" alt="image-20200610164815888" style="zoom:40%;" />
+
+
 
 ### ONN：Operation-aware Neural Network
+
 - a combination of FFM and NN
     - have different embeddings for different feature interactions
     - have DNN to capture high-order interaction
@@ -931,7 +986,7 @@ Part 3: FC, Activation layer, etc.
 
 - Comparison with ***Wide & Deep***:
     - FM and Deep parts shares the same inputs; In wide&deep, the two parts are independent
-    - Compared with wide&deep based on manually created features, Deep FM contains the inner product of feature latent vectors (automatically)
+    - Compared with wide&deep based on manually created features, Deep FM contains the inner product of feature latent vectors (automatically) for feature intersection.
     
 - Network structure
     - Directly from very sparse layer: zero and first order terms
@@ -985,15 +1040,35 @@ Note how the attention weights are calculated. A simple version would be just do
 
 
 - The motivation is similar:
-    - To explicitly learn feature interactions (like FM part in DeepFM)
-    - To capture feature interactions of **high orders**.
+    - To explicitly learn feature interactions automatically (like FM part in DeepFM)
+    - To capture feature interactions of **high orders** (not just 2nd order as in FM).
     - To apply ResNet in the interaction part so that in each step, so we can still keep original inputs.
-    - Computationally more efficient than DNN: $L (number\ of\ layers)\times d(dimension\ of\ embedding)$
 
 <img src="../assets/figures/dl/dc2.png" width="300">
 
 ---
 
+- Ref: https://blog.csdn.net/Dby_freedom/article/details/86502623
+  - Only $d$ parameters are needed for $w$. If using DNN, the number of parameters would be $d^3$.
+  - <img src="../assets/figures/dl/image-20200617001731849.png" alt="image-20200617001731849" style="zoom:67%;" />
+
+- An example at https://zhuanlan.zhihu.com/p/55234968
+
+  - $x_1$ contains the 1st and 2nd order interaction items
+
+  - $x_2$ contains the 1st, 2nd, 3rd order interacrtion items
+
+  - Number of parameters: $L (number\ of\ layers)\times d(dimension\ of\ embedding) \times 2$
+
+  - Parameter sharing instead of different weights for each interaction terms. Compared with purely DNN the number of parameter is significantly reduced.
+
+    
+
+---
+
+![image-20200616232554466](../assets/figures/dl/image-20200616232554466.png)
+
+---
 
 <img src="../assets/figures/dl/dc1.png" width="500">
 
@@ -1002,22 +1077,33 @@ Note how the attention weights are calculated. A simple version would be just do
 <img src="../assets/figures/dl/dc4.png" width="400">
 
 - Key: $x _{l+1} = x_0 x_l^Tw_l + b_l + x_l = f(x_l, w_l, b_l) + x_l$
-
 - Drawbacks
-    - Note that $x_L = \alpha_k x_0 = g(x_0, \mathbf w, \mathbf b) x_0$ where $\alpha_k$ is a scalar. This is one of the limitations of bitwise interaction.
+    - **Bitwise interactions**: assume that for the embedding for feature $x_1$ is $[x_{11},x_{12},x_{13}] $, the embedding for feature $x_2$ is $[x_{21},x_{22},x_{23}] $ . The first layer input becomes $[x_{11},x_{12},x_{13}x_{2, 1},x_{22},x_{23}] $. There is no distinction between different feature fields.
+    - Note that $x_L = \alpha_k x_0 = g(x_0, \mathbf w, \mathbf b) x_0$ where $\alpha_k$ is a scalar (can be proved). 
 
 ### xDeepFM - eXtreme Deep Factorization Machine
 - ref: https://arxiv.org/pdf/1803.05170.pdf
 
 Comparison with Deep & Cross:
 - Same: Cross feature explicitly in **high order**
+- Similar: Different feature maps / filters --> **Different fields** like the concept of NFFM
 - Improvement: **Vector-wise interaction**
-
+- Difference: at layer $l$ only the $l+1$ order interaction is kept, while in Deep and Cross all orders below $l+1$ are kept at layer $l$.
 
 <img src="../assets/figures/dl/xf.png" width="800">
 
+---
 
-Compressed Interaction Network
+<img src="../assets/figures/dl/image-20200616222851514.png" width="800" style="zoom:67%;" >
+
+**CIN - Compressed Interaction Network**
+
+ref: https://zhuanlan.zhihu.com/p/57162373
+
+<img src="../assets/figures/dl/image-20200617000133536.png" alt="image-20200617000133536" style="zoom:80%;" />
+
+<img src="../assets/figures/dl/image-20200617000213447.png" alt="image-20200617000213447" style="zoom: 67%;" />
+
 - $m$: number of features
 - $H_k$: number of embedding feature vectors in $k^{th}$ layer.
 - $D$: embedding size
@@ -1030,17 +1116,21 @@ Compressed Interaction Network
 
 
 - Key Idea of Compression:
-    - Number of channels: $m$
-    - Size of picture: $H _{k-1} \times D$
-    - Filter Size: $H _{k-1} \times m \times 1$
+    - Weight Matrix $W$ / Filter Size: $H _{k-1} \times m$
     - Output dimension of one filter applied on $Z$: $D \times 1 $
-    - Number of Filters: $H_k$
+    - Number of Weight Matrix $W$ / Filters: $H_k$
     - Output of all Filters applied on $Z$: $D \times H_k$
-    - Output of Sum Pooling (keep one value for each filter): $1 \times H_k$
-    - Concat the outputs of $K$ layers: length - $[H_1; H_2; ..;H_k]$
-    
+- After finishing all layers:
+    - Output of Sum Pooling for one layer (summing across $D$): $1 \times H_k$
+    - Concat the outputs of $K$ layers: length - $[H_1; H_2; ..;H_K]$
 - Number of Parameters:
 $$H _{k-1} \times m \times H_k \times K$$
+-  Comparison with FM:
+
+  - Set Weight Matrix $W = I$
+  - Set $H_1 =m$ and only $K = 1$ layer
+  -  <img src="../assets/figures/dl/image-20200616235758428.png" alt="image-20200616235758428" style="zoom: 67%;" />
+  - The xDeepFM is downgraded to traditional FM as a sum of several inner products
 
 
 - Drawbacks:
@@ -1172,7 +1262,24 @@ Ref: https://arxiv.org/abs/1801.02294
 
 ### DIEN - Deep Interest Envole Network
 
-To be added
+- Ref: https://arxiv.org/abs/1809.03672
+- Main difference with DIN (Deep Interest Network)
+  - **Interest Extraction Layer**: Model the dependencies between user behaviors through GRU units, and get the expressive representation of ***interest sequence***. 
+  - **Interest Evolving Layer**: Model the interest envolving by combining attention mechanism and sequential learning ability from GRU - GRU with attentional update gate (AUGRU) to get the ***interest evolve that's relevant to the target ad***. 
+- Training for information extraction layer:
+  - The final label $y$ only contains the truth for final interest instead of interest sequence. So an auxiliary loss is used to capture the relationship between hidden state $h(t)$ and next behavior $i(t+1)$.
+  - <img src="../assets/figures/dl/image-20200616221139179.png" alt="image-20200616221139179" style="zoom:67%;" />
+- Attention mechanism for interest envolving layer:
+  - <img src="../assets/figures/dl/image-20200616222241350.png" alt="image-20200616222241350" style="zoom:50%;" />
+  - where $e_a$ is target ad embedding, and $h(t)$ is output from interest extraction layer.
+  - <img src="../assets/figures/dl/image-20200616222356399.png" alt="image-20200616222356399" style="zoom: 50%;" />
+  - where $u$ is the update gate
+
+
+
+![image-20200616222524089](../assets/figures/dl/image-20200616222524089.png)
+
+
 
 ### MIND - Multi-Interest Network with Dynamic Routing
 
