@@ -305,7 +305,7 @@ $$\pi^*(s) = \underset{a}{argmax\ }Q(s,a) $$
 
 
 - The parameters $w$ in the $NN$ determines a policy $Q(s,a \vert s, w)$ for each $a$.
-<img src="../assets/figures/rl/deepq.png" width="600">
+<img src="../assets/figures/dl/image-20200617233544927.png" alt="image-20200617233544927" style="zoom:67%;" />
 
 - For episode in range(max_episode):
     - For step in range(max_step):
@@ -333,7 +333,8 @@ $$\nabla_\theta J(\theta) = \color{red}{ \nabla_\theta\ log\pi _{\theta}(a_t \ve
     
     $$\nabla_\theta J(\theta) = \color{red}{ \nabla_\theta\ log\pi _{\theta}(a_t \vert s_t)}\ \color{blue}{ Q(S_t,A_t)} --- [7]$$ 
     - Deep Q-Learning
-     
+    
+      
    
    $$\nabla_w L(w) = [\hat Q_w(s,a^*) - \color{blue}{(r + \gamma \underset{a'}{max\ } Q(s',a'))}] \nabla_w \hat Q(s,a^*) --- [6]$$
     - Critic

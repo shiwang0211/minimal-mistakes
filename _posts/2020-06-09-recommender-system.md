@@ -513,6 +513,8 @@ ref:
 
 <img src="../assets/figures/dl/airbnb.png" width="500">
 
+<span style="color:blue">***Approach 1 - Listing embeddings for short-term real-time personalization***</span> 
+
 **Definition of loss function**
 
 - The combined negative sampling loss function: 
@@ -521,22 +523,53 @@ ref:
 - Center listing $l$: clicked listing
 - $pos$: positive context listings that was clicked by *same* user before and after center listing within a **window**. Goal is to push center listing *l* closer to listings in $pos$.
 - $neg_1$ comes from randomly sampled listing from all markets.
-- Third component: use **booked listing** as global context even it falls out of the context windows. Goal is to use center listing *l* closer to booked listing.
+- Third component: use **booked listing** as global context even it falls out of the context windows. Goal is to use center listing *l* closer to booked listing. This adds to some "supervised" flavor into the model.
   - Potential change: add *dislikes* as global negative samples
 - Fourth component: $neg_2$ comes from randomly sampled listing from **the same market** as center listing.
 
-**Application of embeddings in personalized ranking**
+<span style="color:blue">***Approach 2 - User-type & listing type embeddings for long term personalization***</span> 
 
-- Base features:
+- Difference from Approach 1: considers user's longer interest and feedbacks, and calculates user/item similarity instead of item similarity.
+
+- Bucketing for different attributes of **user** and **listing**. This solves data sparsity, missing type and cold starting problems. Also user embedding can be updated based on user type ids.
+
+- <img src="../assets/figures/dl/image-20200617223410535.png" alt="image-20200617223410535" style="zoom:67%;" />
+
+  **Define Loss Function**
+
+  
+
+  $$Loss = -[\sum _{(l, u) \in D_{book}} log\ \sigma(v_u v_l^T) + \sum _{(l, u) \in D_{rand\_neg}} log\ \sigma(-v_u v_l^T) + \sum _{(l, u) \in D{reject}} log\ \sigma(-v_u v_l^T)]$$
+
+  - $l$: Listing types, $u$: user types
+
+  - The sample contains $(u,u),(l,l),(u,l),(l,u)$, i.e., user and listing are in the same space.
+
+    
+
+- ***User_types*** embedding and ***List_types*** embeddings are learned in the same space. The explicit negative samples cpmes from hosts' rejections.
+
+- <img src="../assets/figures/dl/image-20200617224201358.png" alt="image-20200617224201358" style="zoom: 67%;" />
+
+  
+
+- Example of the output
+
+- <img src="../assets/figures/dl/image-20200617223637285.png" alt="image-20200617223637285" style="zoom:67%;" />
+
+<span style="color:blue">**Application of embeddings in personalized ranking model**</span>  
+
+- Base features in base model:
   - listing features
   - user features
   - query features
   - cross-features
-- Define the set of listings that a user **clicked**/**skipped** (i.e., clicked a lower ranked listing) in the last 2 weeks. ($H_c$ and $H_s$).
-- Define the similarity of item embedding and user embedding $$EmbClickSim(l, H_c) = cosine(v_l, \sum _{l_h \in H_c} v _{l_h})$$
-- Similar for $EmbSkipSim$. Add these ***Listing Embedding Features*** to the model to improve performance.
-
-
+- Define the set of listings that a user **clicked**/**skipped** (i.e., clicked a lower ranked listing) in the last 2 weeks. ($H_c$ and $H_s$). Define the similarity of a given listing $l$ and a user's $H_c$ and $H_s$.
+  - $$EmbClickSim(l, H_c) = cosine(v_l, \sum _{l_h \in H_c} v _{l_h})$$
+- Similar for $EmbSkipSim$, etc.
+  - <img src="../assets/figures/dl/image-20200617231134395.png" alt="image-20200617231134395" style="zoom:50%;" />
+- Add these ***Listing Embedding Features*** to the model to improve performance.
+- If using user_type and listing_type embedding, the similarity can be directly calculated.
 
 ## YouTubeNet
 
@@ -767,8 +800,10 @@ Given (user, item, context): predict click = 0/1
 
 
 
-
 ### Factorization Machine (FM)
+
+to read: https://www.cnblogs.com/pinard/p/6370127.html
+
 - Known: for matrix $W$, and a large $K$, $W \approx \mathbf V\mathbf V^T$, i.e., $w _{ij} \approx <\mathbf v_i, \mathbf v_j>$ 
 -  $y(\mathbf x)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \sum _{i=1}^{N}\sum _{j=i+1}^{N}{<\mathbf v_i, \mathbf v_j>x_ix_j} $
 -  It can be re-written as: $ y(\mathbf x)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \frac{1}{2}[(\sum _{i=1}\mathbf v_i)^2 - \sum_{i=1}(\mathbf v_i)^2] $
@@ -860,20 +895,59 @@ In traditional CF, The **Neural CF layers** are replaced with inner product.
 <img src="../assets/figures/dl/fnn.png" width = "600">
 
 ### PNN：Product-based Neural Network
+
+- Ref: https://arxiv.org/abs/1611.00144
+
 - Instead of using simply concat/add in the DNN, **inner/outer product** is used for embedding vector interactions.
 
 
 - Two parts inside the product layer:
     - z: original embedding vectors 
     - p: inner/outer product of embedding vectors
+    
 - Drawback: high complexity
-    - note that from inner product layer to hidden layer 1 we have $(D_1  + M) \cdot N \cdot N$, where $N$ is number of features and $M$ is dimension of embedding vector, which can be simplified as $D_1 \cdot M \cdot N$
-    - If outer product is used, time complexity would be $D_1 \cdot M \cdot N \cdot N \cdot M$, , which can be simplified as $D_1 \cdot M \cdot (N+M)$
+    - note that from ***inner*** product layer to hidden layer 1 we have 
+
+      - 1st order time complxity - $N \cdot M \cdot D_1$
+      - 2nd order time complexity - $\underbrace{N \cdot N \cdot M }_{\text{dot product}} + \underbrace{N \cdot N \cdot D_1 }_{\text{embedding layer to layer 1}}$
+      - 1st order space complexity - $N \cdot M \cdot D_1$
+      - 2nd order space complexity - $N \cdot N \cdot D_1$
+
+    - Where $N$ is number of features, $M$ is dimension of embedding vector, and $D_1$ as number of hidden layer units, and $M << N $.
+
+    - If outer product is used, instead of inner product:
+
+      - 2nd order time complexity - $\underbrace{N \cdot N \cdot M \cdot M}_{\text{outer product}} + \underbrace{N \cdot N \cdot M \cdot M \cdot D_1 }_{\text{embedding layer to layer 1}}$
+
+        
+
+      - 2nd oder space complexity - $N \cdot N \cdot M \cdot M \cdot D_1 $
+
+- Simplication for inner product:
 
 
-<img src="../assets/figures/dl/pnn.png" width = "600">
+    - For a given unit $d$ from hidden layer 1. $d = 1,2,..., D_1$. 
+    - $P_{ij}$ is inner product $<\mathbf f_i, \mathbf f_j>$, $\mathbf f \in \mathbb R^M$
+    - $l^d = W^d \circ \mathbf p = \sum_{i=1}^{N} \sum_{j=1}^{N} W^d_{ij} P_{ij}$
+    - For symmetric matrix $W^d$, like in factorization machine, it can be decomposed into two $k$ order matrix as $W \approx VV^T$ and $W_{ij} \approx \mathbf v_i^T \mathbf v_j$. Here the dimension of $V$ is $N \times K$.
+    - In this paper 1st order decomposition is used where $W^d \approx \mathbf\phi \mathbf \phi^T$, where $\phi \in \mathbb R^N$ in other words $K=1$ .
+    - Then $l^d = \sum_{i=1}^{N} \sum_{j=1}^{N}\phi_i \phi_j <\mathbf f_i, \mathbf f_j> = <\sum_{i=1}^{N} \phi_i \mathbf f_i, \sum_{j=1}^{N}\phi_j \mathbf f_j>$. i.e., This is a combination of two steps: from embedding to product layer ***and*** from product to hidden layer.
+    - 2nd order time complexity is reduced to - $N \cdot M \cdot D_1$
+    - 2nd order space complexity is reduced to - $N \cdot D_1$
+
+- Simplication for outer product:
+
+
+    - sum pooling of all outer products are used. The connection from product layer to hidden layer is not changed.
+    - Instead of $M \cdot M \cdot N \cdot N$ , the output is re-defined as the sum of all outer products to be $M \cdot M$.
+    - $\mathbf p \xrightarrow{\text{sum pooling}} \sum_{i=1}^{N} \sum_{j=1}^{N} \mathbf f_i \mathbf f^T_j = (\sum_{i=1}^{N} \mathbf f_i) (\sum_{j=1}^{N} \mathbf f_j)^T$
+    - 2nd order time complexity is reduced to - $\underbrace{M \cdot N}_{\text{outer product (sum pooling)}} + \underbrace{M \cdot M \cdot D_1 }_{\text{embedding layer to layer 1}}$
+    - 2nd order space complexity is reduced to - $M \cdot M \cdot D_1 $
+
+<img src="../assets/figures/dl/image-20200617231356649.png" alt="image-20200617231356649" style="zoom:67%;" />
 
 ### AFM (Attentional Factorization Machines)
+
 reference: https://arxiv.org/pdf/1708.04617.pdf
 <img src="../assets/figures/dl/afm.png" width="800"> 
 - Motivation: similar as FFM -> Different interactions between different combinations of features
@@ -1058,7 +1132,9 @@ Part 3: FC, Activation layer, etc.
     $$V _{user} = f(v_A, e_1, e_2, ..., e_H) = \sum _{j=1}^H g(e_j, v_A) \cdot e_j = \sum _{j=1}^H w_je_j$$ where $A$ is candidiate item id, $j$ is user's historical item id.
 <img src="../assets/figures/dl/two models.png">
 
-Note how the attention weights are calculated. A simple version would be just dot product. <img src="../assets/figures/dl/two model 2.png" width="600">
+Note how the attention weights are calculated. A simple version would be just dot product. Another version is outer product, where more interactions are expressed to learn the weights.
+
+<img src="../assets/figures/dl/two model 2.png" width="600">
 
 ### DCN - Deep & Cross Network
 - ref: https://arxiv.org/abs/1708.05123
