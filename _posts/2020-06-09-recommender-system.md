@@ -290,6 +290,15 @@ cf.ii_predict(df_matrix, item_similarity).shape
 | Not interpretable | Interpretable|
 | Cold starting: No problem for new items (after 1 action) | Cold starting: no problem for new users (after 1 action) |
 
+## Limitations of Collaborative Filtering
+
+- Leaning towards those popular items
+- Establish an inner loop for those top $K$ items that are close to each other
+- Poor coverage and generalization (*see graph embedding*)
+- No time / sequential information (*see graph embedding*)
+
+
+
 # Model-Based CF - Matrix Decomposition
 
 ## Matrix Factorization or Latent Factor Model
@@ -509,11 +518,11 @@ ref:
 - The combined negative sampling loss function: 
   $$Loss = -[\sum _{(l, c) \in pos} log\ \sigma(u_c v_l^T) + \sum _{(l, c) \in neg_1} log\ \sigma(-u_c v_l^T) + log\ \sigma(u _{l_b} v_l^T) +  \sum _{(l, c) \in neg_2} log\ \sigma(-u_c v_l^T)]$$
   - $l$: center listing, $c$: context listing
-
 - Center listing $l$: clicked listing
 - $pos$: positive context listings that was clicked by *same* user before and after center listing within a **window**. Goal is to push center listing *l* closer to listings in $pos$.
-- $neg_1$ comes from randomly sampled listing.
+- $neg_1$ comes from randomly sampled listing from all markets.
 - Third component: use **booked listing** as global context even it falls out of the context windows. Goal is to use center listing *l* closer to booked listing.
+  - Potential change: add *dislikes* as global negative samples
 - Fourth component: $neg_2$ comes from randomly sampled listing from **the same market** as center listing.
 
 **Application of embeddings in personalized ranking**
@@ -569,7 +578,7 @@ ref:
 - Apply word2vec skipgram model
 <img src="../assets/figures/dl/deepwalk.png" width="700">
 
-### LINE（Large-scale Information Network Embedding）
+### LINE (Large-scale Information Network Embedding)
 
 <img src="../assets/figures/dl/line.png" width="500">
 
@@ -607,8 +616,7 @@ ref:
 - Focus: Matching phase instead of ranking phase. The main goal is the item embedding, and item similarity.
 
 
-- Why not CF: CF depends on historial co-occurence of items under same user. It cannot capture higher-order
-similarities in users’ behavior sequence.
+- Why not CF: CF depends on historial co-occurence of items under same user. It cannot capture higher-order similarities in users’ behavior sequence.
 
 
 - Problem with traditional graph embedding: some items with few interaction. How to do cold-starting.
@@ -621,16 +629,25 @@ similarities in users’ behavior sequence.
 - Solve for $W$ and $\alpha$. 
     - j = 0 represents weights for item embedding
     - j > 0 represents weights for side-info embedding
-$$H_v = \frac{\sum_j e^{\alpha_j} \cdot w_j}{\sum e^{\alpha}} $$
+Hidden Representation - $$H_v = \frac{\sum_j e^{\alpha_j} \cdot w_j}{\sum e^{\alpha}} $$
 
 - For cold start items without any interactions
-    - CF doesn't work
-    - Item graph cannot be constructed
+    - Traditional CF doesn't work
+    - Item graph cannot be constructed because no co-occurance
     - Represent it with **the average embeddings of its side information**, and calculate dot product with embeddings of other items.
     
 
 <img src="../assets/figures/dl/cold_start.png" width="500">
 
+### Combine with CF
+
+- ref: https://zhuanlan.zhihu.com/p/139966632
+- The recalled items from CF tend to have high CTR but have limitations.
+- Graph Embedding has better generalization with more recalled items.
+- Porposed method: 
+  - use CF to get item similarity, and use node2vec to do random walking, and use word2vec to generate graph embedding
+  - during the recall stage, recall top K based on item similarity, and then based on graph embeddings if number of recalled items is not enough
+- <img src="../assets/figures/dl/image-20200617210303568.png" alt="image-20200617210303568" style="zoom:80%;" />
 
 ## More generalized item vectorization
 
@@ -944,9 +961,21 @@ Difference with ***Deep FM***:
     
 - FM:<img src = "../assets/figures/dl/fm3.png" width = "700">
 
+    ---
+
+    
+
 - FFM:<img src = "../assets/figures/dl/ffm2.png" width = "700">
 
+    ---
+
+    
+
 - PNN:<img src = "../assets/figures/dl/pnn2.png" width = "700">
+
+    ---
+
+    
 
 - ONN:<img src = "../assets/figures/dl/onn.png" width = "700">
 
@@ -1015,7 +1044,8 @@ Part 3: FC, Activation layer, etc.
     - Considers **diversity** of user interest instead of embedding user history in the same way regardless of given candidate item.
     - **Local activation** helps linking only part of user's history with the candidate item (e,g., swimming cap - goggle). 
     - In other words, a weighted average pooling for user behavior history vectors.
-    - <span style="color:blue">another form of **Attention** mechanism</span>
+    - <span style="color:blue">Another form of **Attention** mechanism</span>
+    - <span style="color:red">There is no extra preference for more recent behaviors.</span>
 
 <img src="../assets/figures/dl/din_1.png" width="900">   
     
@@ -1268,6 +1298,7 @@ Ref: https://arxiv.org/abs/1801.02294
   - **Interest Evolving Layer**: Model the interest envolving by combining attention mechanism and sequential learning ability from GRU - GRU with attentional update gate (AUGRU) to get the ***interest evolve that's relevant to the target ad***. 
 - Training for information extraction layer:
   - The final label $y$ only contains the truth for final interest instead of interest sequence. So an auxiliary loss is used to capture the relationship between hidden state $h(t)$ and next behavior $i(t+1)$.
+  - $L = L_{target_click} + \alpha L_{auxiliary}$
   - <img src="../assets/figures/dl/image-20200616221139179.png" alt="image-20200616221139179" style="zoom:67%;" />
 - Attention mechanism for interest envolving layer:
   - <img src="../assets/figures/dl/image-20200616222241350.png" alt="image-20200616222241350" style="zoom:50%;" />
