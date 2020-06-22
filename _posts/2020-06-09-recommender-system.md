@@ -40,7 +40,7 @@ tags:
 
 Input data also includes:
 
-- User Info (sex, income)
+- User Info (sex, income, etc)
 - Item Info (BOW, TF-IDF)
 - User-Item Interaction
   - active/explicit: rating
@@ -245,7 +245,7 @@ cf.ui_predict(df_matrix, user_similarity).shape
 
 Users who liked this item also liked ...
 - $ \hat{x} _{k,m} = \frac{1}{Norm}  \sum _{m_0}ItemSim(m, m_0) \cdot x _{k, m_0}$
-- $m_0 \in N(k)$ where user $k$ has already rated.  
+- $m_0 \in N(k)$ where user $k$ has already rated (positively).  
 
 How to understand $ItemSim(m, m_0)$:
 - Dot product: number of users who like both item $m$ and item $m_0$ (If input matrix is not rating)
@@ -281,20 +281,20 @@ cf.ii_predict(df_matrix, item_similarity).shape
 
 ## Comparison between user-based and item-based
 
-|User-based       | Item-based           |
-| ------------- |:--------------|
-| more socialized      | more personalized |
-| fro example: news | for example: books|
-| update user-similarity matrix| update item-similarity matrix|
-| number of user << number of items | number of user >> number of items|
-| Not interpretable | Interpretable|
-| Cold starting: No problem for new items (after 1 action) | Cold starting: no problem for new users (after 1 action) |
+| User-based                                                   | Item-based                                                   |
+| ------------------------------------------------------------ | :----------------------------------------------------------- |
+| more socialized, which makes it easier to identify new interest by looking at similar users. | more personalized, where relavant items are recommended.     |
+| For example: news, where interesting news needs to be delivered on time. the interest can be constantly changing and unstable. | for example: books/newfilx videos, where users' interest are more stable compared with news. |
+| in contrast, for those low-frequency scenarios like hotel booking, hard to get feedback, and the user historical behavior can be very sparse. | Long-tail effect where popular items are quite similar while tail items have sparse vectors, and can rarely be selected. i.e., Leaning towards those popular items, and establish an inner loop for those top $K$ items that are close to each other. |
+| update user-similarity matrix ($n^2$ space complexity when # of user is big) | update item-similarity matrix                                |
+| number of user << number of items                            | number of user >> number of items                            |
+| Not interpretable                                            | Interpretable                                                |
+| Cold starting: No problem for new items (after 1 action)     | Cold starting: no problem for new users (after 1 action)     |
 
-## Limitations of Collaborative Filtering
+## Summary - Limitations of Collaborative Filtering
 
-- Leaning towards those popular items
-- Establish an inner loop for those top $K$ items that are close to each other
-- Poor coverage and generalization (*see graph embedding*)
+- Cannot incorporate other user/item/context features (*see LR, graph embedding*)
+- Sparse vectors, which leads to poor coverage, long tail effect and poor generalization (*see MF, graph embedding*)
 - No time / sequential information (*see graph embedding*)
 
 
@@ -302,24 +302,23 @@ cf.ii_predict(df_matrix, item_similarity).shape
 # Model-Based CF - Matrix Decomposition
 
 ## Matrix Factorization or Latent Factor Model
-Singular-Value-Decomposition
-
-- see SVD notebook for math behind SVD
+- Singular-Value-Decomposition
 
 <img src="https://sigopt.com/wp-content/uploads/2018/10/collaborative_filtering.png" width="400">
 
 
-- $M = U \times \Sigma \times V^T  $ Note: $\Sigma$ can be multipled to U or V
+- $M_{m \times n} = U_{m \times m} \times \Sigma_{m \times n} \times V_{n \times n}^T  $ Note: $\Sigma$ can be multipled to U or V
+- $M_{m \times n} \approx U_{m \times k} \times \Sigma_{k \times k} \times V_{k \times n}^T  $ 
+- U and V are low-dimention latent vectors (Embeddings) for users and movies. 
+    - How to interpret this dimensions? Genres (i.e., users' preference for Genre $k$ and a given book's weight on genre $k$)
 - Con: need default value for missing value in rating matrix
     - For like (0/1) or implicit feedback: 
     - 1) balanaced negative samples + postive samples
     - 2) draw negative samples from popular items 
-    
-- U and V are low-dimention latent vectors (Embeddings) for users and movies. 
-    - How to interpret this dimensions? Genres (i.e., users' preference for Genre $k$ and a given book's weight on genre $k$)
-    
-- Alternative approach: $Min(L) = \sum _{i,j}{(u_i v_j - x _{ij})^2} + Regularization (u,v)$
+- Con of traditional solution algorithm: time complexity: $O(mn^2)$
+- Alternative approach: $Min(L) = \sum _{i,j}{(u_i v_j - R _{ij})^2} + Regularization (u,v)$
     - Solved by SGD
+    - space complexity: $mk + nk$ instead of $m^2$ or $n^2$
 
 
 ​    
@@ -476,6 +475,7 @@ plot_model(model, to_file='../assets/figures/dl/model_ncf2.png')
     - Output: An item space with defined distance
 - One model for one user; No interaction between users
 - Approximate KNN to retrieve nearest K items: https://github.com/facebookresearch/faiss (to read...)
+- The embedding can be either pertained, or trained together with the other parts of the network, where a tradeoff of efficiency and information loss comes into play. However, usually embeddings (e.g., user embeddings which represents user interest) don't change that often.
 
 
 ## Item2Vec
@@ -499,8 +499,19 @@ $$E = -\sum_i \sum_j logP(j \vert i)$$
 - (+) No need for human label
 - (-) cannot cover new items
   - possible solution: find the closest $M$ items that matches the new item in some important dimensions (pre-determined, e.g., price, city, etc., and use the average embedding of these items as the embedding of the new item
-- (-) how to address items as a network?
+- (-) how to address items as a network? Graph Embedding
 - brief example in a Chinese B&B: https://www.infoq.cn/article/d6B7B9DD-Nc4SruOb27B
+
+
+
+### Locality-Sentituve Hashing
+
+- If we just calculate inner product of the target with each candidate to get the nearst items, the time complxity would be $KN$ where $K$ is embedding size and $N$ is number of candidates.
+- LSH projects the high-dimension vectors into lower-dimension so that the cosine similarity of the original vectors are preserved approximately.
+- $ h = x \cdot v $ where $x$ is a random $K$ dimension vector and $v$ is the embedding. The result is a number (i.e., 1-dimension). Then use this number to do the bucketing. There can be $m$ random vectors as the hash function to increase the probability of having similar $x$ in the same bucket.
+- <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621140950853.png" alt="image-20200621140950853" style="zoom: 33%;" />
+
+
 
 ### Airbnb
 
@@ -577,7 +588,7 @@ ref:
 
 - Difference from Item2Vec:
   - Use user features to learn item embeddings, while in Item2Vec only items are utilized.
-  - Note that the last layer is a **multi-class** classifcation layer
+  - Note that the last layer is a **multi-class** classifcation layer. Each output units corresponds to an item, and the weights connecting to this unit is the item embedding.
   - The output would be user embeddings ***and*** item embeddings
   
 - User features
@@ -641,7 +652,7 @@ ref:
 
 - Two parameters $p$ and $q$ jointly determines the balance between DFS and BFS
 
-### Alibaba: Enhanced Graph Embedding with Side Information
+### EGES - Alibaba: Enhanced Graph Embedding with Side Information
 ref: 
 - https://arxiv.org/pdf/1803.02349.pdf
 - https://mp.weixin.qq.com/s/LrdmMi5ulmNZZpRN3HtHMQ
@@ -688,10 +699,7 @@ Hidden Representation - $$H_v = \frac{\sum_j e^{\alpha_j} \cdot w_j}{\sum e^{\al
 
 # Overview of Ranking Algorithms
 
-- Top-K ranking problem instead of rating prediction problem
-- More consistent with practical user needs
-
-## How to evaluate a ranking system
+## Offline Evaluation
 
 ### Recall and Precision
 - Given user $u$, the model generates a recommendation set $R$ and true set (where the user likes/rates) $T$
@@ -719,13 +727,25 @@ https://en.wikipedia.org/wiki/Discounted_cumulative_gain
 ### Coverage
 <img src="https://slideplayer.com/10441443/35/images/7/Coverage+Measure+the+ability+of+recommender+system+to+recommend+all+items+to+users.+Entropy%2C+Gini+Index..jpg" width="400">
 
+## Online Evaluation
+
+- AB Test
+- Inrerleaving 
+  - Fewer samples needed, so faster than AB test.
+  - Can be used as pre-filtering for AB test.
+  - A relative metric. Still need AB test to get final metric.
+
+<img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621173503479.png" alt="image-20200621173503479" style="zoom: 50%;" />
+
+
+
 ---
 
 
-<img src="https://image.slidesharecdn.com/divers-111026095821-phpapp01/95/towards-diverse-recommendation-72-728.jpg?cb=1319623189" width="400">
 
-### Other metrics:
-Diversity, AUC, F1, etc.
+<img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621173430794.png" alt="image-20200621173430794" style="zoom:33%;" />
+
+
 
 
 ## Modelling Approach
@@ -804,7 +824,7 @@ Given (user, item, context): predict click = 0/1
 
 to read: https://www.cnblogs.com/pinard/p/6370127.html
 
-- Known: for matrix $W$, and a large $K$, $W \approx \mathbf V\mathbf V^T$, i.e., $w _{ij} \approx <\mathbf v_i, \mathbf v_j>$ 
+- Known: for matrix $W$, and a large $K$, $W \approx \mathbf V\mathbf V^T$, i.e., $w _{ij} \approx <\mathbf v_i, \mathbf v_j>$ . Recall MF for CF.
 -  $y(\mathbf x)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \sum _{i=1}^{N}\sum _{j=i+1}^{N}{<\mathbf v_i, \mathbf v_j>x_ix_j} $
 -  It can be re-written as: $ y(\mathbf x)=w_0 + \sum _{i=1}^{N}{w _{1i}x_i} + \frac{1}{2}[(\sum _{i=1}\mathbf v_i)^2 - \sum_{i=1}(\mathbf v_i)^2] $
 - $\mathbf v_i, \mathbf v_j - R^{N \times K}$, latent vector for feature $i$ and $j$ with embedding length $K$, and totally $N$ features
@@ -813,7 +833,7 @@ to read: https://www.cnblogs.com/pinard/p/6370127.html
     - Intuively, gradient direction is towards $v _{j,f}$ wherever $x_i$ and $x_j$ are both one.
 - Some advantages:
     - Reasonable prediction for unseen pairs (i.e., sparse data)
-    - Lower dimension compared with polynomial: $O(N \times K)$
+    - Lower dimension compared with polynomial:  $O(N \times K)$
 
 <img src="http://ailab.criteo.com/wp-content/uploads/2017/03/Screen-Shot-2017-02-10-at-11.12.53-AM-768x301.png" width="400">
 
@@ -844,9 +864,9 @@ A symmetric matrix $R$ is used to replace field-specific embeddings, and implici
 - **Motivation**: GBDT transforms features, reduced dimensions, combined attributes
 - The leaves serve as new input features for LR
 - Drawback:
-    - Two phase modelling, i.e., LR doesn't impact GBDT
-    - Tree not very good for high-dimension sparse features because trees tend to overfitting because penalty is imposed on tree nodes/depth while LR penalizes weights
-    - For example, there is feature X with value 1 on 10 samples and value 0 on 9990 samples. In GBDT it is perfect node split because it takes only 1 depth and 1 split, while in LR it will be regularized for big weight.
+    - Two phase modelling, i.e., LR doesn't impact GBDT, no back propagation to GBDT
+    - Tree not very good for high-dimension sparse features because trees tend to overfitting because penalty is imposed on tree nodes/depth while LR penalizes weights. For example, there is feature X with value 1 on 10 samples and value 0 on 9990 samples. In GBDT it is perfect node split because it takes only 1 depth and 1 split, while in LR it will be regularized for big weight.
+    - Also information loss for continuous variables.
 - Alternative: 
     - Use GBDT for continous variables, get $gbdt(X _{continuous})$
     - Concatenate with $X _{discrete}$ to get final $\mathbf X$, and feed into LR.
@@ -871,6 +891,7 @@ A symmetric matrix $R$ is used to replace field-specific embeddings, and implici
     - Start: Embedding layer
     - End: FC layer
     
+- An simple illustration of 
 
 <img src="../assets/figures/dl/wd.jpg" width="700">
 
@@ -879,7 +900,7 @@ ref: https://github.com/hhlisme/Daily
 ### NeuralCF
 
 
-In traditional CF, The **Neural CF layers** are replaced with inner product.
+In traditional CF, The **Neural CF layers** are replaced with inner product. In NeuralCF more interaction is enabled.
 
 <img src="../assets/figures/dl/neural_cf.png" width="500">
 
@@ -925,7 +946,6 @@ In traditional CF, The **Neural CF layers** are replaced with inner product.
 
 - Simplication for inner product:
 
-
     - For a given unit $d$ from hidden layer 1. $d = 1,2,..., D_1$. 
     - $P_{ij}$ is inner product $<\mathbf f_i, \mathbf f_j>$, $\mathbf f \in \mathbb R^M$
     - $l^d = W^d \circ \mathbf p = \sum_{i=1}^{N} \sum_{j=1}^{N} W^d_{ij} P_{ij}$
@@ -936,7 +956,6 @@ In traditional CF, The **Neural CF layers** are replaced with inner product.
     - 2nd order space complexity is reduced to - $N \cdot D_1$
 
 - Simplication for outer product:
-
 
     - sum pooling of all outer products are used. The connection from product layer to hidden layer is not changed.
     - Instead of $M \cdot M \cdot N \cdot N$ , the output is re-defined as the sum of all outer products to be $M \cdot M$.
@@ -1055,10 +1074,21 @@ Difference with ***Deep FM***:
 
 ### Wide and Deep
 - Memorization: learning the directly relevant frequent co-occurrence of items;
+
 - Generalization: improving the diversity exploring new items combinations that have never or rarely occurred in the past.
+
 - **Wide/Shallow**: LR for categorical variables --> Memorization
+
+  - For example: cross product of isntalled app and impressed app
+  - new feature = $And(Netflix\ Installed, Pandora\ Impressed)$
+
 - **Deep/Stack**: DNN for continous/categorical variables --> Generalization
-<img src="https://1.bp.blogspot.com/-Dw1mB9am1l8/V3MgtOzp3uI/AAAAAAAABGs/mP-3nZQCjWwdk6qCa5WraSpK8A7rSPj3ACLcB/s1600/image04.png" width="800">
+
+  - Statistics features, etc.
+
+    
+
+  <img src="https://1.bp.blogspot.com/-Dw1mB9am1l8/V3MgtOzp3uI/AAAAAAAABGs/mP-3nZQCjWwdk6qCa5WraSpK8A7rSPj3ACLcB/s1600/image04.png" width="800">
 ---
 <img src="http://edarchimbaud.github.io/img/2016-11-22-wide-and-deep-learning-for-recommender-systems/Screenshot%20from%202016-11-22%2021-07-22.png" width="600">
 
@@ -1370,6 +1400,7 @@ Ref: https://arxiv.org/abs/1801.02294
 
 - Ref: https://arxiv.org/abs/1809.03672
 - Main difference with DIN (Deep Interest Network)
+  - Instead of providing a recommendation based on the entire behavior history, the target is ***next action***. For example, there can be an interest envolve from item A to item B. So given the purchase history A, we would recommend B. Also there can be other interest envolve from item C to item D that is irrelavant to the target item. we would to **focus** on the interest sequence that A and B fall into.
   - **Interest Extraction Layer**: Model the dependencies between user behaviors through GRU units, and get the expressive representation of ***interest sequence***. 
   - **Interest Evolving Layer**: Model the interest envolving by combining attention mechanism and sequential learning ability from GRU - GRU with attentional update gate (AUGRU) to get the ***interest evolve that's relevant to the target ad***. 
 - Training for information extraction layer:
@@ -1427,7 +1458,7 @@ To be added
 
 <img src="http://deliveryimages.acm.org/10.1145/3190000/3185994/images/www2018-3-fig4.jpg" width="500">
 
-### *Deep Reinforcement Learning for List-wise Recommendations
+### Deep Reinforcement Learning for List-wise Recommendations
 
 - ref: https://arxiv.org/abs/1801.00209
 
@@ -1443,85 +1474,106 @@ To be added
 <img src="../assets/figures/dl/Actor-Critic.png" width="600"> 
 
 
-## Some feature engineering issues
-
-
-**General**
-- For continuous variables
-    - standardize for NN inputs
-    - discretize for LR
-    
-    
-    
-- For discrete variables
-    - One-got encoding
-    - Text: BoW(n-gram), TF-IDF
-    
+## Features
 
 
 **List/Type of features**
+
 - User Characteristic
     - Demographic
-    - Behavior, preference, activeness
-- Business Characteristics
-    - Type, city, star, etc
-    - Image
-- Query
-    - Tokens, similarity
+    - Behavior (Sequence)
+    
+- Item Characteristics
+    - Tags/Attributes
+    - Image/Text/Image
+    
+- Network
+
+    - User Similarity / Relationship
+
 - Context
     - Time, distance, competition
     - Position bias
-
-**Key feature: user behavior**
-- Real time user behavior
-    - Clicked Business (C_P)
-    - Ordered Business (O_P)
-    - Queries (Q)
-    - Sortings (S)
-    - Business Characteristic (C_Type, O_Type, C_Loc, O_Loc)
     
-- Problem: Sparsity of C_P, O_P, Q, S
-- Fix: separate model to describe **USER** based on user behavior 
-    - Predict next time t user behavior based on LTSM
-    - Doc2Vec to get embedding of a user based on behaviors
-    - Topic modelling
-    - Serve as continous feature in Part 2
+- Statistics
 
+    - Past CTR
 
-**Some examples of extra features**
-- Statistics for different types of behaviors, for example, conversion rate, device, etc.
-    - Counting features like device ip count, device id count, hourly user count, user count
-    - Bagging features
-        - user \vert app id \vert bag of app id
-        - user1 \vert  A  \vert A, B
-        - user1 \vert  B  \vert A, B
-        - user2 \vert  C  \vert C, D
-        - user2  \vert D  \vert C, D
-    - Click history
-        - label \vert  user  \vert history
-        - 0  \vert user1 \vert 
-        - 1  \vert user1  \vert 0
-        - 1  \vert user1  \vert 01
-        - 0  \vert user1  \vert 011
-- Paattern/Series of behaviors (A-B-C)
+        
+
+**Pre-processing**
+
+- For continuous variables
+
+  - standardize for NN inputs
+  - discretize for LR (avoid extreme distributions / overfitting)
+
+  
+
+- For discrete variables
+
+  - One-hot encoding
+  - Multi-got encoding
+  - Various embedding techniques
 
 
 # Cold Starting
 
-For new users:
+**For new users:**
+
 - Provide most popular items
-- Provide results based on demographic attributes (gender, age, etc)
+- User basic information
+- Third-party data source
 - Ask users to provide feedback on some items before providing recommendation
 
+**For new items:**
 
-For new items:
-- If using user-based CF, then as long as some user finds the items from other sources, it will be spread among users
-- If using item-based CF, then have to use item content to calculate item similarity, otherwise it will never be presented to users
-    - Calculate item-similarity by vectorizing items
-    - A strong feature would actually help content-based recommendation out-perform CF
-    
-- Some examples of similarity w/o user behavior history
+- Item content vectors
     - keyword vector of an item title with the help of NER
     - TF-IDF of a text
-    - LDA topic modelling (use topic vector to calculate similarity)
-    
+    - LDA topic modelling
+
+# Engineering
+
+## Data Latency
+
+- Client  Side - lowest delay (second)
+  - User embedding, for example, can be potentially updated on client side
+
+- Server Side - Streaming (minute) / HDFS (hour)
+  - Item Embeddings
+
+## Data Infrastructure
+
+- System
+
+  - MapReduce
+  - Streaming (Sparking Streaming, Storm, Flink)
+  - ***Lambda*** 
+    - <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621162920709.png" alt="image-20200621162920709" style="zoom: 33%;" />
+  - Kappa
+
+- Storage
+
+  - HDFS (Offline training samples, features)
+  - Redis (Online features, model parameters)
+
+- Offline Training
+
+  - Spark MLlib
+    - Data Parallelization - data are distributed across multiple nodes.
+    - All parameters will be broadcast to each node, so that each node has a full copy of the current model.
+    - All nodes need to finish computing for aggregation.
+    - Deep learning is not supported
+    - <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621171507137.png" alt="image-20200621171507137" style="zoom: 33%;" />
+
+  - Parameter Server
+    - Asynchronous data communication (faster; loss in consistency and convergence as model parameters are not updated each iteration.)
+    - multiple servers to avoid bottleneck / server failure
+    - Consistent hashing
+    - <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621171027535.png" alt="image-20200621171027535" style="zoom:50%;" />
+    - <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621171041190.png" alt="image-20200621171041190" style="zoom:50%;" />
+  - Tensorflow - google 
+  - PyTorch - Facebook 
+  - MXNet - Amazon
+
