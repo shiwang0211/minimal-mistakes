@@ -509,7 +509,7 @@ $$E = -\sum_i \sum_j logP(j \vert i)$$
 - If we just calculate inner product of the target with each candidate to get the nearst items, the time complxity would be $KN$ where $K$ is embedding size and $N$ is number of candidates.
 - LSH projects the high-dimension vectors into lower-dimension so that the cosine similarity of the original vectors are preserved approximately.
 - $ h = x \cdot v $ where $x$ is a random $K$ dimension vector and $v$ is the embedding. The result is a number (i.e., 1-dimension). Then use this number to do the bucketing. There can be $m$ random vectors as the hash function to increase the probability of having similar $x$ in the same bucket.
-- <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621140950853.png" alt="image-20200621140950853" style="zoom: 33%;" />
+- <img src="../assets/figures/dl//image-20200621140950853.png" alt="image-20200621140950853" style="zoom: 33%;" />
 
 
 
@@ -706,6 +706,12 @@ Hidden Representation - $$H_v = \frac{\sum_j e^{\alpha_j} \cdot w_j}{\sum e^{\al
 - $Recall = \frac{R \cap T}{T}$
 - $Precision = \frac{R \cap T}{R}$
 
+### AUC
+
+$$
+GAUC  = \sum_u w_u AUC_u
+$$
+
 ### AP (Average Precision)
 
 $Average Precision = \frac{\sum _{k=1}^{N}{P(k) * rel(k)}}{K} $
@@ -735,7 +741,7 @@ https://en.wikipedia.org/wiki/Discounted_cumulative_gain
   - Can be used as pre-filtering for AB test.
   - A relative metric. Still need AB test to get final metric.
 
-<img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621173503479.png" alt="image-20200621173503479" style="zoom: 50%;" />
+<img src="../assets/figures/dl//image-20200621173503479.png" alt="image-20200621173503479" style="zoom: 50%;" />
 
 
 
@@ -743,7 +749,7 @@ https://en.wikipedia.org/wiki/Discounted_cumulative_gain
 
 
 
-<img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621173430794.png" alt="image-20200621173430794" style="zoom:33%;" />
+<img src="../assets/figures/dl//image-20200621173430794.png" alt="image-20200621173430794" style="zoom:33%;" />
 
 
 
@@ -766,6 +772,67 @@ https://en.wikipedia.org/wiki/Discounted_cumulative_gain
     - The scale of difference is ignored
 
 <img src="https://image.slidesharecdn.com/l2rrecysystutaly-final-131012040539-phpapp01/95/learning-to-rank-for-recommender-systems-acm-recsys-2013-tutorial-46-638.jpg?cb=1381555055" width="400">
+
+
+
+**Lambda MART**
+
+- *The goal is o predict the score $s_i$ for each document with flexible loss function (like NDCG) and physical meanings for derivations. Also robust with unbalanced dataset because of the pairwise nature.*
+
+- The probability that $i$ is ranked higher than $j$ is that:
+  $$
+  P_{ij} = \frac{1}{1+exp(-(s_i-s_j))}=\sigma(s_i-s_j)=\sigma_{ij}
+  $$
+
+- The loss function is just the cross-entropy:
+  $$
+  L_{ij} = -[y_{ij}\log P_{ij} + (1-y_{ij})\log(1-P_{ij})]
+  $$
+
+- Only considers where $i$ is ranked higher than $j$ (i.e., $y_{ij}=1$ )
+  $$
+  L_{ij} = -\log\sigma_{ij}
+  $$
+
+- If we consider other metrics $Z$ (like NDCG), the loss function can be further written as
+  $$
+  L_{ij} = -\Delta Z_{ij} \cdot \log\sigma_{ij}
+  $$
+
+- Calculate the gradients for scores $s$:
+  $$
+  Define:\ \lambda_{ij} = \frac{\partial L_{ij}}{\partial s_i}=-\frac{\partial L_{ij}}{\partial s_j} = -\Delta Z_{ij} (1-\sigma_{ij})
+  $$
+
+- So for a given document $i$, the gradient is the sum of higher $i$ lower $j$ and lower $i$ higher $j$.
+  $$
+  \lambda_i = \sum_j \frac{\partial L_{ij}}{\partial s_i} = (+1)\sum_{i>j} \lambda_{ij} + (-1) \sum_{i<j} \lambda_{ij}
+  $$
+
+- We will also need the second-order derivative for scores $s$:
+  $$
+  w_{ij} =  \frac{\partial^2 L_{ij}}{\partial s^2_i}=\frac{\partial[ -\Delta Z_{ij} (1-\sigma_{ij})]}{\partial s_i}=\Delta Z_{ij}\sigma_{ij}(1-\sigma_{ij}) = \Delta Z_{ij}\rho_{ij}(1-\rho_{ij}) \\
+  \rho_{ij} = -\frac{-\lambda_{ij}}{\Delta Z_{ij}}
+  $$
+
+- Put in into the framework of XGBoost
+
+  - Use $\lambda_i$ to generate the tree structure based on mean squared error
+
+  - Use Newton method to generate the optimal node value for each region $R$
+    $$
+    G_R = \sum_{i \in R} \frac{\partial L}{\partial s}= \sum_{i \in R} \lambda_i \\
+    H_R = \sum_{i \in R} \frac{\partial^2 L}{\partial s^2}= \sum_{i \in R} w_i 
+    \\
+    \omega^*_R = - \frac{G_R}{H_R}
+    $$
+
+- Update the values based on regularization parameter
+  $$
+  s \leftarrow s + \mu \omega^*
+  $$
+
+
 
 - Listwise
     - Directly optimize final performance metric
@@ -1533,6 +1600,18 @@ To be added
     - TF-IDF of a text
     - LDA topic modelling
 
+**Cross Domain Recommendation**
+
+- $t$: target, $s$: source (e.g., those items with more historical behavior information)
+- Perform matrix de-composition for $R^T$ and $R^S$ for overlapping users
+  - get $U^T$ and $U^S$ for user embedding
+  - get $V^T$ and $V^S$ for user embedding
+
+- Estimate the NN for so that $U^T$ = $f\ (U^S)$
+- For cold starting users: $\hat r_{ij} = f(u^S_i) v^T_j$
+
+
+
 # Engineering
 
 ## Data Latency
@@ -1550,7 +1629,7 @@ To be added
   - MapReduce
   - Streaming (Sparking Streaming, Storm, Flink)
   - ***Lambda*** 
-    - <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621162920709.png" alt="image-20200621162920709" style="zoom: 33%;" />
+    - <img src="../assets/figures/dl//image-20200621162920709.png" alt="image-20200621162920709" style="zoom: 33%;" />
   - Kappa
 
 - Storage
@@ -1565,14 +1644,14 @@ To be added
     - All parameters will be broadcast to each node, so that each node has a full copy of the current model.
     - All nodes need to finish computing for aggregation.
     - Deep learning is not supported
-    - <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621171507137.png" alt="image-20200621171507137" style="zoom: 33%;" />
+    - <img src="../assets/figures/dl//image-20200621171507137.png" alt="image-20200621171507137" style="zoom: 33%;" />
 
   - Parameter Server
     - Asynchronous data communication (faster; loss in consistency and convergence as model parameters are not updated each iteration.)
     - multiple servers to avoid bottleneck / server failure
     - Consistent hashing
-    - <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621171027535.png" alt="image-20200621171027535" style="zoom:50%;" />
-    - <img src="/Users/shiwang/Desktop/shiwang0211.github.io/assets/figures/dl//image-20200621171041190.png" alt="image-20200621171041190" style="zoom:50%;" />
+    - <img src="../assets/figures/dl//image-20200621171027535.png" alt="image-20200621171027535" style="zoom:50%;" />
+    - <img src="../assets/figures/dl//image-20200621171041190.png" alt="image-20200621171041190" style="zoom:50%;" />
   - Tensorflow - google 
   - PyTorch - Facebook 
   - MXNet - Amazon

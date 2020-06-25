@@ -12,9 +12,9 @@ tags:
 
 
 
-# K-Multi-Bandit and Exploration/Exploitation
+# Bandit Algorithm
 
-
+## Multi-Arm Bandit
 
 For each time step $t$:
 - **$\epsilon$ Greedy Algorithm**:
@@ -28,6 +28,26 @@ $$N(k) \rightarrow N(k) + 1$$
 $$Q(k) \rightarrow Q(k) + \frac{1}{N(k)}[r - Q(k)]$$
 - Interpretation:
 $$NewEstimate \rightarrow OldEstimate + StepSize[Target - OldEstimate]$$
+
+
+
+## Context-Free - UCB (Upper Confidence Bound)
+
+- for a given option $a_i$: the expected return is $\bar x_{i,t} + \sqrt{\frac{2ln(n)}{n_{i,t}}}$
+- first term - *exploitation*: the average return of item $i$ in the last $n_{i,t}$ trials
+- second term - *exploration*: higher bounds for items which were selected not that often
+
+## Context-Free - Thompson Sampling
+
+- beta distribution: $f(x;\alpha, \beta) = C \cdot x^{\alpha-1} \cdot (1-x)^{\beta-1} $. Note that $\alpha = \beta = 1$ gives the uniform distribution between 0 and 1.
+- the beta distribution is the conjugate prior probability distribution for the Bernoulli distribution
+- each time stamp, find the largest $\theta_i$, and update the parameter $\alpha_i$ and $\beta_i$ based on the reward $r$.
+- The two parameters controls the mean and variance of the $\theta$ for each option.
+
+## Contextual Bandit
+
+- The decision becomes making action $a$ based on the contextual vector $x_t$ and policy $\pi$
+- get reward $r_{t,a}$ and revise policy $\pi$.
 
 # Markov Process
 
@@ -335,6 +355,7 @@ $$\nabla_\theta J(\theta) = \color{red}{ \nabla_\theta\ log\pi _{\theta}(a_t \ve
     - Deep Q-Learning
     
       
+     
    
    $$\nabla_w L(w) = [\hat Q_w(s,a^*) - \color{blue}{(r + \gamma \underset{a'}{max\ } Q(s',a'))}] \nabla_w \hat Q(s,a^*) --- [6]$$
     - Critic
