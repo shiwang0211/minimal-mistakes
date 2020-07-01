@@ -1629,7 +1629,7 @@ To be added
   - MapReduce
   - Streaming (Sparking Streaming, Storm, Flink)
   - ***Lambda*** 
-    - <img src="../assets/figures/dl//image-20200621162920709.png" alt="image-20200621162920709" style="zoom: 33%;" />
+    - <img src="../assets/figures/dl/image-20200621162920709.png" alt="image-20200621162920709" style="zoom: 33%;" />
   - Kappa
 
 - Storage
@@ -1644,14 +1644,14 @@ To be added
     - All parameters will be broadcast to each node, so that each node has a full copy of the current model.
     - All nodes need to finish computing for aggregation.
     - Deep learning is not supported
-    - <img src="../assets/figures/dl//image-20200621171507137.png" alt="image-20200621171507137" style="zoom: 33%;" />
+    - <img src="../assets/figures/dl/image-20200621171507137.png" alt="image-20200621171507137" style="zoom: 33%;" />
 
   - Parameter Server
     - Asynchronous data communication (faster; loss in consistency and convergence as model parameters are not updated each iteration.)
     - multiple servers to avoid bottleneck / server failure
     - Consistent hashing
-    - <img src="../assets/figures/dl//image-20200621171027535.png" alt="image-20200621171027535" style="zoom:50%;" />
-    - <img src="../assets/figures/dl//image-20200621171041190.png" alt="image-20200621171041190" style="zoom:50%;" />
+    - <img src="../assets/figures/dl/image-20200621171027535.png" alt="image-20200621171027535" style="zoom:50%;" />
+    - <img src="../assets/figures/dl/image-20200621171041190.png" alt="image-20200621171041190" style="zoom:50%;" />
   - Tensorflow - google 
   - PyTorch - Facebook 
   - MXNet - Amazon
